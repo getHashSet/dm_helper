@@ -1,19 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import Slider from '../_subcomponents/Slider/Slider';
 
-RandomEncounter.defaultProps = {}
+RollToHit.defaultProps = {}
 
-export default function RandomEncounter() {
-
+export default function RollToHit() {
     return (
         <StyledSection>
             <StyledFrame>
-                <h2>Random Encounter</h2>
-                <p>Party Level</p>
-                <Slider/>
-                <p>Location</p>
-                <StyledButton>Roll Initiative</StyledButton>
+                <h2>Dice Calculator</h2>
+                <StyledButton>Quick d20</StyledButton>
             </StyledFrame>
         </StyledSection>
     )
@@ -22,7 +17,6 @@ export default function RandomEncounter() {
 const StyledFrame = styled.div`
     width: 100%;
     max-width: 1200px;
-    color: #fff;
 
     h2 {
         font-size: 2em;
@@ -31,8 +25,10 @@ const StyledFrame = styled.div`
 `
 
 const StyledSection = styled.section`
-    padding: 1em .5em;
-    background-color: #e74c3c;
+    background: #f39c12;
+    color: #fff;
+    min-height: 30vh;
+    padding: .5em;
     display: flex;
     justify-content: center;
 `;
@@ -50,7 +46,8 @@ const StyledButton = styled.button`
 
     &:hover {
         cursor: pointer;
-        background-color: #c0392b;
+        background-color: #e67e22;
+        color: #fff;
         transform: translateY(2px);
     }
 

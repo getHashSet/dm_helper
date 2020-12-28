@@ -6,22 +6,29 @@ ItemShop.defaultProps = {}
 export default function ItemShop() {
     return (
         <StyledSection>
-            <h2>Item Shop</h2>
-            <div>
-                <p>Adventure Shop</p>
-                <p>Stable</p>
-                <p>Black Smith</p>
-                <p>Arms &amp; Armor</p>
-                <p>Magic Shop</p>
-            </div>
-            <StyledButton>CREAT SHOP</StyledButton>
+            <StyledFrame>
+                <h2>Item Shop</h2>
+                <div>
+                    <p>Adventure Shop</p>
+                    <p>Stable</p>
+                    <p>Black Smith</p>
+                    <p>Arms &amp; Armor</p>
+                    <p>Magic Shop</p>
+                </div>
+                <StyledButton>CREAT SHOP</StyledButton>
+                <p>Shop Keep: and their name</p>
+                <p>NPCS: Number or NPCs in the shop</p>
+                <p>List of whats for sale</p>
+                <p>How much gold the shop keep has on them</p>
+            </StyledFrame>
         </StyledSection>
     )
 }
 
-const StyledSection = styled.section`
-    min-height: 30vh;
-    padding: .5em;
+const StyledFrame = styled.div`
+    width: 100%;
+    max-width: 1200px;
+    color: #34495e;
 
     h2 {
         font-size: 2em;
@@ -29,9 +36,15 @@ const StyledSection = styled.section`
     }
 `;
 
+const StyledSection = styled.section`
+    padding: 1em .5em;
+    display: flex;
+    justify-content: center;
+`;
+
 const StyledButton = styled.button`
-    background: none;
-    color: #2c3e50;
+    background:  #2c3e50;
+    color: #fff;
     font-size: 1.5em;
     padding: .5em 1em;
     margin: .5em 0;
