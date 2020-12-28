@@ -7,7 +7,7 @@ const headerReducer = (state = "", action) => {
         case 'HEADER':
             return action.payload;
         default:
-            return 'hello, world'
+            return 'TableTop Squire'
     };
 };
 export default headerReducer;

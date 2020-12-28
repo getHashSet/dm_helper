@@ -11,7 +11,6 @@ export default function DiscreteSlider() {
   return (
     <React.Fragment>
         <StyledSlider>
-            <h3>Challenge Rating</h3>
             <div>
                 <p>Easy</p>
                 <Slider
@@ -49,13 +48,6 @@ const StyledSlider = styled.div`
         max-width: 500px;
         display: flex;
         align-items: center;
-    }
-
-    h3 {
-        font-size: 1.5em;
-        font-weight: 800;
-        display: block;
-        width: 100%;
     }
 
     p {

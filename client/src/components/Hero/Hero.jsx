@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from "react-redux";
 
-Hero.defaultProps = {
-    backgroundImg: "",
-}
+Hero.defaultProps = {}
 
 export default function Hero(props) {
+    // =================== //
+    //   HOOK INTO STATE   //
+    // =================== //
+    const [theTitle] = useState(useSelector((state) => state.headerTag));
+
     return (
         <StyledSection>
             <div className="shadow"></div>
             <div className="title">
-                {props.children}
+                <h1>{theTitle}</h1>
             </div>
         </StyledSection>
     )

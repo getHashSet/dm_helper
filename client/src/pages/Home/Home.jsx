@@ -9,9 +9,7 @@ export default class Home extends Component {
     render() {
         return (
             <React.Fragment>
-                <Hero>
-                    <h1>The DM Helper</h1>
-                </Hero>
+                <Hero />
                 <RandomEncounter />
                 <RollToHit />
                 <ItemShop/>
