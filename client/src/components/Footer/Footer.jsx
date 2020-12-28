@@ -21,7 +21,7 @@ export default function Footer() {
                 </ul> */}
             </div>
             <div className="copyright">
-                Loopy Ewe <span>Designs</span> <span>Copyright&copy; {year}</span>
+                <span>Copyright&copy; {year}</span>
             </div>
         </StyledFooter>
     )
