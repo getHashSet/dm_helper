@@ -1,0 +1,59 @@
+{
+  "name": "dm_helper",
+  "version": "1.0.0",
+  "private": true,
+  "proxy": "http://localhost:8080",
+  "dependencies": {
+    "babel-jest": "^26.6.0",
+    "eslint": "^7.11.0",
+    "jest": "26.6.0",
+    "webpack": "4.44.2",
+    "axios": "^0.19.0",
+    "body-parser": "^1.17.2",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "express-session": "^1.17.1",
+    "express-sslify": "^1.2.0",
+    "mongoose": "^5.10.1",
+    "morgan": "^1.8.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "styled-components": "^5.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "if-env": "^1.0.4",
+    "react-scripts": "^3.3.0"
+  },
+  "description": "MTG Deck Builder",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run start:prod",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon server.js --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "prod": "node server.js",
+    "heroku-postbuild": "npm run build",
+    "seed": "node utils/scripts/seeds.js"
+  },
+  "engines": {
+    "node": "12.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getHashSet/dm_helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/getHashSet/dm_helper/issues"
+  },
+  "homepage": "https://github.com/getHashSet/dm_helper#readme"
+}
