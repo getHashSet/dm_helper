@@ -25,31 +25,78 @@ export default function RollToHit() {
             buttonValue = e.target.textContent;
         }
 
+        // HELPER VARs
+        let cleanedOutput = calculatorOutput;
+        const lastMod = cleanedOutput[cleanedOutput.length - 2];
+        const lastChar = cleanedOutput[cleanedOutput.length - 1];
+
+        // HELPER FUNCTION
+        const replaceAt = function(index, replacement, str) {
+            return str.substr(0, index) + replacement + str.substr(index + replacement.length);
+        }
+
         // ============================= //
         //   BLOCK: Too many characters  //
         // ============================= //
         if (calculatorOutput.length > 15){ return; };
-
         
         // ============================== //
         //   BLOCK: Doulbes Plus & Minus  //
         // ============================== //
         if (buttonValue === "+" || buttonValue === "-"){
-            if (calculatorOutput[calculatorOutput.length - 1] === "+" 
-            || calculatorOutput[calculatorOutput.length - 1] === "-"
-            || calculatorOutput[calculatorOutput.length - 1] === "d"
-            || calculatorOutput[calculatorOutput.length - 1] === " ")
-            {
-                return
+
+            // check if the dice type was selected yet.
+            if (lastChar === "d") {return};
+
+            // stop plus and min before numbers are added.
+            if (cleanedOutput === "0" && buttonValue === "+") {return};
+            
+            // is first number a negative number?
+            if (cleanedOutput === "0" && buttonValue === "-"){
+                updatecalculatorOutput("-");
+            };
+            
+            // check if output is long enough to edit
+            if(cleanedOutput.length > 2){
+                
+                if(buttonValue === lastMod){
+                    cleanedOutput = cleanedOutput.slice(0, cleanedOutput.length - 3);
+                    if (cleanedOutput === "") {cleanedOutput = "0"};
+                    updatecalculatorOutput(cleanedOutput);
+                    return;
+                }
+
+                switch (`${cleanedOutput[cleanedOutput.length - 2]}`) {
+                    case "+" :
+                        cleanedOutput = replaceAt(cleanedOutput.length - 2, buttonValue, cleanedOutput);
+                        updatecalculatorOutput(cleanedOutput);
+                        return;
+                    case "-" :
+                        cleanedOutput = replaceAt(cleanedOutput.length - 2, buttonValue, cleanedOutput);
+                        updatecalculatorOutput(cleanedOutput);
+                        return;
+                    default:
+                        break;
+                }
             }
         };
 
         if (buttonValue === "d"){
-            if (calculatorOutput[calculatorOutput.length - 1] === "+" 
-            || calculatorOutput[calculatorOutput.length - 1] === "-"
-            || calculatorOutput[calculatorOutput.length - 1] === "d")
+
+            // remove the d if pressed twice
+            if (lastChar === "d"){
+                if (cleanedOutput === "d") {
+                    cleanedOutput = "0";
+                } else {
+                    cleanedOutput = cleanedOutput.slice(0, cleanedOutput.length - 1);
+                }
+                updatecalculatorOutput(cleanedOutput);
+            }
+
+            if (calculatorOutput[calculatorOutput.length - 1] === "d")
             {
-                return
+                // double d's detected!
+                return;
             } else {
                 // ==================== //
                 //   BLOCK: Doulbes Ds  //
@@ -85,6 +132,12 @@ export default function RollToHit() {
         }
         // return the new output.
         updatecalculatorOutput(newOutput);
+    }
+
+    const doRollCalculation = (e) => {
+        e.preventDefault();
+
+        
     }
 
     // ========== //
@@ -126,7 +179,7 @@ export default function RollToHit() {
                             <StyledCalcRow className="fourth_row">
                                 <li onClick={addANumberToTheProblem}><p>0</p></li>
                                 <li onClick={addANumberToTheProblem}><p>d</p></li>
-                                <li><p>=</p></li>
+                                <li onClick={doRollCalculation}><p>=</p></li>
                             </StyledCalcRow>
                         </div>
                         <div className="other_options"></div>
