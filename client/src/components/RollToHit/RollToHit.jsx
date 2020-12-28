@@ -1,9 +1,95 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 RollToHit.defaultProps = {}
 
 export default function RollToHit() {
+    // =================== //
+    //   HOOK INTO STATE   //
+    // =================== //
+    const [calculatorOutput, updatecalculatorOutput] = useState("0");
+
+    // ================ //
+    //     Functions    //
+    // ================ //
+    const clearCalculatorField = (e) => {
+        updatecalculatorOutput("0");
+    }
+
+    const addANumberToTheProblem = (e) => {
+        // Step 1: Check if button field was clicked or the p tag itself.
+        let buttonValue = "0";
+        if (e.target.children[0] != null){
+            buttonValue = e.target.children[0].textContent;
+        } else {
+            buttonValue = e.target.textContent;
+        }
+
+        // ============================= //
+        //   BLOCK: Too many characters  //
+        // ============================= //
+        if (calculatorOutput.length > 15){ return; };
+
+        
+        // ============================== //
+        //   BLOCK: Doulbes Plus & Minus  //
+        // ============================== //
+        if (buttonValue === "+" || buttonValue === "-"){
+            if (calculatorOutput[calculatorOutput.length - 1] === "+" 
+            || calculatorOutput[calculatorOutput.length - 1] === "-"
+            || calculatorOutput[calculatorOutput.length - 1] === "d"
+            || calculatorOutput[calculatorOutput.length - 1] === " ")
+            {
+                return
+            }
+        };
+
+        if (buttonValue === "d"){
+            if (calculatorOutput[calculatorOutput.length - 1] === "+" 
+            || calculatorOutput[calculatorOutput.length - 1] === "-"
+            || calculatorOutput[calculatorOutput.length - 1] === "d")
+            {
+                return
+            } else {
+                // ==================== //
+                //   BLOCK: Doulbes Ds  //
+                // ==================== //
+                if (calculatorOutput.indexOf("d") !== -1 && buttonValue === "d"){
+                    let doubleDs = false;
+                    for(let i = 0; i <calculatorOutput.length; i++){
+                        // if the character is a - or a + then unflag. Flag if a d
+                        if(calculatorOutput[i] === "d"){
+                            doubleDs = true;
+                        } else if (calculatorOutput[i] === "+" || calculatorOutput[i] === "-"){
+                            doubleDs = false;
+                        }
+                    }
+                    if (doubleDs === true) {return};
+                };
+            }
+        }
+
+        // Step 2: Create default output.
+        let newOutput = calculatorOutput;
+
+        // Step 3: Check if value is not a number.
+        if (buttonValue === "+" || buttonValue === "-"){
+            buttonValue = ` ${buttonValue} `;
+        };
+
+        // Step 4: If the current output is a 0 then return just the new output otherwise return concated version of both.
+        if(calculatorOutput === "0"){
+            newOutput = buttonValue;
+        } else {
+            newOutput = `${calculatorOutput}${buttonValue}`;
+        }
+        // return the new output.
+        updatecalculatorOutput(newOutput);
+    }
+
+    // ========== //
+    //   RETURN   //
+    // ========== //
     return (
         <StyledSection>
             <StyledFrame>
@@ -17,29 +103,29 @@ export default function RollToHit() {
                 <StyledButton>d100</StyledButton>
                 <STyledDiceCalculator>
                     <div className="frame">
-                        <div className="output">0</div>
+                        <div id="output" className="output">{calculatorOutput}</div>
                         <div className="buttons">
                             <StyledCalcRow className="first_row">
-                                <li><p>7</p></li>
-                                <li><p>8</p></li>
-                                <li><p>9</p></li>
-                                <li><p>-</p></li>
+                                <li onClick={addANumberToTheProblem}><p>7</p></li>
+                                <li onClick={addANumberToTheProblem}><p>8</p></li>
+                                <li onClick={addANumberToTheProblem}><p>9</p></li>
+                                <li onClick={addANumberToTheProblem}><p>-</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="second_row">
-                                <li><p>4</p></li>
-                                <li><p>5</p></li>
-                                <li><p>6</p></li>
-                                <li><p>+</p></li>
+                                <li onClick={addANumberToTheProblem}><p>4</p></li>
+                                <li onClick={addANumberToTheProblem}><p>5</p></li>
+                                <li onClick={addANumberToTheProblem}><p>6</p></li>
+                                <li onClick={addANumberToTheProblem}><p>+</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="third_row">
-                                <li><p>1</p></li>
-                                <li><p>2</p></li>
-                                <li><p>3</p></li>
-                                <li><p>c</p></li>
+                                <li onClick={addANumberToTheProblem}><p>1</p></li>
+                                <li onClick={addANumberToTheProblem}><p>2</p></li>
+                                <li onClick={addANumberToTheProblem}><p>3</p></li>
+                                <li onClick={clearCalculatorField}><p>c</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="fourth_row">
-                                <li><p>0</p></li>
-                                <li><p>d</p></li>
+                                <li onClick={addANumberToTheProblem}><p>0</p></li>
+                                <li onClick={addANumberToTheProblem}><p>d</p></li>
                                 <li><p>=</p></li>
                             </StyledCalcRow>
                         </div>
@@ -64,6 +150,10 @@ const StyledCalcRow = styled.ul`
         display: flex;
         justify-content: center;
         align-items: center;
+
+        p {
+            user-select: none;
+        }
 
         &:hover {
             cursor: pointer;
