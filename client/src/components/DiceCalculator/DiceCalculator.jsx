@@ -163,6 +163,7 @@ export default function RollToHit() {
         let cleanedOutput = calculatorOutput;
         let arrayOfChaos = [];
         let allTheRolls = [];
+        let cleanedDiceRolls = [];
         let finalValue = "";
 
         // Step 0: check for d at the end of the line
@@ -184,30 +185,69 @@ export default function RollToHit() {
         // Step 3: roll the dice in array of chaos.
         // arrayOfChaos = ["d20", "+", "d12"];
         for (let i = 0; i < arrayOfChaos.length; i++) {
+
             let currentValue = arrayOfChaos[i];
+
+            // check if its a dice or a whole number.
             if (currentValue.indexOf("d") !== -1 ){
                 // Edgecase: if the last character is a d without a dice number after it.
                 if (currentValue === "d" || currentValue === "d0" || currentValue[0] === "0"){currentValue = ``};
+
+                // Edgecase: If number of dice are not defined then make it just 1.
                 if (currentValue[0] === "d"){currentValue = `1${currentValue}`};
+
+                // Edgecase: if somehow the first value is still a "d" then split it anyway.
                 let newArrayOfNumbers = currentValue[0] === "d" ? [currentValue] : currentValue.split("d");
 
+                // Edgecase: There should be 2 numbers in the array. Lets filter to make sure.
+                // example: 3d8 = [3, 8];
+                // example: 1d12 = [1, 12];
+                // If we dont match that pattern then just store the value we have instead. Dont math it.
                 if(newArrayOfNumbers.length > 1){
-                    let returnvalue = 0;
-                    // ["2", "10"];
-                    for(let j = 0; j < newArrayOfNumbers[0]; j++) {
-                        let randomlyRolledNumber = rollRandomNumber(newArrayOfNumbers[1]);
-                        returnvalue = +returnvalue + +randomlyRolledNumber;
-                        arrayOfChaos[i] = returnvalue;
+                    let rollResultTotal = 0; // default value being returned will be 0.
+
+                    // we only care about the first 2 values in the array. Anything else is bad data.
+                    const numberOfDice = newArrayOfNumbers[0];
+                    const diceType = newArrayOfNumbers[1];
+
+                    for(let j = 0; j < numberOfDice; j++) {
+                        // roll the dice!
+                        const randomlyRolledNumber = rollRandomNumber(diceType);
+
+                        // To Dislay: clean the dice type and value from the roll.
+                        // Should look something like this {type: "d10", roll: "8", 1 of 10}.
+                        const cleanedDiceValue = {
+                            type: `d${diceType}`,
+                            roll: `${randomlyRolledNumber}`,
+                            index: `${j + 1}`,
+                            totalRolls: `${numberOfDice}`,
+                        };
+
+                        // add the cleaned object to our array so that we can display it all nice.
+                        cleanedDiceRolls.push(cleanedDiceValue);
+
+                        // add the roll to the running total.
+                        rollResultTotal = +rollResultTotal + +randomlyRolledNumber;
+
+                        // replace the value in arrayOfChaos with the now rolled dice value.
+                        arrayOfChaos[i] = rollResultTotal;
+
+                        // add it to the nonclean running total array.
                         allTheRolls.push(randomlyRolledNumber);
                     }
                     console.log(`d${newArrayOfNumbers[1]} Rolls in order: ${allTheRolls}`);
                 } else {
+                    // this will catch + - x / and errors.
                     arrayOfChaos[i] = newArrayOfNumbers[0];
                 }
             }
         }
 
+        // Next Step: Now that we have our totals we can do stuff with them.
+        // Flag: are we adding or subtracting the prev value to the next value.
         let addOrSubtractBool = "add";
+
+        // 
         arrayOfChaos.forEach(value => {
 
             if (value === "+" || value === "-") {
@@ -234,10 +274,14 @@ export default function RollToHit() {
         // Step 9: Stage DOM elements inside a fragment
         const toast = 
         <StyledToastiness>
-            <p>{finalValue}</p>
-            <div className="overflow">
-                {allTheRolls.map((roll, index) => <p>Roll #{index + 1}: {roll}</p>)}
+
+            <h3>{finalValue}</h3>
+
+            <div className={`overflow expand`}>
+                <h4>{calculatorOutput} = {finalValue}</h4>
+                {cleanedDiceRolls.map((diceRollObject) => <p>{diceRollObject.index} of {diceRollObject.totalRolls} {diceRollObject.type} ({diceRollObject.roll})</p>)}
             </div>
+
         </StyledToastiness>;
 
         // Edge Case: Negative Numbers
@@ -448,16 +492,34 @@ const StyledToastiness = styled.section`
         text-align: center;
     }
 
+    h3 {
+        font-size: 2em;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
     .overflow {
+        height: 0px;
         max-height: 50vh;
         overflow: scroll;
 
+        h4 {
+            font-weight: 400;
+        }
+
         p {
+            display: block;
             font-weight: 400;
             font-size: .5em;
             padding: .2em;
             margin: 0;
             text-align: left;
+        }
+
+        &.expand {
+            height: auto;
         }
     }
 `;

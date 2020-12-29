@@ -18,7 +18,7 @@ const allReducers = combineReducers({
     partyLevel: encounterPartyLevel,
     challengeRating: encounterChallengeRating,
     showToastMenu: showToastReducer,
-    currentToastData: toastData,
+    currentToastData: toastData
 });
 
 export default allReducers;
