@@ -162,6 +162,7 @@ export default function RollToHit() {
 
         let cleanedOutput = calculatorOutput;
         let arrayOfChaos = [];
+        let allTheRolls = [];
         let finalValue = "";
 
         // Step 0: check for d at the end of the line
@@ -189,7 +190,6 @@ export default function RollToHit() {
                 if (currentValue === "d" || currentValue === "d0" || currentValue[0] === "0"){currentValue = ``};
                 if (currentValue[0] === "d"){currentValue = `1${currentValue}`};
                 let newArrayOfNumbers = currentValue[0] === "d" ? [currentValue] : currentValue.split("d");
-                let allTheRolls = [];
 
                 if(newArrayOfNumbers.length > 1){
                     let returnvalue = 0;
@@ -228,9 +228,20 @@ export default function RollToHit() {
             }
         });
 
-        // Edge Case: Negative Numbers
+        // Step 8: check final value;
         if (finalValue < 0) {finalValue = 0};
-        updateToastMenu(finalValue)
+        
+        // Step 9: Stage DOM elements inside a fragment
+        const toast = 
+        <StyledToastiness>
+            <p>{finalValue}</p>
+            <div className="overflow">
+                {allTheRolls.map((roll, index) => <p>Roll #{index + 1}: {roll}</p>)}
+            </div>
+        </StyledToastiness>;
+
+        // Edge Case: Negative Numbers
+        updateToastMenu(toast)
         console.log("-- End of Roll --");
     }
 
@@ -424,5 +435,29 @@ const StyledButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+`;
+
+const StyledToastiness = styled.section`
+    color: #34495e;
+    overflow: hidden;
+
+    p {
+        width: 100%;
+        margin-bottom: 1em;
+        text-align: center;
+    }
+
+    .overflow {
+        max-height: 50vh;
+        overflow: scroll;
+
+        p {
+            font-weight: 400;
+            font-size: .5em;
+            padding: .2em;
+            margin: 0;
+            text-align: left;
+        }
     }
 `;
