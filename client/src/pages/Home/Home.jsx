@@ -4,6 +4,7 @@ import Footer from '../../components/Footer/Footer';
 import ItemShop from '../../components/ItemShop/ItemShop';
 import RandomEncounter from '../../components/RandomEncounter/RandomEncounter';
 import RollToHit from '../../components/RollToHit/RollToHit';
+import Inn from '../../components/Inn/Inn';
 
 export default class Home extends Component {
     render() {
@@ -12,8 +13,9 @@ export default class Home extends Component {
                 <Hero />
                 <RandomEncounter />
                 <RollToHit />
-                <ItemShop/>
-                <Footer/>
+                <Inn />
+                <ItemShop />
+                <Footer />
             </React.Fragment>
         )
     }
