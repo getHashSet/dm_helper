@@ -179,7 +179,8 @@ export default function RollToHit() {
             let currentValue = arrayOfChaos[i];
             if (currentValue.indexOf("d") !== -1 ){
                 // Edgecase: if the last character is a d without a dice number after it.
-                if (currentValue === "d"){currentValue = ``};
+                console.log(currentValue);
+                if (currentValue === "d" || currentValue === "d0" || currentValue[0] === "0"){currentValue = ``};
                 if (currentValue[0] === "d"){currentValue = `1${currentValue}`};
                 let newArrayOfNumbers = currentValue[0] === "d" ? [currentValue] : currentValue.split("d");
                 let allTheRolls = [];
@@ -222,7 +223,7 @@ export default function RollToHit() {
         });
 
         // Edge Case: Negative Numbers
-        if (finalValue <= 0) {finalValue = 1};
+        if (finalValue < 0) {finalValue = 0};
         updateToastMenu(finalValue)
 
     }
