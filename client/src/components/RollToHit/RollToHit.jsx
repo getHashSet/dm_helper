@@ -174,13 +174,16 @@ export default function RollToHit() {
         }
 
         // Step 3: roll the dice in array of chaos.
+        // arrayOfChaos = ["d20", "+", "d12"];
         for (let i = 0; i < arrayOfChaos.length; i++) {
             let currentValue = arrayOfChaos[i];
-            if (currentValue.indexOf("d") !== -1){
-                // 2d10
-                // d20
-                let newArrayOfNumbers = currentValue.split("d");
+            if (currentValue.indexOf("d") !== -1 ){
+                // Edgecase: if the last character is a d without a dice number after it.
+                if (currentValue === "d"){currentValue = ``};
+                if (currentValue[0] === "d"){currentValue = `1${currentValue}`};
+                let newArrayOfNumbers = currentValue[0] === "d" ? [currentValue] : currentValue.split("d");
                 let allTheRolls = [];
+
                 if(newArrayOfNumbers.length > 1){
                     let returnvalue = 0;
                     // ["2", "10"];
@@ -230,6 +233,12 @@ export default function RollToHit() {
 
         if (updateTheCalculatorOutput){updatecalculatorOutput(str);}
     }
+
+    document.addEventListener('scroll',function(){
+        if(showToastMenu){
+            updateshowToastMenu(false);
+        }
+    });
 
     // ========== //
     //   RETURN   //
