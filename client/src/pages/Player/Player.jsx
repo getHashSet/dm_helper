@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import Footer from '../../components/Footer/Footer';
 import DiceCalculator from '../../components/DiceCalculator/DiceCalculator';
 import GoHome from '../../components/GoHome/GoHome';
+import RollPlayToHit from '../../components/RollPlayToHit/RollPlayToHit';
 
 export default class Player extends Component {
     render() {
         return (
             <React.Fragment>
                 <DiceCalculator />
-                <p>Roll to hit</p>
-                <p>Actions Chart</p>
-                <p>Status Chart</p>
-                <p>Character Maker</p>
+                <RollPlayToHit />
+                <p>Actions Chart, displays actions you can do.</p>
+                <p>Status Chart, display status effects.</p>
+                <p></p>
                 <Footer />
                 <GoHome />
             </React.Fragment>
