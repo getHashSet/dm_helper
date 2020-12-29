@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { showToastMenuState, updateToastData } from "../../redux/actions";
 import styled from 'styled-components';
-import Dice from "./dice-d20-solid.svg";
 
 RollToHit.defaultProps = {}
 
@@ -9,8 +10,7 @@ export default function RollToHit() {
     //   HOOK INTO STATE   //
     // =================== //
     const [calculatorOutput, updatecalculatorOutput] = useState("0");
-    const [showToastMenu, updateshowToastMenu] = useState(false);
-    const [toastMenuText, updatetoastMenuText] = useState("Well hello there...");
+    const dispatch = useDispatch();
 
     // ================ //
     //     Functions    //
@@ -228,18 +228,13 @@ export default function RollToHit() {
 
     }
 
-    const updateToastMenu = (str = toastMenuText, updateTheCalculatorOutput = false) => {
-        updatetoastMenuText(str);
-        updateshowToastMenu(!showToastMenu);
+    const updateToastMenu = (str, updateTheCalculatorOutput = false) => {
+        // removed. needs to be a prop now updatetoastMenuText(str);
+        dispatch(showToastMenuState(true));
+        dispatch(updateToastData(`${str}`));
 
         if (updateTheCalculatorOutput){updatecalculatorOutput(str);}
     }
-
-    document.addEventListener('scroll',function(){
-        if(showToastMenu){
-            updateshowToastMenu(false);
-        }
-    });
 
     // ========== //
     //   RETURN   //
@@ -298,77 +293,9 @@ export default function RollToHit() {
                     </STyledDiceCalculator>
                 </StyledFrame>
             </StyledSection>
-            <StyledToast showToastMenu={showToastMenu} onClick={() => {updateshowToastMenu(!showToastMenu)}} >
-                <StyledShadowBox />
-                <StyledToastBox className={showToastMenu ? "fadeIn" : "no_class"}>
-                    {toastMenuText}
-                </StyledToastBox>
-            </StyledToast>
         </React.Fragment>
     )
 }
-
-// ============== //
-//   TOAST MENU   //
-// ============== //
-const StyledToast = styled.div`
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    z-index: ${props => props.showToastMenu ? "9000" : "-1"};
-    visibility: ${props => props.showToastMenu ? "visible" : "hidden"};
-    overflow: hidden;
-`;
-
-const StyledShadowBox = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    /* background-color: rgba(0,0,0, .6); */
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const StyledToastBox = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #2d3436;
-    background-color: #fff;
-    border-radius: .5em;
-    min-width: 200px;
-    min-height: 50px;
-    max-width: calc(100vw - 1em);
-    box-shadow: 1px 1px 8px #000;
-    transform: translate(-50%, -90%);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    opacity: 0;
-    transition: transform .3s, opacity .2s;
-    user-select: none;
-    font-size: 2em;
-    padding: 1em;
-    font-weight: 900;
-
-    &.fadeIn {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-    }
-
-`;
 
 // ============ //
 //   DICE BOX   //

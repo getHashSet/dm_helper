@@ -4,19 +4,21 @@
 // is around the Apps using this store.
 /////////////////////////////////////////
 
-// import counterReducer from './counter';
 import loggedReducer from './isLoggedIn';
 import headerReducer from './header';
 import encounterPartyLevel from './encounterPartyLevel';
 import encounterChallengeRating from './encounterChallengeRating';
 import { combineReducers } from 'redux';
+import showToastReducer from './showToast';
+import toastData from './toastData_reducer';
 
 const allReducers = combineReducers({
-    //counter: counterReducer,
     isLoggedIn: loggedReducer,
     headerTag: headerReducer,
     partyLevel: encounterPartyLevel,
-    challengeRating : encounterChallengeRating,
+    challengeRating: encounterChallengeRating,
+    showToastMenu: showToastReducer,
+    currentToastData: toastData,
 });
 
 export default allReducers;

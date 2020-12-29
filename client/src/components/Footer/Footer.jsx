@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Toast from '../Toast/Toast';
 
 export default function Footer() {
 
@@ -23,6 +24,7 @@ export default function Footer() {
             <div className="copyright">
                 <span>Copyright&copy; {year}</span>
             </div>
+            <Toast>data</Toast>
         </StyledFooter>
     )
 }
