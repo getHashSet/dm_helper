@@ -55,12 +55,12 @@ export default function RollToHit() {
             if (cleanedOutput === "0" && buttonValue === "+") {return};
             
             // is first number a negative number?
-            if (cleanedOutput === "0" && buttonValue === "-"){
+            if (cleanedOutput === "0" && buttonValue === "-") {
                 updatecalculatorOutput("-");
             };
             
             // check if output is long enough to edit
-            if(cleanedOutput.length > 2){
+            if(cleanedOutput.length > 2) {
                 
                 if(buttonValue === lastMod){
                     cleanedOutput = cleanedOutput.slice(0, cleanedOutput.length - 3);
@@ -177,14 +177,49 @@ export default function RollToHit() {
         for (let i = 0; i < arrayOfChaos.length; i++) {
             let currentValue = arrayOfChaos[i];
             if (currentValue.indexOf("d") !== -1){
-                arrayOfChaos[i] = rollRandomNumber(currentValue.slice(1));
+                // 2d10
+                // d20
+                let newArrayOfNumbers = currentValue.split("d");
+                let allTheRolls = [];
+                if(newArrayOfNumbers.length > 1){
+                    let returnvalue = 0;
+                    // ["2", "10"];
+                    for(let j = 0; j < newArrayOfNumbers[0]; j++) {
+                        let randomlyRolledNumber = rollRandomNumber(newArrayOfNumbers[1]);
+                        returnvalue = +returnvalue + +randomlyRolledNumber;
+                        arrayOfChaos[i] = returnvalue;
+                        allTheRolls.push(randomlyRolledNumber);
+                    }
+                    console.log(allTheRolls);
+                } else {
+                    arrayOfChaos[i] = newArrayOfNumbers[0];
+                }
             }
         }
 
+        let addOrSubtractBool = "add";
         arrayOfChaos.forEach(value => {
-            finalValue = `${+finalValue + +value}`; 
+
+            if (value === "+" || value === "-") {
+                switch (value) {
+                    case "+":
+                        addOrSubtractBool = "add";
+                    break;
+                    case "-":
+                        addOrSubtractBool = "subtract";
+                    break;
+                }
+            } else {
+                if (addOrSubtractBool === "add"){
+                    finalValue = `${+finalValue + +value}`; 
+                } else if (addOrSubtractBool === "subtract"){
+                    finalValue = `${+finalValue - +value}`; 
+                }
+            }
         });
 
+        // Edge Case: Negative Numbers
+        if (finalValue <= 0) {finalValue = 1};
         updateToastMenu(finalValue)
 
     }
