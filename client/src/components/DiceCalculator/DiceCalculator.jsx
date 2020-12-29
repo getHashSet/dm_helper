@@ -41,7 +41,7 @@ export default function RollToHit() {
         // ============================= //
         //   BLOCK: Too many characters  //
         // ============================= //
-        if (calculatorOutput.length > 15){ return; };
+        if (calculatorOutput.length > 20){ return; };
         
         // ============================== //
         //   BLOCK: Doulbes Plus & Minus  //
@@ -158,10 +158,17 @@ export default function RollToHit() {
 
     const doRollCalculation = (e) => {
         e.preventDefault();
+        console.log("-- Start of Roll --");
 
         let cleanedOutput = calculatorOutput;
         let arrayOfChaos = [];
         let finalValue = "";
+
+        // Step 0: check for d at the end of the line
+        if(cleanedOutput[cleanedOutput.length - 1] === "d") {
+            const removingD = cleanedOutput.length - 1;
+            cleanedOutput = cleanedOutput.slice(0, +removingD)
+        };
 
         // Step 1: check if value is just 0;
         if (cleanedOutput === "0") {return};
@@ -179,7 +186,6 @@ export default function RollToHit() {
             let currentValue = arrayOfChaos[i];
             if (currentValue.indexOf("d") !== -1 ){
                 // Edgecase: if the last character is a d without a dice number after it.
-                console.log(currentValue);
                 if (currentValue === "d" || currentValue === "d0" || currentValue[0] === "0"){currentValue = ``};
                 if (currentValue[0] === "d"){currentValue = `1${currentValue}`};
                 let newArrayOfNumbers = currentValue[0] === "d" ? [currentValue] : currentValue.split("d");
@@ -194,7 +200,7 @@ export default function RollToHit() {
                         arrayOfChaos[i] = returnvalue;
                         allTheRolls.push(randomlyRolledNumber);
                     }
-                    console.log(allTheRolls);
+                    console.log(`d${newArrayOfNumbers[1]} Rolls in order: ${allTheRolls}`);
                 } else {
                     arrayOfChaos[i] = newArrayOfNumbers[0];
                 }
@@ -225,15 +231,13 @@ export default function RollToHit() {
         // Edge Case: Negative Numbers
         if (finalValue < 0) {finalValue = 0};
         updateToastMenu(finalValue)
-
+        console.log("-- End of Roll --");
     }
 
-    const updateToastMenu = (str, updateTheCalculatorOutput = false) => {
+    const updateToastMenu = (str) => {
         // removed. needs to be a prop now updatetoastMenuText(str);
-        dispatch(showToastMenuState(true));
-        dispatch(updateToastData(`${str}`));
-
-        if (updateTheCalculatorOutput){updatecalculatorOutput(str);}
+        dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
+        dispatch(updateToastData(str)); // default parent is a div with flex turned on.
     }
 
     // ========== //
