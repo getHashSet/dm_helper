@@ -404,6 +404,16 @@ const StyledCalcRow = styled.ul`
                 transform: translateY(3px);
             }
         }
+
+        @media (max-width: 768px) {
+            &:hover {
+                background-color: #2980b9;
+            };
+
+            &:active {
+                background-color: #3498db;
+            }
+        }
     }
 `;
 
