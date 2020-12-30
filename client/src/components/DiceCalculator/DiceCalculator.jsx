@@ -272,14 +272,19 @@ export default function RollToHit() {
         if (finalValue < 0) {finalValue = 0};
         
         // Step 9: Stage DOM elements inside a fragment
+
+        // ===== //
+        // TOAST //
+        // ===== //
         const toast = 
         <StyledToastiness>
 
             <h3>{finalValue}</h3>
 
+            <h4>{calculatorOutput}</h4>
+
             <div className={`overflow expand`}>
-                <h4>{calculatorOutput} = {finalValue}</h4>
-                {cleanedDiceRolls.map((diceRollObject) => <p>{diceRollObject.index} of {diceRollObject.totalRolls} {diceRollObject.type} ({diceRollObject.roll})</p>)}
+                {cleanedDiceRolls.map((diceRollObject) => <div><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
             </div>
 
         </StyledToastiness>;
@@ -483,6 +488,7 @@ const StyledButton = styled.button`
 `;
 
 const StyledToastiness = styled.section`
+    width: 100%;
     color: #34495e;
     overflow: hidden;
 
@@ -493,20 +499,46 @@ const StyledToastiness = styled.section`
     }
 
     h3 {
+        text-align: center;
         font-size: 2em;
+        padding: 0 0 .5em 0;
+        margin: .3em 0;
+        border-bottom: 1px solid #bdc3c7;
     }
 
     h4 {
+        padding: .5em .5em 1em .5em;
+        font-weight: 600;
         text-align: center;
+        border-bottom: 1px solid #bdc3c7;
     }
 
     .overflow {
         height: 0px;
         max-height: 50vh;
-        overflow: scroll;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0 .5;
+        margin: .5;
 
-        h4 {
-            font-weight: 400;
+        div {
+            text-align: center;
+            display: flex;
+            flex-wrap: nowrap;
+            width: 100%;
+            border-bottom: 1px solid #bdc3c7;
+
+            .the_roll {
+                text-align: center;
+                border-left: 1px solid #bdc3c7;
+            }
+        }
+
+        span {
+            font-weight: 200;
+            font-style: italic;
+            font-size: .8em;
+            color: #34495e;
         }
 
         p {
@@ -515,7 +547,7 @@ const StyledToastiness = styled.section`
             font-size: .5em;
             padding: .2em;
             margin: 0;
-            text-align: left;
+            text-align: center;
         }
 
         &.expand {

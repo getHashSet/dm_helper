@@ -6,6 +6,7 @@ import RandomEncounter from '../../components/RandomEncounter/RandomEncounter';
 import DiceCalculator from '../../components/DiceCalculator/DiceCalculator';
 import Inn from '../../components/Inn/Inn';
 import GoHome from '../../components/GoHome/GoHome';
+import Npc from '../../components/Npc/Npc';
 
 export default class Dm extends Component {
     render() {
@@ -13,6 +14,7 @@ export default class Dm extends Component {
             <React.Fragment>
                 <RandomEncounter />
                 <DiceCalculator />
+                <Npc />
                 <Inn />
                 <ItemShop />
                 <Footer />

@@ -78,7 +78,7 @@ const StyledToastBox = styled.div`
     position: absolute;
     left: 50%;
     top: 50%;
-    min-width: 200px;
+    min-width: 250px;
     max-width: calc(100vw - 1em);
     min-height: 50px;
     padding: 1em;
