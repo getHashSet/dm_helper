@@ -54,12 +54,14 @@ export default function EnemyCard(props) {
     const rollSavingThrow = (e) => {
         let statMod = 0;
 
-        if (e.target.getAttribute('data-mod') === null){
+        if (e.target.parentElement.getAttribute('data-mod') !== null){
             statMod = e.target.parentElement.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
-        } else {
+        } else if (e.target.getAttribute('data-mod') !== null){
             statMod = e.target.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
+        } else {
+            statMod = 0;
         }
 
         if (statMod === null) {statMod = 0};
