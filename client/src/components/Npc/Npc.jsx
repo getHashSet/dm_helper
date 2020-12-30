@@ -113,6 +113,9 @@ const StyledButton = styled.button`
     }
 `;
 
+// ========= //
+//   TOAST   //
+// ========= //
 const StyledToast = styled.section`
     font-weight: 400;
     font-size: 16px;

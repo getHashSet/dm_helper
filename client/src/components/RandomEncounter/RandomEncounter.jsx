@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import Slider from '../_subcomponents/Slider/Slider';
+import EnemyCard from '../_subcomponents/EnemyCard/EnemyCard';
 
 // ===================== //
 //     DEFAULT PROPS     //
@@ -33,35 +34,45 @@ export default function RandomEncounter() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection>
-            <StyledFrame>
+        <React.Fragment>
+            <StyledSection>
+                <StyledFrame>
 
-                <h2>Random Encounter</h2>
+                    <h2>Random Encounter</h2>
 
-                <StyledOptionBox>
-                    <h3>Party Level</h3>
-                </StyledOptionBox>
+                    <StyledOptionBox>
+                        <h3>Party Level</h3>
+                    </StyledOptionBox>
 
-                <StyledOptionBox>
-                    <h3>Challenge Rating</h3>
-                    <Slider/>
-                </StyledOptionBox>
+                    <StyledOptionBox>
+                        <h3>Challenge Rating</h3>
+                        <Slider/>
+                    </StyledOptionBox>
 
-                <StyledOptionBox>
-                    <h3>Encounter Table</h3>
-                    <StyledFlexOptionsUL className="encounter_table">
-                        <li onClick={encounterTableSelected}>Mountain</li>
-                        <li>Forest</li>
-                        <li>Clearing</li>
-                        <li>City</li>
-                        <li>Underground</li>
-                    </StyledFlexOptionsUL>
-                </StyledOptionBox>
+                    <StyledOptionBox>
+                        <h3>Encounter Table</h3>
+                        <StyledFlexOptionsUL className="encounter_table">
+                            <li onClick={encounterTableSelected}>Mountain</li>
+                            <li>Forest</li>
+                            <li>Clearing</li>
+                            <li>City</li>
+                            <li>Underground</li>
+                        </StyledFlexOptionsUL>
+                    </StyledOptionBox>
 
-                <StyledButton>Roll Initiative</StyledButton>
+                    <StyledButton>Roll Initiative</StyledButton>
 
-            </StyledFrame>
-        </StyledSection>
+                </StyledFrame>
+            </StyledSection>
+            <StyledBattleField>
+                <StyledFrame>
+                    <h2>Battle Field</h2>
+                    <StyledDeck>
+                        <EnemyCard />
+                    </StyledDeck>
+                </StyledFrame>
+            </StyledBattleField>
+        </React.Fragment>
     )
 }
 
@@ -74,6 +85,7 @@ const StyledSection = styled.section`
     display: flex;
     justify-content: center;
 `;
+
 const StyledFlexOptionsUL = styled.ul`
     display: flex;
 
@@ -140,3 +152,62 @@ const StyledButton = styled.button`
         outline: none;
     }
 `;
+
+// ================ //
+//   BATTLE FIELD   //
+// ================ //
+const StyledBattleField = styled.section`
+    min-height: 30vh; // TODO remove min height from this.
+    margin: 0;
+    padding: 1em .5em;
+    background-color: #fff;
+
+    h2 {
+        color: #2f3640;
+    }
+`;
+
+// ======== //
+//   DECK   //
+// ======== //
+const StyledDeck = styled.section`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+`;
+
+// ======== //
+//   CARD   //
+// ======== //
+// See sub components for card styling.
+
+// ========= //
+//   TOAST   //
+// ========= //
+const StyledToast = styled.section`
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+
+    p {
+        padding: .5em 0;
+
+        i {
+            font-style: italic;
+        }
+
+        span {
+            font-weight: 600;
+        }
+    }
+
+    h4 {
+        font-weight: 600;
+        font-size: 1.5em;
+    }
+`
