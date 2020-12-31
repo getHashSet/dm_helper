@@ -5,14 +5,14 @@ import { showToastMenuState, updateToastData } from "../../../redux/actions";
 
 EnemyCard.defaultProps = {
     enemyName : "Enemy",
-    ac : 10,
+    ac : 14,
     initiative : 1,
     hp : 10,
     movement : ["walk", "swim", "fly", "dig"],
     stats : {
         STR : 14,
         DEX : 20,
-        CON : 10,
+        CON : 1,
         INT : 28,
         WIS : 5,
         CHA : 16
@@ -75,14 +75,9 @@ export default function EnemyCard(props) {
 
         // Edgecases
         if (savingThrow === 20 && statMod > 0) {savingThrow = "Dirty 20"};
-        if (savingThrow < 1 && d20 !== 1) {
-            savingThrow = "2";
-        };
-        if (savingThrow < 1) {
-            savingThrow = 1;
-        };
-        if (d20 === 20) {savingThrow = "Crit"};
-        if (d20 === 1) {savingThrow = "1"};
+        if (savingThrow < 1 && d20 !== 1) { savingThrow = "Dirty 1"; };
+        if (d20 === 20) {savingThrow = "Nat 20"};
+        if (d20 === 1) {savingThrow = "Nat 1"};
 
         console.log(`Sending ${savingThrow} to Toast.`)
         updateToastMenu(savingThrow);
@@ -100,19 +95,84 @@ export default function EnemyCard(props) {
         }
     }
 
+    const getMod = (stat) => {
+        const uncleanedMod = getStatMod(stat);
+        const mod = uncleanedMod.slice(1, uncleanedMod.length - 1); // remove string data
+        return +mod;
+    }
+
+    const d20PlusMod = (mod) => {
+        const d20 = Math.floor(Math.random() * 20) + 1;
+        return d20 + +mod;
+    }
+
+    const rollPlusMod = (stat) => {
+        const mod = getMod(stat);
+        return d20PlusMod(mod);
+    };
+
+    const adjustHpButton = (e) => {
+        e.preventDefault();
+
+        let inputData = e.target.parentElement.children[0].value;
+        // if (+inputData > 0) { inputData = 0 };
+
+        console.log(inputData)
+
+        updateenemyHp(enemyHp - +inputData);
+    };
+
     // ========== //
     //   RETURN   //
     // ========== //
     return (
         <StyledCard>
             
+            {/* Enemy Name */}
             <div className="card_name">
                 <h2>{props.enemyName}</h2>
             </div>
 
-            <StyledHpCounter>HP:  <span onClick={() => updateenemyHp(enemyHp - 1)}>-</span> {enemyHp} <span onClick={() => updateenemyHp(enemyHp + 1)}>+</span> </StyledHpCounter>
-
-            <div>{`AC: ${props.ac}`}</div>
+            {/* AC HP IN */}
+            <StyledAcHpIn>
+                <div className="top_section">
+                    {/* AC */}
+                    <div className="block">
+                        <div className="background"></div>
+                        <div className="info">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="shield-alt" class="svg-inline--fa fa-shield-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"></path></svg>
+                            {props.ac}
+                        </div>
+                    </div>
+                    {/* HP */}
+                    <div className="block">
+                        <div className="background"></div>
+                        <div className="info">
+                            <svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Heart</title><path d='M256 448a32 32 0 01-18-5.57c-78.59-53.35-112.62-89.93-131.39-112.8-40-48.75-59.15-98.8-58.61-153C48.63 114.52 98.46 64 159.08 64c44.08 0 74.61 24.83 92.39 45.51a6 6 0 009.06 0C278.31 88.81 308.84 64 352.92 64c60.62 0 110.45 50.52 111.08 112.64.54 54.21-18.63 104.26-58.61 153-18.77 22.87-52.8 59.45-131.39 112.8a32 32 0 01-18 5.56z'/></svg>
+                            {enemyHp}
+                        </div>
+                    </div>
+                    {/* IN */}
+                    <div className="block">
+                        <div className="background"></div>
+                        <div className="info">
+                            <svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Flash</title><path d='M194.82 496a18.36 18.36 0 01-18.1-21.53v-.11L204.83 320H96a16 16 0 01-12.44-26.06L302.73 23a18.45 18.45 0 0132.8 13.71c0 .3-.08.59-.13.89L307.19 192H416a16 16 0 0112.44 26.06L209.24 489a18.45 18.45 0 01-14.42 7z'/></svg>
+                            {props.initiative}
+                        </div>
+                    </div>
+                </div>
+                <div className="bottom_section hidden_section">
+                    <input className="adjustHpBy" type="number" name="adjustHpBy"/>
+                    {/* Damage */}
+                    <div className="damage_heal_buttons" onClick={adjustHpButton}>
+                        DMG
+                    </div>
+                    {/* Heal */}
+                    <div className="damage_heal_buttons" onClick={() => updateenemyHp(enemyHp + 1)}>
+                        HEAL
+                    </div>
+                </div>
+            </StyledAcHpIn>
 
             <ul className="stats">
 
@@ -153,6 +213,7 @@ export default function EnemyCard(props) {
                     CHA <span>{props.stats.CHA}{getStatMod(props.stats.CHA)}</span>
                 </li>
             </ul>
+
         </StyledCard>
     )
 }
@@ -227,12 +288,89 @@ const StyledCard = styled.article`
     }
 `;
 
-const StyledHpCounter = styled.div`
-    user-select: none;
+// ============ //
+//   AC HP IN   //
+// ============ //
+const StyledAcHpIn = styled.section`
+    
+    .top_section {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
 
-    span {
-        &:hover {
-            cursor: pointer;
+        .block {
+            position: relative;
+            width: 33%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            .info {
+                padding: .5em 0;
+                font-size: 1.5em;
+                font-weight: 700;
+                margin: 0;
+
+                svg {
+                    margin-bottom: -4px;
+                    width: 100%;
+                    height: 100%;
+                    max-width: 1em;
+                    max-height: 1em;
+                }
+            }
+
+            .backgroud {
+
+            }
+        }
+    }
+
+    .bottom_section {
+        height: auto;
+        transition: max-height .3s;
+        overflow: hidden;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        align-items: center;
+
+        input {
+            text-align: center;
+            width: 30%;
+            font-size: 1em;
+            color: #2d3436;
+            border: 1px solid #bdc3c7;
+            background-image:none;
+            background-color:transparent;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+
+            &:focus {
+                outline: none;
+            }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .damage_heal_buttons {
+            width: 25%;
+            text-align: center;
+            user-select: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:active {
+                transform: translateY(2px);
+            }
         }
     }
 `;

@@ -3,7 +3,7 @@
 // ========== //
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Slider from '../_subcomponents/Slider/Slider';
 import EnemyCard from '../_subcomponents/EnemyCard/EnemyCard';
 
@@ -20,7 +20,7 @@ export default function RandomEncounter() {
     //   HOOK INTO STATE   //
     // =================== //
     const [userEncounterSelection, updateuserEncounterSelection] = useState("");
-    const dispatch: Function = useDispatch();
+    // const dispatch = useDispatch();
 
     // ================ //
     //     Functions    //

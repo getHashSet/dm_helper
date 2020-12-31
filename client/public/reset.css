@@ -53,3 +53,6 @@ table {
 #root {
 	overflow: hidden;
 }
+a:-webkit-any-link{
+	text-decoration:none;
+}
