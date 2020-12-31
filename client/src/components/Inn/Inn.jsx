@@ -84,7 +84,9 @@ const StyledFrame = styled.div`
         user-select: none;
 
         svg {
-            width: 1em;
+            height: 1em;
+            max-height: 1em;
+            max-height: 1em;
             padding: 0 .5em 0 0;
             margin-bottom: -4px;
         }

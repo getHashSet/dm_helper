@@ -58,15 +58,15 @@ export default function EnemyCard(props) {
             statMod = e.target.parentElement.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
         } else if (e.target.getAttribute('data-mod') !== null){
+            console.log(`found: ${e.target.getAttribute('data-mod')}`);
             statMod = e.target.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
         } else {
             statMod = 0;
         }
 
-        if (statMod === null) {statMod = 0};
-
-        console.log(statMod);
+        // Edgecase check if statmod broke during our terible logic
+        if (typeof(statMod) !== 'string' || statMod === undefined || statMod === 'ndefine') {statMod = 0};
 
         const d20 = Math.floor(Math.random() * 20) + 1;
         let savingThrow = d20 + +statMod;
@@ -106,7 +106,9 @@ export default function EnemyCard(props) {
     return (
         <StyledCard>
             
-            <h2>{props.enemyName}</h2>
+            <div className="card_name">
+                <h2>{props.enemyName}</h2>
+            </div>
 
             <StyledHpCounter>HP:  <span onClick={() => updateenemyHp(enemyHp - 1)}>-</span> {enemyHp} <span onClick={() => updateenemyHp(enemyHp + 1)}>+</span> </StyledHpCounter>
 
@@ -160,15 +162,29 @@ export default function EnemyCard(props) {
 // ======== //
 const StyledCard = styled.article`
     width: 30%;
+    min-width: 350px;
     height: 500px;
     max-height: 90vh;
     max-width: 1000vw;
     margin: .5em;
-    padding: 4px;
+    overflow: hidden;
     background-color: #fff;
-    border: 1px solid #c0392b;
+    border: 2px solid #e84c3b;
     border-radius: .5em;
     color:#2f3640;
+
+    .card_name {
+        width: 100%;
+        background-color: #e84c3b;
+        font-weight: 900;
+        padding: .5em 1em;
+        margin: 0;
+        
+        h2 {
+            font-size: 2em;
+            color: #fff;
+        }
+    }
 
     .stats {
         margin: .5em 0;
@@ -206,6 +222,8 @@ const StyledCard = styled.article`
 
     @media (max-width: 768px) {
         width: 100%;
+        max-width: 400px;
+        min-width: 0px;
     }
 `;
 
