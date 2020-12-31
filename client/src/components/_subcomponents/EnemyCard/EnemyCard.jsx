@@ -39,7 +39,37 @@ EnemyCard.defaultProps = {
             diceMod: 2,
             description: "Drink potion to heal 2d4 + 2 hp.",
             flavorText : "A potion of red goo that smells tart."
-        }
+        },
+        {
+            type: "attack", // attack, item, spell
+            actionType: "action", // action, bonus action, passive, reaction.
+            actionName: "Trip",
+            hitMod : 5,
+            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damage: "1d6",
+            description: "STR check vs targets atheletics or acrobatics.",
+            flavorText : "Make an athletics or acrobatics save vs 18.",
+        },
+        {
+            type: "attack", // attack, item, spell
+            actionType: "action", // action, bonus action, passive, reaction.
+            actionName: "Dodge",
+            hitMod : 5,
+            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damage: "1d6",
+            description: "Impose Disadvantage on attackers.",
+            flavorText : "You see the Enemy start to dip dive bob weave and dodge activly.",
+        },
+        {
+            type: "attack", // attack, item, spell
+            actionType: "action", // action, bonus action, passive, reaction.
+            actionName: "Dagger",
+            hitMod : 5,
+            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damage: "1d4",
+            description: "Stab with a dagger for 1d4 + 3",
+            flavorText : "Stab",
+        },
     ]
 }
 
@@ -181,7 +211,7 @@ export default function EnemyCard(props) {
         updateenemyHp(newHpTotal);
     };
 
-    const buildAction = (action) => {
+    const buildAction = (action, index) => {
         if (action.type === null || action.type === undefined) {return};
 
         // type: "attack", // attack, item, spell
@@ -194,7 +224,7 @@ export default function EnemyCard(props) {
         const flavorText = action.flavorText;
         const charges = action.charges;
 
-        return  <StyledAction onClick={() => updateToastMenu(flavorText)}>
+        return  <StyledAction onClick={() => updateToastMenu(flavorText)} key={index}>
                     <div className="dice_box">
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="dice-d20" className="svg-inline--fa fa-dice-d20 fa-w-15" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path fill="currentColor" d="M106.75 215.06L1.2 370.95c-3.08 5 .1 11.5 5.93 12.14l208.26 22.07-108.64-190.1zM7.41 315.43L82.7 193.08 6.06 147.1c-2.67-1.6-6.06.32-6.06 3.43v162.81c0 4.03 5.29 5.53 7.41 2.09zM18.25 423.6l194.4 87.66c5.3 2.45 11.35-1.43 11.35-7.26v-65.67l-203.55-22.3c-4.45-.5-6.23 5.59-2.2 7.57zm81.22-257.78L179.4 22.88c4.34-7.06-3.59-15.25-10.78-11.14L17.81 110.35c-2.47 1.62-2.39 5.26.13 6.78l81.53 48.69zM240 176h109.21L253.63 7.62C250.5 2.54 245.25 0 240 0s-10.5 2.54-13.63 7.62L130.79 176H240zm233.94-28.9l-76.64 45.99 75.29 122.35c2.11 3.44 7.41 1.94 7.41-2.1V150.53c0-3.11-3.39-5.03-6.06-3.43zm-93.41 18.72l81.53-48.7c2.53-1.52 2.6-5.16.13-6.78l-150.81-98.6c-7.19-4.11-15.12 4.08-10.78 11.14l79.93 142.94zm79.02 250.21L256 438.32v65.67c0 5.84 6.05 9.71 11.35 7.26l194.4-87.66c4.03-1.97 2.25-8.06-2.2-7.56zm-86.3-200.97l-108.63 190.1 208.26-22.07c5.83-.65 9.01-7.14 5.93-12.14L373.25 215.06zM240 208H139.57L240 383.75 340.43 208H240z"></path></svg>
                     </div>
@@ -250,7 +280,7 @@ export default function EnemyCard(props) {
                     <div className="block" title="Initiative Roll">
                         <div className="background"></div>
                         <div className="info">
-                            <svg xmlns='http://www.w3.org/2000/svg' className='ionicon' viewBox='0 0 512 512'><title>Flash</title><path d='M194.82 496a18.36 18.36 0 01-18.1-21.53v-.11L204.83 320H96a16 16 0 01-12.44-26.06L302.73 23a18.45 18.45 0 0132.8 13.71c0 .3-.08.59-.13.89L307.19 192H416a16 16 0 0112.44 26.06L209.24 489a18.45 18.45 0 01-14.42 7z'/></svg>
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="stopwatch" className="svg-inline--fa fa-stopwatch fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 304c0 114.9-93.1 208-208 208S16 418.9 16 304c0-104 76.3-190.2 176-205.5V64h-28c-6.6 0-12-5.4-12-12V12c0-6.6 5.4-12 12-12h120c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-28v34.5c37.5 5.8 71.7 21.6 99.7 44.6l27.5-27.5c4.7-4.7 12.3-4.7 17 0l28.3 28.3c4.7 4.7 4.7 12.3 0 17l-29.4 29.4-.6.6C419.7 223.3 432 262.2 432 304zm-176 36V188.5c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12V340c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12z"></path></svg>
                             {initiative}
                         </div>
                     </div>
@@ -310,9 +340,9 @@ export default function EnemyCard(props) {
             </ul>
 
             {/* COMBAT ACTIONS */}
+            <div className="title">Actions</div>
             <div className="actions">
-                <p>Actions</p>
-                {props.actions.map(action => buildAction(action))}
+                {props.actions.map((action, index) => buildAction(action, index))}
             </div>
         </StyledCard>
     )
@@ -347,12 +377,6 @@ const StyledCard = styled.article`
         h2 {
             font-size: 2em;
             color: #fff;
-        }
-
-        .toggle {
-            width: 1em;
-            height: 1em;
-            background-color: $fff;
         }
     }
 
@@ -391,11 +415,13 @@ const StyledCard = styled.article`
     }
 
     .actions {
+        position: relative;
+        margin: .5em;
+        max-height: 50%;
         border: 1px solid #bdc3c7;
         border-radius: .5em;
         background: #fff;
-        overflow-y: scroll;
-        overflow-x: hidden;
+        overflow: scroll;
     }
 
     @media (max-width: 768px) {
@@ -449,7 +475,7 @@ const StyledAction = styled.div`
         .body {
             padding: 4px;
             font-size: .8em;
-            font-weight: 100;
+            font-weight: 400;
         }
     }
 
@@ -489,7 +515,7 @@ const StyledAcHpIn = styled.section`
 
         .block {
             position: relative;
-            width: 33%;
+            flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -511,8 +537,30 @@ const StyledAcHpIn = styled.section`
                 }
             }
 
-            .backgroud {
+            &:nth-child(2) {
+                font-size: 1.5em;
+            }
 
+            &:first-child {
+                font-size: .8em;
+                width: 20%;
+                flex-grow: 1;
+                border-right: 1px solid #bdc3c7;
+                
+                svg {
+                    margin: 0 .2em -2px 0;
+                }
+            }
+
+            &:last-child {
+                font-size: .8em;
+                width: 20%;
+                flex-grow: 1;
+                border-left: 1px solid #bdc3c7;
+
+                svg {
+                    margin: 0 .2em -2px 0;
+                }
             }
         }
     }

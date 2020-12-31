@@ -64,10 +64,14 @@ export default function RandomEncounter() {
 
                 </StyledFrame>
             </StyledSection>
+
+            {/* BATTLE FIELD */}
             <StyledBattleField>
                 <StyledFrame>
                     <h2>Battle Field</h2>
                     <StyledDeck>
+                        <EnemyCard />
+                        <EnemyCard />
                         <EnemyCard />
                     </StyledDeck>
                 </StyledFrame>
@@ -161,6 +165,9 @@ const StyledBattleField = styled.section`
     margin: 0;
     padding: 1em .5em;
     background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     h2 {
         color: #2f3640;
@@ -175,7 +182,7 @@ const StyledDeck = styled.section`
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin: 0;
     padding: 0;
