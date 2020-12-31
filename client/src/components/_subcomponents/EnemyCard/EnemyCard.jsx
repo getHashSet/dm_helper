@@ -114,12 +114,29 @@ export default function EnemyCard(props) {
     const adjustHpButton = (e) => {
         e.preventDefault();
 
+        const type = e.target.getAttribute('name');
         let inputData = e.target.parentElement.children[0].value;
-        // if (+inputData > 0) { inputData = 0 };
+        console.log(`input data: ${inputData} and its type is ${typeof inputData}`);
+        if ( +inputData <= 0 ) { inputData = 1 };
+        console.log(`input data: ${inputData}`);
+        let newHpTotal = enemyHp;
 
-        console.log(inputData)
+        console.log("test");
+        console.log(inputData, newHpTotal);
 
-        updateenemyHp(enemyHp - +inputData);
+        switch (type) {
+            case "heal":
+                newHpTotal = enemyHp + +inputData;
+                if (newHpTotal > props.hp) {newHpTotal = props.hp};
+                break;
+            default:
+                newHpTotal = enemyHp - +inputData;
+                if (newHpTotal < 0) { newHpTotal = 0 };
+                break;
+        };
+
+        e.target.parentElement.children[0].value = "";
+        updateenemyHp(newHpTotal);
     };
 
     // ========== //
@@ -131,6 +148,7 @@ export default function EnemyCard(props) {
             {/* Enemy Name */}
             <div className="card_name">
                 <h2>{props.enemyName}</h2>
+                <div className="toggle" hasAdvantage={hasAdvantage} onClick={() => updatehasAdvatage(!hasAdvantage)}></div>
             </div>
 
             {/* AC HP IN */}
@@ -164,12 +182,12 @@ export default function EnemyCard(props) {
                 <div className="bottom_section hidden_section">
                     <input className="adjustHpBy" type="number" name="adjustHpBy"/>
                     {/* Damage */}
-                    <div className="damage_heal_buttons" onClick={adjustHpButton}>
-                        DMG
+                    <div className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
+                        Damage
                     </div>
                     {/* Heal */}
-                    <div className="damage_heal_buttons" onClick={() => updateenemyHp(enemyHp + 1)}>
-                        HEAL
+                    <div className="damage_heal_buttons" name="heal" onClick={adjustHpButton}>
+                        Heal
                     </div>
                 </div>
             </StyledAcHpIn>
@@ -240,10 +258,19 @@ const StyledCard = styled.article`
         font-weight: 900;
         padding: .5em 1em;
         margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         
         h2 {
             font-size: 2em;
             color: #fff;
+        }
+
+        .toggle {
+            width: 1em;
+            height: 1em;
+            background-color: $fff;
         }
     }
 
@@ -298,6 +325,8 @@ const StyledAcHpIn = styled.section`
         flex-wrap: nowrap;
         justify-content: center;
         align-items: center;
+        border-bottom: 1px solid #b2bec3;
+        margin-bottom: .5em;
 
         .block {
             position: relative;
@@ -339,7 +368,8 @@ const StyledAcHpIn = styled.section`
 
         input {
             text-align: center;
-            width: 30%;
+            width: 3em;
+            height: 1.5em;
             font-size: 1em;
             color: #2d3436;
             border: 1px solid #bdc3c7;
@@ -357,6 +387,7 @@ const StyledAcHpIn = styled.section`
             &::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
+            }
         }
 
         .damage_heal_buttons {
