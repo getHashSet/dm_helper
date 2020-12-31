@@ -220,14 +220,14 @@ export default function EnemyCard(props) {
         // if (hasAdvantage && hasDisadvantage) {updatehasDisadvantage(false); updatehasAdvatage(false)};
 
         if (hasDisadvantage) {
-            updatehasDisadvantage(false);
+            // updatehasDisadvantage(false);
             console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? secondRoll : firstRoll;
             return d20;
         };
 
         if (hasAdvantage) {
-            updatehasAdvatage(false);
+            // updatehasAdvatage(false);
             console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? firstRoll : secondRoll;
             return d20;
