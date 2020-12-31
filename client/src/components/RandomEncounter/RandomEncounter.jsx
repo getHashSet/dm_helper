@@ -182,7 +182,7 @@ const StyledDeck = styled.section`
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin: 0;
     padding: 0;

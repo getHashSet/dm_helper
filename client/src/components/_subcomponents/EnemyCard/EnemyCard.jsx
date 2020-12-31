@@ -111,6 +111,7 @@ export default function EnemyCard(props) {
     const [enemyHp, updateenemyHp] = useState(getHp(props.hitDice));
     const [maxHp] = useState(enemyHp);
     const [hasAdvantage, updatehasAdvatage] = useState(false);
+    const [hasDisadvantage, updatehasDisadvantage] = useState(false);
 
     // ================ //
     //     Functions    //
@@ -130,7 +131,6 @@ export default function EnemyCard(props) {
             statMod = e.target.parentElement.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
         } else if (e.target.getAttribute('data-mod') !== null){
-            console.log(`found: ${e.target.getAttribute('data-mod')}`);
             statMod = e.target.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
         } else {
@@ -140,7 +140,8 @@ export default function EnemyCard(props) {
         // Edgecase check if statmod broke during our terible logic
         if (typeof(statMod) !== 'string' || statMod === undefined || statMod === 'ndefine') {statMod = 0};
 
-        const d20 = Math.floor(Math.random() * 20) + 1;
+        const d20 = rolld20();
+
         let savingThrow = d20 + +statMod;
 
         console.log(`Mod: ${statMod} d20: ${d20}`);
@@ -174,7 +175,8 @@ export default function EnemyCard(props) {
     };
 
     const d20PlusMod = (mod) => {
-        const d20 = Math.floor(Math.random() * 20) + 1;
+        const d20 = rolld20();
+
         return d20 + +mod;
     };
 
@@ -210,6 +212,29 @@ export default function EnemyCard(props) {
         e.target.parentElement.children[0].value = "";
         updateenemyHp(newHpTotal);
     };
+
+    const rolld20 = () => {
+        const firstRoll = Math.floor(Math.random() * 20) + 1;
+        const secondRoll = Math.floor(Math.random() * 20) + 1;
+
+        // if (hasAdvantage && hasDisadvantage) {updatehasDisadvantage(false); updatehasAdvatage(false)};
+
+        if (hasDisadvantage) {
+            updatehasDisadvantage(false);
+            console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
+            const d20 = firstRoll > secondRoll ? secondRoll : firstRoll;
+            return d20;
+        };
+
+        if (hasAdvantage) {
+            updatehasAdvatage(false);
+            console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
+            const d20 = firstRoll > secondRoll ? firstRoll : secondRoll;
+            return d20;
+        };
+
+        return firstRoll;
+    }
 
     const buildAction = (action, index) => {
         if (action.type === null || action.type === undefined) {return};
@@ -249,7 +274,7 @@ export default function EnemyCard(props) {
     //   RETURN   //
     // ========== //
     return (
-        <StyledCard>
+        <StyledCard hasAdvantage={hasAdvantage} hasDisadvantage={hasDisadvantage}>
             
             {/* Enemy Name */}
             <div className="card_name">
@@ -285,15 +310,17 @@ export default function EnemyCard(props) {
                         </div>
                     </div>
                 </div>
-                <div className="bottom_section hidden_section">
-                    <input className="adjustHpBy" type="number" name="adjustHpBy"/>
-                    {/* Damage */}
-                    <div className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
-                        Damage
-                    </div>
-                    {/* Heal */}
-                    <div className="damage_heal_buttons" name="heal" onClick={adjustHpButton}>
-                        Heal
+                <div className="bottom_section">
+                    <div className="update_hp">
+                        <input className="adjustHpBy" type="number" name="adjustHpBy"/>
+                        {/* Damage */}
+                        <div className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
+                            Damage
+                        </div>
+                        {/* Heal */}
+                        <div className="damage_heal_buttons" name="heal" onClick={adjustHpButton}>
+                            Heal
+                        </div>
                     </div>
                 </div>
             </StyledAcHpIn>
@@ -340,7 +367,18 @@ export default function EnemyCard(props) {
             </ul>
 
             {/* COMBAT ACTIONS */}
-            <div className="title">Actions</div>
+            {/* <div className="title">Actions</div> */}
+            <div className="toggles">
+                        <div className="advantage" onClick={() => updatehasAdvatage(!hasAdvantage)}>
+                    <div className="toggle"></div>
+                    <p>Advantage</p>
+                </div>
+                <div className="disadvantage" onClick={() => updatehasDisadvantage(!hasDisadvantage)}>
+                    <div className="toggle_disadvantage"></div>
+                    <p>Disadvantage</p>
+                </div>
+            </div>
+
             <div className="actions">
                 {props.actions.map((action, index) => buildAction(action, index))}
             </div>
@@ -354,7 +392,6 @@ export default function EnemyCard(props) {
 const StyledCard = styled.article`
     width: 30%;
     min-width: 350px;
-    height: 500px;
     max-height: 90vh;
     max-width: 1000vw;
     margin: .5em;
@@ -381,7 +418,7 @@ const StyledCard = styled.article`
     }
 
     .stats {
-        margin: .5em 0;
+        margin-top: .5em;
         border-top: 1px solid #bdc3c7;
         border-bottom: 1px solid #bdc3c7;
         display: flex;
@@ -416,13 +453,59 @@ const StyledCard = styled.article`
 
     .actions {
         position: relative;
-        margin: .5em;
-        max-height: 50%;
+        margin: 0 .5em .5em .5em;
+        max-height: 20vh;
         border: 1px solid #bdc3c7;
         border-radius: .5em;
         background: #fff;
         overflow: scroll;
     }
+
+    .toggles {
+        display: flex;
+        flex-grow: 1;
+        justify-content: center;
+        font-size: .8em;
+
+        .advantage,
+        .disadvantage {
+            display: flex;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+
+            .toggle,
+            .toggle_disadvantage {
+                margin: .5em;
+                width: 1em;
+                height: 1em;
+                border: 3px solid #e74c3c;
+                border-radius: 4px;
+            }
+
+            &:first-child {
+                border-right: 1px solid #bdc3c7;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .advantage {
+            .toggle {
+                background-color: ${props => props.hasAdvantage ? "#e74c3c" : "#fff"};
+            }
+        }
+
+        .disadvantage {
+            .toggle_disadvantage {
+                background-color: ${props => props.hasDisadvantage ? "#e74c3c" : "#fff"};
+            }
+        }
+    }
+
 
     @media (max-width: 768px) {
         width: 100%;
@@ -573,6 +656,14 @@ const StyledAcHpIn = styled.section`
         flex-wrap: nowrap;
         justify-content: space-evenly;
         align-items: center;
+
+        .update_hp {
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #bdc3c7;
+        }
 
         input {
             text-align: center;
