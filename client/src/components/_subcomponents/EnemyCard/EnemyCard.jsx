@@ -49,10 +49,11 @@ EnemyCard.defaultProps = {
             actionName: "Bite",
             hitMod : 5,
             damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
-            damageDice: "1d6",
+            damageDice: "2d4",
             description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
             flavorText : "The enemy rears back and bites your arm.",
             charges : 1,
+            sideAffect : "Roll vs being tripped. DC 11 or fall prone.",
         },
         {
             type: "item",

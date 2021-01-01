@@ -16,6 +16,7 @@ ActionAttack.defaultProps = {
         damageDice: "1d6",
         description: `Attack is +5 to hit to deal 1d6 + 3 damage.`,
         charges : 1,
+        sideAffect : "",
     },
     mods: {
         STR: 10,
@@ -192,11 +193,20 @@ export default function ActionAttack(props) {
                     <p>Damage Roll: <span>{damageRoll}</span></p>
                 </div>
                 <p className="formula"><span>{props.action.actionName}: </span> {hitFormula}, {damageFormula} damage.</p>
+                <p className="heading">Hit Roll</p>
                 {hitRolls.map((roll) => {
                     return <p className="formula">Hit roll 1d20: <span>{roll}</span></p>
                 })}
+                <p className="heading">Damage Rolls</p>
                 {damageRolls.map((roll, index) => {
-                    return <p className="formula">{props.action.damageDice} {index + 1} of {totalNumberOfDice}: <span>{roll}</span> </p>
+                    return <div className="roll">
+                        <p>
+                            <span>{index + 1} of {totalNumberOfDice} </span> {props.action.damageDice}
+                        </p>
+                        <p>
+                            {roll}
+                        </p>
+                        </div>
                 })}
             </StyledToast>
         updateToastMenu(reactElement);
@@ -228,6 +238,7 @@ export default function ActionAttack(props) {
 // ========== //
 const StyledAction = styled.div`
     background-color: #fff;
+    color: #2d3436;
     display: flex;
     margin: .5em;
     border-radius: 4px;
@@ -300,6 +311,7 @@ const StyledToast = styled.section`
     font-weight: 400;
     font-size: 16px;
     text-align: center;
+    color: #2d3436;
 
     h4 {
         padding: 1em;
@@ -307,10 +319,47 @@ const StyledToast = styled.section`
         font-size: 4em;
     }
 
+    .heading {
+        width: 100%;
+        padding: .5em 0 .3em 0;
+        font-weight: 100;
+        font-size: .8em;
+        color: #7f8c8d;
+    }
+
+    .roll { //div
+        display: flex;
+        margin: 0;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid #bdc3c7;
+
+        p {
+            width: 50%;
+            padding: .3em;
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+
+            &:first-child {
+                border-right: 1px solid #bdc3c7;
+                font-weight: 100;
+
+                span {
+                    padding-right: .5em;
+                    font-size: .8em;
+                    font-style: italic;
+                    color: #7f8c8d;
+                }
+            }
+        }
+    }
+
     .formula {
         padding: 1em;
         border: 1px solid #bdc3c7;
-        border-bottom: none;
         font-weight: 100;
         font-style: italic;
 
