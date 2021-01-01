@@ -23,7 +23,29 @@ EnemyCard.defaultProps = {
         {
             type: "attack", // attack, item, spell
             actionType: "action", // action, bonus action, passive, reaction.
-            actionName: "Attack",
+            actionName: "Battle Axe",
+            hitMod : 5,
+            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damageDice: "1d6",
+            description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
+            flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
+            charges : 1,
+        },
+        {
+            type: "attack", // attack, item, spell
+            actionType: "action", // action, bonus action, passive, reaction.
+            actionName: "Bow & Arrow",
+            hitMod : 5,
+            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damageDice: "1d6",
+            description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
+            flavorText : "You get shot.",
+            charges : 1,
+        },
+        {
+            type: "attack", // attack, item, spell
+            actionType: "action", // action, bonus action, passive, reaction.
+            actionName: "Bite",
             hitMod : 5,
             damageMod : 3, // number - or - "str", "dex" - or - "finess"
             damageDice: "1d6",
