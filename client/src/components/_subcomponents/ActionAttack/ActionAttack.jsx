@@ -15,7 +15,8 @@ ActionAttack.defaultProps = {
         damageMod : "None", // number - or - "str", "dex" - or - "finess"
         damageDice: "1d6",
         description: `Attack is +5 to hit to deal 1d6 + 3 damage.`,
-        charges : 1,
+        charges : 999,
+        emptyChargesMessage: "You no longer have a Battle Axe... you threw it.",
         sideAffect : "",
     },
     mods: {
@@ -36,6 +37,7 @@ export default function ActionAttack(props) {
     const dispatch = useDispatch(); // used to send data back to redux
     const [hasAdvantage, updatehasAdvatage] = useState(false);
     const [hasDisadvantage, updatehasDisadvantage] = useState(false);
+    const [chargesRemaining, updatechargesRemaining] = useState(props.action.charges);
     let damageFormula = "";
     let hitFormula = "";
     let nat20 = false;
@@ -89,7 +91,6 @@ export default function ActionAttack(props) {
     }
 
     const rollToHit = () => {
-        // TODO Store rolls in a variable to be displayed in the toast.
         let d20 = rolld20();
         let hitRoll = 0;
         hitRoll += 2;
@@ -106,6 +107,7 @@ export default function ActionAttack(props) {
                 break;
             case "finesse":
                 STR >= DEX? hitRoll += STR : hitRoll += DEX;
+                break;
             default:
                 break;
         };
@@ -120,8 +122,6 @@ export default function ActionAttack(props) {
     }
 
     const rollDamage = () => {
-        // TODO Store rolls in a variable to be displayed in the toast.
-
         let finalDamage = 0;
 
         let damageMod = 0;
@@ -137,6 +137,7 @@ export default function ActionAttack(props) {
                 break;
             case "finesse":
                 STR >= DEX? damageMod = STR : damageMod = DEX;
+                break;
             default:
                 break;
         };
@@ -169,6 +170,19 @@ export default function ActionAttack(props) {
     }
 
     const rollToHitAndDamage = () => {
+
+        // Disabled
+        if (chargesRemaining <= 0) {
+            props.action.emptyChargesMessage !== undefined 
+            ? updateToastMenu(<p>{props.action.emptyChargesMessage}</p>)
+            : updateToastMenu(<p>You cant use that Action right now.</p>)
+            return;
+        };
+
+        if (chargesRemaining !== undefined) {
+            updatechargesRemaining(chargesRemaining - 1);
+        };
+
         const hitRoll = rollToHit();
         const damageRoll = rollDamage();
         let hitRollText;
@@ -217,9 +231,10 @@ export default function ActionAttack(props) {
     //   RETURN   //
     // ========== //
     return (
-        <StyledAction onClick={rollToHitAndDamage}>
+        <StyledAction onClick={rollToHitAndDamage} chargesRemaining={chargesRemaining}>
             <div className="dice_box">
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="dice-d20" className="svg-inline--fa fa-dice-d20 fa-w-15" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path fill="currentColor" d="M106.75 215.06L1.2 370.95c-3.08 5 .1 11.5 5.93 12.14l208.26 22.07-108.64-190.1zM7.41 315.43L82.7 193.08 6.06 147.1c-2.67-1.6-6.06.32-6.06 3.43v162.81c0 4.03 5.29 5.53 7.41 2.09zM18.25 423.6l194.4 87.66c5.3 2.45 11.35-1.43 11.35-7.26v-65.67l-203.55-22.3c-4.45-.5-6.23 5.59-2.2 7.57zm81.22-257.78L179.4 22.88c4.34-7.06-3.59-15.25-10.78-11.14L17.81 110.35c-2.47 1.62-2.39 5.26.13 6.78l81.53 48.69zM240 176h109.21L253.63 7.62C250.5 2.54 245.25 0 240 0s-10.5 2.54-13.63 7.62L130.79 176H240zm233.94-28.9l-76.64 45.99 75.29 122.35c2.11 3.44 7.41 1.94 7.41-2.1V150.53c0-3.11-3.39-5.03-6.06-3.43zm-93.41 18.72l81.53-48.7c2.53-1.52 2.6-5.16.13-6.78l-150.81-98.6c-7.19-4.11-15.12 4.08-10.78 11.14l79.93 142.94zm79.02 250.21L256 438.32v65.67c0 5.84 6.05 9.71 11.35 7.26l194.4-87.66c4.03-1.97 2.25-8.06-2.2-7.56zm-86.3-200.97l-108.63 190.1 208.26-22.07c5.83-.65 9.01-7.14 5.93-12.14L373.25 215.06zM240 208H139.57L240 383.75 340.43 208H240z"></path></svg>
+                {chargesRemaining < 100 ? <p>{chargesRemaining}</p> : ""}
             </div>
             <div className="info">
                 <div className="title">
@@ -237,16 +252,18 @@ export default function ActionAttack(props) {
 //   STYLES   //
 // ========== //
 const StyledAction = styled.div`
+    display: flex;
     background-color: #fff;
     color: #2d3436;
-    display: flex;
     margin: .5em;
     border-radius: 4px;
     border: 1px solid #bdc3c7;
     user-select: none;
+    opacity: ${props => props.chargesRemaining === null || props.chargesRemaining <= 0 ? ".5" : "1"};
 
     .dice_box {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         padding: .5em;
@@ -261,6 +278,11 @@ const StyledAction = styled.div`
             height: 1em;
             max-width: 100%;
             max-height: 100%;
+        }
+
+        p {
+            text-align: center;
+            width: 100%;
         }
     }
 
@@ -322,7 +344,7 @@ const StyledToast = styled.section`
     .heading {
         width: 100%;
         padding: .5em 0 .3em 0;
-        font-weight: 100;
+        font-weight: 300;
         font-size: .8em;
         color: #7f8c8d;
     }
@@ -345,7 +367,7 @@ const StyledToast = styled.section`
 
             &:first-child {
                 border-right: 1px solid #bdc3c7;
-                font-weight: 100;
+                font-weight: 300;
 
                 span {
                     padding-right: .5em;
@@ -360,7 +382,7 @@ const StyledToast = styled.section`
     .formula {
         padding: 1em;
         border: 1px solid #bdc3c7;
-        font-weight: 100;
+        font-weight: 300;
         font-style: italic;
 
         span {
@@ -374,7 +396,7 @@ const StyledToast = styled.section`
     }
 
     .totals {
-        font-weight: 100;
+        font-weight: 300;
         display: flex;
         flex-wrap: nowrap;
         justify-content: center;

@@ -5,66 +5,69 @@ import { showToastMenuState, updateToastData } from "../../../redux/actions";
 import ActionAttack from '../ActionAttack/ActionAttack';
 
 EnemyCard.defaultProps = {
-    enemyName : "Enemy",
-    ac : 14,
-    cr : 1,
-    hitDice : "2d10",
-    movement : ["walk", "swim", "fly", "dig"],
-    stats : {
-        STR : 14,
-        DEX : 20,
-        CON : 1,
-        INT : 28,
-        WIS : 5,
-        CHA : 16
-    },
-    pageNumber : "Monster Manual",
-    actionsNumber : 1,
-    actions : [
-        {
-            type: "attack", // attack, item, spell
-            actionType: "action", // action, bonus action, passive, reaction.
-            actionName: "Battle Axe",
-            hitMod : 5,
-            damageMod : "STR",
-            damageDice: "1d6",
-            description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-            flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
-            charges : 1,
+    enemy : {
+        enemyName : "Enemy",
+        ac : 14,
+        cr : 1,
+        hitDice : "2d10",
+        movement : ["walk", "swim", "fly", "dig"],
+        stats : {
+            STR : 14,
+            DEX : 20,
+            CON : 1,
+            INT : 28,
+            WIS : 5,
+            CHA : 16
         },
-        {
-            type: "attack", // attack, item, spell
-            actionType: "action", // action, bonus action, passive, reaction.
-            actionName: "Bow & Arrow",
-            hitMod : 5,
-            damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
-            damageDice: "1d6",
-            description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-            flavorText : "You get shot.",
-            charges : 1,
-        },
-        {
-            type: "attack", // attack, item, spell
-            actionType: "action", // action, bonus action, passive, reaction.
-            actionName: "Bite",
-            hitMod : 5,
-            damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
-            damageDice: "2d4",
-            description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-            flavorText : "The enemy rears back and bites your arm.",
-            charges : 1,
-            sideAffect : "Roll vs being tripped. DC 11 or fall prone.",
-        },
-        {
-            type: "item",
-            actionType: "bonus_action",
-            actionName: "Potion",
-            roll: "2d4", // edge case. what if its like 2d4 + 2?
-            diceMod: 2,
-            description: "Drink potion to heal 2d4 + 2 hp.",
-            flavorText : "A potion of red goo that smells tart."
-        },
-    ]
+        pageNumber : "Monster Manual",
+        actionsNumber : 1,
+        actions : [
+            {
+                type: "attack", // attack, item, spell
+                actionType: "action", // action, bonus action, passive, reaction.
+                actionName: "Battle Axe",
+                hitMod : 5,
+                damageMod : "STR",
+                damageDice: "1d6",
+                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
+                flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
+                charges : 1,
+            },
+            {
+                type: "attack", // attack, item, spell
+                actionType: "action", // action, bonus action, passive, reaction.
+                actionName: "Bow & Arrow",
+                hitMod : 5,
+                damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
+                damageDice: "1d6",
+                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
+                flavorText : "You get shot.",
+                charges : 1,
+            },
+            {
+                type: "attack", // attack, item, spell
+                actionType: "action", // action, bonus action, passive, reaction.
+                actionName: "Bite",
+                hitMod : 5,
+                damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
+                damageDice: "2d4",
+                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
+                flavorText : "The enemy rears back and bites your arm.",
+                charges : 1,
+                sideAffect : "Roll vs being tripped. DC 11 or fall prone.",
+            },
+            {
+                type: "item",
+                actionType: "bonus_action",
+                actionName: "Potion",
+                roll: "2d4", // edge case. what if its like 2d4 + 2?
+                diceMod: 2,
+                description: "Drink potion to heal 2d4 + 2 hp.",
+                flavorText : "A potion of red goo that smells tart."
+            },
+        ]
+    }
+    
 }
 
 // ============= //
@@ -102,7 +105,7 @@ export default function EnemyCard(props) {
     //   HOOK INTO STATE   //
     // =================== //
     const dispatch = useDispatch(); // used to send data back to redux
-    const [enemyHp, updateenemyHp] = useState(getHp(props.hitDice));
+    const [enemyHp, updateenemyHp] = useState(getHp(props.enemy.hitDice));
     const [maxHp] = useState(enemyHp);
     const [hasAdvantage, updatehasAdvatage] = useState(false);
     const [hasDisadvantage, updatehasDisadvantage] = useState(false);
@@ -153,13 +156,7 @@ export default function EnemyCard(props) {
     const getStatMod = (stat) => {
         if (stat > 9 && stat < 12) {return};
         
-        if (stat < 10) {
-            return `(${Math.floor((stat - 10) / 2)})`;
-        }
-
-        if (stat > 11) {
-            return `(${(stat - 10) / 2})`;
-        }
+        return `(${Math.floor((stat - 10) / 2)})`;
     };
 
     const getMod = (stat) => {
@@ -235,41 +232,42 @@ export default function EnemyCard(props) {
         if (action.type === null || action.type === undefined) {return};
 
         const mods = {
-            STR: props.stats.STR,
-            STR_mod: getMod(props.stats.STR),
-            DEX: props.stats.DEX,
-            DEX_mod: getMod(props.stats.DEX),
+            STR: props.enemy.stats.STR,
+            STR_mod: getMod(props.enemy.stats.STR),
+            DEX: props.enemy.stats.DEX,
+            DEX_mod: getMod(props.enemy.stats.DEX),
         }
 
-        switch (action.type) {
+        console.log(action);
+        switch (`${action.type}`.toLowerCase()) {
             case "attack":
-                return  <ActionAttack key={index} action={action} mods={mods}/>;   
+                return  <ActionAttack key={index} action={action} mods={mods} rolld20={rolld20}/>;   
             default:
                 break;
         };
     };
 
-    const rollToHitAndDamage = (e) => {
-        let action;
+    // const rollToHitAndDamage = (e) => {
+    //     let action;
 
-        // check 5 levels deep
-        if (e.target.getAttribute("data-action-index") !== null) {action = e.target.getAttribute("data-action-index")}
-        else if (e.target.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.getAttribute("data-action-index")}
-        else if (e.target.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.getAttribute("data-action-index")}
-        else if (e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index")}
-        else if (e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index")};
-        console.log(props.actions[+action]);
+    //     // check 5 levels deep
+    //     if (e.target.getAttribute("data-action-index") !== null) {action = e.target.getAttribute("data-action-index")}
+    //     else if (e.target.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.getAttribute("data-action-index")}
+    //     else if (e.target.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.getAttribute("data-action-index")}
+    //     else if (e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index")}
+    //     else if (e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index")};
+    //     console.log(props.enemy.actions[+action]);
 
-        // Exit if something went wrong.
-        if (action === null || action === undefined) {return};
+    //     // Exit if something went wrong.
+    //     if (action === null || action === undefined) {return};
 
-        const d20 = rolld20()
+    //     const d20 = rolld20()
 
-        const styledToast = <React.Fragment>
-            <div></div>
-        </React.Fragment>
-        updateToastMenu(d20);
-    }
+    //     const styledToast = <React.Fragment>
+    //         <div></div>
+    //     </React.Fragment>
+    //     updateToastMenu(d20);
+    // }
 
     const advantageToggle = (e) => {
         e.preventDefault();
@@ -291,7 +289,7 @@ export default function EnemyCard(props) {
     //   HOOKS AGAIN  //
     // ============== //
     // because of a rookie mistake that I cant be bothered to fix Im just going to put this hook here.
-    const [initiative, updateinitiative] = useState(rollPlusMod(props.stats.DEX));
+    const [initiative, updateinitiative] = useState(rollPlusMod(props.enemy.stats.DEX));
 
     // ========== //
     //   RETURN   //
@@ -301,7 +299,7 @@ export default function EnemyCard(props) {
             
             {/* Enemy Name */}
             <div className="card_name">
-                <h2>{props.enemyName}</h2>
+                <h2>{props.enemy.enemyName}</h2>
                 <div className="toggle" ></div>
             </div>
 
@@ -313,7 +311,7 @@ export default function EnemyCard(props) {
                         <div className="background"></div>
                         <div className="info">
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="shield-alt" className="svg-inline--fa fa-shield-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"></path></svg>
-                            {props.ac}
+                            {props.enemy.ac}
                         </div>
                     </div>
                     {/* HP */}
@@ -354,40 +352,40 @@ export default function EnemyCard(props) {
             <ul className="stats">
 
                 <li className="class" 
-                    data-mod={`${getStatMod(props.stats.STR)}`} 
+                    data-mod={`${getStatMod(props.enemy.stats.STR)}`} 
                     onClick={rollSavingThrow}>
                     STR 
-                    <span>{props.stats.STR}{getStatMod(props.stats.STR)}</span>
+                    <span>{props.enemy.stats.STR}{getStatMod(props.enemy.stats.STR)}</span>
                 </li>
 
                 <li className="class"
-                    data-mod={`${getStatMod(props.stats.DEX)}`}
+                    data-mod={`${getStatMod(props.enemy.stats.DEX)}`}
                     onClick={rollSavingThrow}>
-                    DEX <span>{props.stats.DEX}{getStatMod(props.stats.DEX)}</span>
+                    DEX <span>{props.enemy.stats.DEX}{getStatMod(props.enemy.stats.DEX)}</span>
                 </li>
 
                 <li className="class"
-                data-mod={`${getStatMod(props.stats.CON)}`}
+                data-mod={`${getStatMod(props.enemy.stats.CON)}`}
                 onClick={rollSavingThrow}>
-                    CON <span>{props.stats.CON}{getStatMod(props.stats.CON)}</span>
+                    CON <span>{props.enemy.stats.CON}{getStatMod(props.enemy.stats.CON)}</span>
                 </li>
 
                 <li className="class"
-                    data-mod={`${getStatMod(props.stats.INT)}`}
+                    data-mod={`${getStatMod(props.enemy.stats.INT)}`}
                     onClick={rollSavingThrow}>
-                    INT <span>{props.stats.INT}{getStatMod(props.stats.INT)}</span>
+                    INT <span>{props.enemy.stats.INT}{getStatMod(props.enemy.stats.INT)}</span>
                 </li>
 
                 <li className="class"
-                    data-mod={`${getStatMod(props.stats.WIS)}`}
+                    data-mod={`${getStatMod(props.enemy.stats.WIS)}`}
                     onClick={rollSavingThrow}>
-                    WIS <span>{props.stats.WIS}{getStatMod(props.stats.WIS)}</span>
+                    WIS <span>{props.enemy.stats.WIS}{getStatMod(props.enemy.stats.WIS)}</span>
                 </li>
 
                 <li className="class"
-                    data-mod={`${getStatMod(props.stats.CHA)}`}
+                    data-mod={`${getStatMod(props.enemy.stats.CHA)}`}
                     onClick={rollSavingThrow}>
-                    CHA <span>{props.stats.CHA}{getStatMod(props.stats.CHA)}</span>
+                    CHA <span>{props.enemy.stats.CHA}{getStatMod(props.enemy.stats.CHA)}</span>
                 </li>
             </ul>
 
@@ -405,7 +403,7 @@ export default function EnemyCard(props) {
             </div>
 
             <div className="actions">
-                {props.actions.map((action, index) => buildAction(action, index))}
+                {props.enemy.actions.map((action, index) => buildAction(action, index))}
             </div>
         </StyledCard>
     )
@@ -416,6 +414,7 @@ export default function EnemyCard(props) {
 // ========= //
 const StyledCard = styled.article`
     width: 30%;
+    height: 55vh;
     min-width: 350px;
     max-height: 90vh;
     max-width: 1000vw;
@@ -427,7 +426,7 @@ const StyledCard = styled.article`
     color:#2d3436;
 
     .card_name {
-        width: 100%;
+        flex-grow: 1;
         background-color: #e84c3b;
         font-weight: 900;
         padding: .5em 1em;
@@ -477,13 +476,13 @@ const StyledCard = styled.article`
     }
 
     .actions {
-        position: relative;
         margin: 0 .5em .5em .5em;
-        max-height: 20vh;
+        height: 20vh;
         border: 1px solid #bdc3c7;
         border-radius: .5em;
-        background: #fff;
-        overflow: scroll;
+        background-color: #ecf0f1;
+        overflow: auto;
+        overflow-x: hidden;
     }
 
     .toggles {
@@ -688,7 +687,6 @@ const StyledAcHpIn = styled.section`
             flex-grow: 1;
             justify-content: center;
             align-items: center;
-            border-right: 1px solid #bdc3c7;
 
             .left,
             .right {

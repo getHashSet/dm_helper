@@ -10,6 +10,7 @@ const actionSchema = new Schema({
     hitMod: { type: Number, required: false }, // default is 2
     description: { type: String, required: true }, // "An attack that does 3d10 + 0 damage. +2 to hit."
     charges: { type: Number, required: false }, // default is 512.
+    emptyChargesMessage: { type: String, required: false }, // dispay this when you are out of charges.
     sideEffect: { type: String, required: false }, // does the attack do something on hit? 
     date: { type: Date, default: Date.now }
 });

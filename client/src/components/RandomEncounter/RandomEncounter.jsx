@@ -6,6 +6,7 @@ import styled from 'styled-components';
 // import { useDispatch } from "react-redux";
 import Slider from '../_subcomponents/Slider/Slider';
 import EnemyCard from '../_subcomponents/EnemyCard/EnemyCard';
+import axios from 'axios';
 
 // ===================== //
 //     DEFAULT PROPS     //
@@ -20,6 +21,10 @@ export default function RandomEncounter() {
     //   HOOK INTO STATE   //
     // =================== //
     const [userEncounterSelection, updateuserEncounterSelection] = useState("");
+    const [partyLevel, updatepartyLevel] = useState("1");
+    const [difficulty, updateDificulty] = useState("0");
+    const challengeRating = +partyLevel + +difficulty;
+    const [enemyEncounter, updateenemyEncounter] = useState({enemies: []});
     // const dispatch = useDispatch();
 
     // ================ //
@@ -29,6 +34,25 @@ export default function RandomEncounter() {
         console.log("USER: selected an encounter type of {}");
         e.preventDefault();
     };
+
+    const rollEnemyEncounter = (e) => {
+        e.preventDefault();
+        // TODO: start load screen.
+        console.log("Rolling enemy encounter");
+
+        axios.get("/api/encounter")
+        .then((data) => {
+            updateenemyEncounter(data.data.encounter);
+            console.log(enemyEncounter);
+        })
+        .catch(err => {
+            console.log('There was an issue with the api call.');
+        })
+        .finally(() => {
+            // TODO: remove load screen.
+            console.log('Got encounter.');
+        });
+    }
 
     // ========== //
     //   RETURN   //
@@ -60,7 +84,7 @@ export default function RandomEncounter() {
                         </StyledFlexOptionsUL>
                     </StyledOptionBox>
 
-                    <StyledButton>Roll Initiative</StyledButton>
+                    <StyledButton onClick={rollEnemyEncounter}>Roll Initiative</StyledButton>
 
                 </StyledFrame>
             </StyledSection>
@@ -70,9 +94,9 @@ export default function RandomEncounter() {
                 <StyledFrame>
                     <h2>Battle Field</h2>
                     <StyledDeck>
-                        <EnemyCard />
-                        <EnemyCard />
-                        <EnemyCard />
+                        {enemyEncounter.enemies.map((enemy, index) => {
+                            return<EnemyCard key={index} enemy={enemy} />
+                        })}
                     </StyledDeck>
                 </StyledFrame>
             </StyledBattleField>
