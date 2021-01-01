@@ -201,7 +201,7 @@ export default function ActionAttack(props) {
 
         const reactElement =
             <StyledToast>
-                <h4>{hitRollText} to hit</h4>
+                <h4>{hitRollText}</h4>
                 <div className="totals">
                     <p> Hit Roll: {hitRollText}</p>
                     <p>Damage Roll: <span>{damageRoll}</span></p>

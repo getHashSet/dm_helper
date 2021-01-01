@@ -238,7 +238,7 @@ export default function EnemyCard(props) {
             DEX_mod: getMod(props.enemy.stats.DEX),
         }
 
-        console.log(action);
+        // console.log(action);
         switch (`${action.type}`.toLowerCase()) {
             case "attack":
                 return  <ActionAttack key={index} action={action} mods={mods} hasDisadvantage={hasDisadvantage} disadvantageToggle={disadvantageToggle} hasAdvantage={hasAdvantage} advantageToggle={advantageToggle}/>;   
@@ -554,6 +554,7 @@ const StyledCard = styled.article`
 
     @media (max-width: 768px) {
         width: 100%;
+        height: auto;
         max-width: 400px;
         min-width: 0px;
     }

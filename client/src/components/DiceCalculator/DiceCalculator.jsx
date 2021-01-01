@@ -540,7 +540,7 @@ const StyledToastiness = styled.section`
     .overflow {
         height: 0px;
         max-height: 50vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
         padding: 0 .5;
         margin: .5;
@@ -576,6 +576,20 @@ const StyledToastiness = styled.section`
 
         &.expand {
             height: auto;
+        }
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 80%;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: #bdc3c7;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #7f8c8d;
         }
     }
 `;
