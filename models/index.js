@@ -1,3 +1,4 @@
 module.exports = {
-	Example: require("./example.model"),
+  Action: require("./action.model"),
+  Enemy: require("./enemy.model"),
   };

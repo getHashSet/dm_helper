@@ -1,9 +1,6 @@
 const router = require("express").Router();
-const exampleController = require("./example.controller");
-const testController = require("./test");
+const randomEncounterController = require('./random_encounter.controller');
 
-router.use("/api/example", exampleController);
-
-router.use("/test", testController);
+router.use('/api/encounter', randomEncounterController);
 
 module.exports = router;
