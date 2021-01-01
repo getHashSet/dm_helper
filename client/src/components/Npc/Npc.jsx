@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
+import axios from 'axios';
 
 Npc.defaultProps = {}
 
@@ -17,7 +18,7 @@ export default function Npc() {
     // ================ //
     const updateToastMenu = (str) => {
         const tempValue = <StyledToast>
-            <p>{str}</p>
+            {str}
         </StyledToast>
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(tempValue)); // default parent is a div with flex turned on.
@@ -25,9 +26,15 @@ export default function Npc() {
 
     const createNPC = (e) => {
         e.preventDefault();
-        updateToastMenu("Names Dibs");
-        console.log(`Random Rumor on a chart with length being the max value. ${Math.floor(Math.random() * 200)}`);
-    }
+    
+        axios.get("/api/npc")
+        .then(data => {
+          const toast =  <p>{data.data.npc.toString()}</p>;
+          updateToastMenu(toast);
+        }).catch(err => {
+          // do nothin
+        });
+      };
 
     // ========== //
     //   RETURN   //
