@@ -20,22 +20,20 @@ const passport = require('./utils/passport');
 const mongoose = require('mongoose');
 const path = require('path');
 const routes = require("./controllers");
-// const enforce = require('express-sslify');
 
 
 // ======================= //
-// ===== Force HTTPS ===== //
+// ===== Use Express ===== //
 // ======================= //
+
 
 const app = express();
-// Use enforce.HTTPS({ trustProtoHeader: true }) in case you are behind
-// a load balancer (e.g. Heroku). See further comments below
-// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 
 // ======================= //
 // ======== Ports ======== //
 // ======================= //
+
 
 const PORT = process.env.PORT || 8080
 
@@ -45,7 +43,7 @@ const PORT = process.env.PORT || 8080
 // ===================== //
 
 
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 app.use(
 	bodyParser.urlencoded({
