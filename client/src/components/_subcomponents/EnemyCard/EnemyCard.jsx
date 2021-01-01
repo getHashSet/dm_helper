@@ -247,28 +247,6 @@ export default function EnemyCard(props) {
         };
     };
 
-    // const rollToHitAndDamage = (e) => {
-    //     let action;
-
-    //     // check 5 levels deep
-    //     if (e.target.getAttribute("data-action-index") !== null) {action = e.target.getAttribute("data-action-index")}
-    //     else if (e.target.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.getAttribute("data-action-index")}
-    //     else if (e.target.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.getAttribute("data-action-index")}
-    //     else if (e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.getAttribute("data-action-index")}
-    //     else if (e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index") !== null) {action = e.target.parentElement.parentElement.parentElement.parentElement.getAttribute("data-action-index")};
-    //     console.log(props.enemy.actions[+action]);
-
-    //     // Exit if something went wrong.
-    //     if (action === null || action === undefined) {return};
-
-    //     const d20 = rolld20()
-
-    //     const styledToast = <React.Fragment>
-    //         <div></div>
-    //     </React.Fragment>
-    //     updateToastMenu(d20);
-    // }
-
     const advantageToggle = () => {
         
         if (hasDisadvantage) {
@@ -557,75 +535,6 @@ const StyledCard = styled.article`
         height: auto;
         max-width: 400px;
         min-width: 0px;
-    }
-`;
-
-// ========== //
-//   ACTION   //
-// ========== //
-const StyledAction = styled.div`
-    display: flex;
-    margin: .5em;
-    border-radius: 4px;
-    border: 1px solid #bdc3c7;
-    user-select: none;
-
-    .dice_box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: .5em;
-        width: 1.2em;
-        overflow: hidden;
-        user-select: none;
-        background-color: #e74c3c;
-        color: #fff;
-
-        svg {
-            width: 1em;
-            height: 1em;
-            max-width: 100%;
-            max-height: 100%;
-        }
-    }
-
-    .info {
-        width: 100%;
-
-        .title {
-            padding: 4px;
-            border-bottom: 1px solid #bdc3c7;
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #fff;
-            background-color: #e74c3c;
-        }
-
-        .body {
-            padding: 4px;
-            font-size: .8em;
-            font-weight: 400;
-        }
-    }
-
-    &:hover {
-        cursor: pointer;
-        border: 1px solid #c0392b;
-        box-shadow: 0 0 1px #c0392b;
-
-        .dice_box {
-            background-color: #c0392b;
-        }
-
-        .info {
-            .title {
-                background-color: #c0392b;
-            }
-        }
-    }
-
-    &:active {
-        transform: translateY(3px);
     }
 `;
 

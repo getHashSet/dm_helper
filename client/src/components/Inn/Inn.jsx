@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
+import axios from 'axios';
 
 Inn.defaultProps = {};
 
@@ -18,7 +19,7 @@ export default function Inn() {
   const updateToastMenu = (str) => {
     const tempValue = (
       <StyledToast>
-        <p>{str}</p>
+        {str}
       </StyledToast>
     );
     dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
@@ -27,11 +28,14 @@ export default function Inn() {
 
   const getRandomRumor = (e) => {
     e.preventDefault();
-    updateToastMenu(
-      `Random Rumor on a chart with length being the max value. ${Math.floor(
-        Math.random() * 200
-      )}`
-    );
+
+    axios.get("/api/rumor")
+    .then(data => {
+      const toast =  <p>{data.data.rumor.toString()}</p>;
+      updateToastMenu(toast);
+    }).catch(err => {
+      // do nothin
+    });
   };
 
   const refreshTavern = (e) => {
