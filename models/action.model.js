@@ -13,6 +13,6 @@ const actionSchema = new Schema({
     date: { type: Date, default: Date.now }
 });
 
-const Action = mongoose.model("Action", enemySchema);
+const Action = mongoose.model("Action", actionSchema);
 
 module.exports = Action;

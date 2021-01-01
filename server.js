@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 	// console.log('loading dev environments')
 	require('dotenv').config()
 }
-require('dotenv').config()
+require('dotenv').config();
 
 
 // ======================= //
@@ -12,7 +12,6 @@ require('dotenv').config()
 
 
 const express = require('express');
-const enforce = require('express-sslify');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const session = require('express-session');
@@ -20,8 +19,8 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('./utils/passport');
 const mongoose = require('mongoose');
 const path = require('path');
-// app.use(enforce.HTTPS({ trustProtoHeader: true })); //force ssl
 const routes = require("./controllers");
+// const enforce = require('express-sslify');
 
 
 // ======================= //
@@ -31,13 +30,12 @@ const routes = require("./controllers");
 const app = express();
 // Use enforce.HTTPS({ trustProtoHeader: true }) in case you are behind
 // a load balancer (e.g. Heroku). See further comments below
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 
 // ======================= //
 // ======== Ports ======== //
 // ======================= //
-
 
 const PORT = process.env.PORT || 8080
 
@@ -47,7 +45,8 @@ const PORT = process.env.PORT || 8080
 // ===================== //
 
 
-app.use(morgan('dev'))
+// app.use(morgan('dev'));
+
 app.use(
 	bodyParser.urlencoded({
 		extended: false
@@ -77,8 +76,8 @@ app.use(
 // =================== //
 
 
-// app.use(passport.initialize())
-// app.use(passport.session()) // will call the deserializeUser
+app.use(passport.initialize())
+app.use(passport.session()) // will call the deserializeUser
 
 
 // =================================== //
@@ -104,10 +103,10 @@ app.use(routes);
 // ====== React App ====== //
 // ======================= //
 
+
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
-
 
 
 // ========================= //
