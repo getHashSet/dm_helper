@@ -241,7 +241,7 @@ export default function EnemyCard(props) {
         console.log(action);
         switch (`${action.type}`.toLowerCase()) {
             case "attack":
-                return  <ActionAttack key={index} action={action} mods={mods} rolld20={rolld20}/>;   
+                return  <ActionAttack key={index} action={action} mods={mods} hasDisadvantage={hasDisadvantage} disadvantageToggle={disadvantageToggle} hasAdvantage={hasAdvantage} advantageToggle={advantageToggle}/>;   
             default:
                 break;
         };
@@ -269,16 +269,16 @@ export default function EnemyCard(props) {
     //     updateToastMenu(d20);
     // }
 
-    const advantageToggle = (e) => {
-        e.preventDefault();
+    const advantageToggle = () => {
+        
         if (hasDisadvantage) {
             updatehasDisadvantage(false);
         };
         updatehasAdvatage(!hasAdvantage);
     }
 
-    const disadvantageToggle = (e) => {
-        e.preventDefault();
+    const disadvantageToggle = () => {
+        
         if (hasAdvantage) {
             updatehasAdvatage(false);
         };
@@ -295,7 +295,7 @@ export default function EnemyCard(props) {
     //   RETURN   //
     // ========== //
     return (
-        <StyledCard hasAdvantage={hasAdvantage} hasDisadvantage={hasDisadvantage}>
+        <StyledCard hasAdvantage={hasAdvantage} hasDisadvantage={hasDisadvantage} enemyHp={enemyHp}>
             
             {/* Enemy Name */}
             <div className="card_name">
@@ -402,7 +402,7 @@ export default function EnemyCard(props) {
                 </div>
             </div>
 
-            <div className="actions">
+            <div className={props.enemy.actions.length > 1 ? "actions scrolling" : "actions"}>
                 {props.enemy.actions.map((action, index) => buildAction(action, index))}
             </div>
         </StyledCard>
@@ -424,6 +424,8 @@ const StyledCard = styled.article`
     border: 2px solid #e84c3b;
     border-radius: .5em;
     color:#2d3436;
+    opacity: ${props => props.enemyHp <= 0 ? ".3" : "1"};
+    transition: opacity .3s;
 
     .card_name {
         flex-grow: 1;
@@ -483,6 +485,24 @@ const StyledCard = styled.article`
         background-color: #ecf0f1;
         overflow: auto;
         overflow-x: hidden;
+
+        &.scrolling {
+            border-radius: .5em 0 0 .5em;
+        }
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 80%;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: #bdc3c7;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #7f8c8d;
+        }
     }
 
     .toggles {

@@ -35,8 +35,6 @@ export default function ActionAttack(props) {
     //   HOOK INTO STATE   //
     // =================== //
     const dispatch = useDispatch(); // used to send data back to redux
-    const [hasAdvantage, updatehasAdvatage] = useState(false);
-    const [hasDisadvantage, updatehasDisadvantage] = useState(false);
     const [chargesRemaining, updatechargesRemaining] = useState(props.action.charges);
     let damageFormula = "";
     let hitFormula = "";
@@ -44,6 +42,7 @@ export default function ActionAttack(props) {
     let nat1 = false;
     let damageRolls = [];
     let hitRolls = [];
+    let unusedHitRoll = "";
     let totalNumberOfDice = 0;
 
     // ================ //
@@ -61,28 +60,30 @@ export default function ActionAttack(props) {
         const firstRoll = Math.floor(Math.random() * 20) + 1;
         hitRolls.push(firstRoll);
 
-        if (hasAdvantage && hasDisadvantage) {
-            updatehasDisadvantage(false);
-            updatehasAdvatage(false);
+        if (props.hasAdvantage && props.hasDisadvantage) {
+            props.disadvantageToggle(false);
+            props.advantageToggle(false);
 
             return firstRoll;
         };
 
-        if (hasDisadvantage) {
+        if (props.hasDisadvantage) {
             const secondRoll = Math.floor(Math.random() * 20) + 1;
             hitRolls.push(secondRoll);
             console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? secondRoll : firstRoll;
-            updatehasDisadvantage(false);
+            unusedHitRoll = firstRoll < secondRoll ? secondRoll : firstRoll;
+            props.disadvantageToggle(false);
             return d20;
         };
 
-        if (hasAdvantage) {
+        if (props.hasAdvantage) {
             const secondRoll = Math.floor(Math.random() * 20) + 1;
             hitRolls.push(secondRoll);
             console.log(`rolling with advantage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? firstRoll : secondRoll;
-            updatehasAdvatage(false);
+            unusedHitRoll = firstRoll < secondRoll ? firstRoll : secondRoll;
+            props.advantageToggle(false);
             
             return d20;
         };
@@ -167,6 +168,7 @@ export default function ActionAttack(props) {
         damageRolls = [];
         hitRolls = [];
         totalNumberOfDice = 0;
+        unusedHitRoll = "";
     }
 
     const rollToHitAndDamage = () => {
@@ -194,26 +196,25 @@ export default function ActionAttack(props) {
         } else if (hitRoll === 20 && !nat20) {
             hitRollText = <p>Dirty<span>20</span></p>
         } else {
-            hitRollText = <p>Hit Roll: <span>{hitRoll}</span></p>
+            hitRollText = <span>{hitRoll}</span>
         };
-
-        console.log(damageRolls);
 
         const reactElement =
             <StyledToast>
-                <h4>{damageRoll}</h4>
+                <h4>{hitRollText} to hit</h4>
                 <div className="totals">
-                    {hitRollText}
+                    <p> Hit Roll: {hitRollText}</p>
                     <p>Damage Roll: <span>{damageRoll}</span></p>
                 </div>
                 <p className="formula"><span>{props.action.actionName}: </span> {hitFormula}, {damageFormula} damage.</p>
                 <p className="heading">Hit Roll</p>
-                {hitRolls.map((roll) => {
-                    return <p className="formula">Hit roll 1d20: <span>{roll}</span></p>
+                {hitRolls.map((roll, index) => {
+                    if (hitRolls[0] === hitRolls[1]) {return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>};
+                    return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula selectedRoll" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>
                 })}
                 <p className="heading">Damage Rolls</p>
                 {damageRolls.map((roll, index) => {
-                    return <div className="roll">
+                    return <div className="roll" >
                         <p>
                             <span>{index + 1} of {totalNumberOfDice} </span> {props.action.damageDice}
                         </p>
@@ -330,7 +331,7 @@ const StyledAction = styled.div`
 //   TOAST   //
 // ========= //
 const StyledToast = styled.section`
-    font-weight: 400;
+    font-weight: 600;
     font-size: 16px;
     text-align: center;
     color: #2d3436;
@@ -344,7 +345,7 @@ const StyledToast = styled.section`
     .heading {
         width: 100%;
         padding: .5em 0 .3em 0;
-        font-weight: 300;
+        font-weight: 400;
         font-size: .8em;
         color: #7f8c8d;
     }
@@ -367,7 +368,7 @@ const StyledToast = styled.section`
 
             &:first-child {
                 border-right: 1px solid #bdc3c7;
-                font-weight: 300;
+                font-weight: 400;
 
                 span {
                     padding-right: .5em;
@@ -382,7 +383,7 @@ const StyledToast = styled.section`
     .formula {
         padding: 1em;
         border: 1px solid #bdc3c7;
-        font-weight: 300;
+        font-weight: 400;
         font-style: italic;
 
         span {
@@ -390,13 +391,19 @@ const StyledToast = styled.section`
             font-style: normal;
         }
 
+        &.selectedRoll {
+            opacity: .5;
+        }
+    }
+
+    .hit_dice {
         &:last-child {
-            border-bottom: 1px solid #bdc3c7;
+            border-top: none;
         }
     }
 
     .totals {
-        font-weight: 300;
+        font-weight: 400;
         display: flex;
         flex-wrap: nowrap;
         justify-content: center;
