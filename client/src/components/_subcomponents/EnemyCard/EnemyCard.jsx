@@ -23,12 +23,12 @@ EnemyCard.defaultProps = {
         {
             type: "attack", // attack, item, spell
             actionType: "action", // action, bonus action, passive, reaction.
-            actionName: "Bite",
+            actionName: "Attack",
             hitMod : 5,
             damageMod : 3, // number - or - "str", "dex" - or - "finess"
             damageDice: "1d6",
             description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-            flavorText : "Enemy bites you.",
+            flavorText : "The enemy rears back and bites your arm.",
             charges : 1,
         },
         {
