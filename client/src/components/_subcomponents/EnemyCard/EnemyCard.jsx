@@ -215,15 +215,7 @@ export default function EnemyCard(props) {
         // ================= //
         if (action.type === "attack") {
             const actionName = action.actionName;
-            const hitMod = action.hitMod;
-            const damageMod = action.damageMod; // number - or - "str", "dex" - or - "finess"
-            const attackdamage = action.damageDice; // 1d6 
             const description = action.description;
-            const flavorText = action.flavorText;
-
-            const breakUpDamage = attackdamage.split("d");
-            const numberOfDice = breakUpDamage[0] > 0 ? breakUpDamage[0] : 1; // whole number
-            const diceType = breakUpDamage[1]; //2 4 6 8 10 12 20 100 ect.
 
             return  <StyledAction key={index} data-action-index={index} onClick={rollToHitAndDamage}>
                         <div className="dice_box">
@@ -239,11 +231,18 @@ export default function EnemyCard(props) {
                         </div>
                     </StyledAction>
         };
+
+        // =========== //
+        //   USE ITEM  //
+        // =========== //
+
+        // ======== //
+        //   SPELL  //
+        // ======== //
     };
 
     const rollToHitAndDamage = (e) => {
         let action;
-        let numberOfTimes = 10;
 
         // check 5 levels deep
         if (e.target.getAttribute("data-action-index") !== null) {action = e.target.getAttribute("data-action-index")}
