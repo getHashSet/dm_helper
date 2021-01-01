@@ -26,7 +26,7 @@ EnemyCard.defaultProps = {
             actionType: "action", // action, bonus action, passive, reaction.
             actionName: "Battle Axe",
             hitMod : 5,
-            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damageMod : "STR",
             damageDice: "1d6",
             description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
             flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
@@ -37,7 +37,7 @@ EnemyCard.defaultProps = {
             actionType: "action", // action, bonus action, passive, reaction.
             actionName: "Bow & Arrow",
             hitMod : 5,
-            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
             damageDice: "1d6",
             description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
             flavorText : "You get shot.",
@@ -48,7 +48,7 @@ EnemyCard.defaultProps = {
             actionType: "action", // action, bonus action, passive, reaction.
             actionName: "Bite",
             hitMod : 5,
-            damageMod : 3, // number - or - "str", "dex" - or - "finess"
+            damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
             damageDice: "1d6",
             description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
             flavorText : "The enemy rears back and bites your arm.",
@@ -233,27 +233,19 @@ export default function EnemyCard(props) {
     const buildAction = (action, index) => {
         if (action.type === null || action.type === undefined) {return};
 
-        // ================= //
-        //   ATTACK ACTION   //
-        // ================= //
-        if (action.type === "attack") {
-            const actionName = action.actionName;
-            const description = action.description;
+        const mods = {
+            STR: props.stats.STR,
+            STR_mod: getMod(props.stats.STR),
+            DEX: props.stats.DEX,
+            DEX_mod: getMod(props.stats.DEX),
+        }
 
-            return  <ActionAttack action={action} />;
-
-            // <StyledAction key={index} data-action-index={index} onClick={rollToHitAndDamage}>
-                        
-            //         </StyledAction>
+        switch (action.type) {
+            case "attack":
+                return  <ActionAttack key={index} action={action} mods={mods}/>;   
+            default:
+                break;
         };
-
-        // =========== //
-        //   USE ITEM  //
-        // =========== //
-
-        // ======== //
-        //   SPELL  //
-        // ======== //
     };
 
     const rollToHitAndDamage = (e) => {
