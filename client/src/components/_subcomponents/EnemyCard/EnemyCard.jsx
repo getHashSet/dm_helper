@@ -174,15 +174,9 @@ export default function EnemyCard(props) {
         return +mod;
     };
 
-    const d20PlusMod = (mod) => {
-        const d20 = rolld20();
-
-        return d20 + +mod;
-    };
-
     const rollPlusMod = (stat) => {
-        const mod = getMod(stat);
-        return d20PlusMod(mod);
+        const mod = +getMod(stat);
+        return (Math.floor(Math.random() * 20) +1) + mod;
     };
 
     const adjustHpButton = (e) => {
@@ -190,10 +184,10 @@ export default function EnemyCard(props) {
 
         // heal or damage?
         const type = e.target.getAttribute('name');
-        let inputData = e.target.parentElement.children[0].value;
+        let inputData = e.target.parentElement.parentElement.children[0].children[0].value;
 
         // Edgecase user didnt put in a value
-        if ( +inputData <= 0 ) { inputData = 1 };
+        if ( inputData === undefined || +inputData <= 0 ) { inputData = 1 };
 
         // current HP total
         let newHpTotal = +enemyHp;
@@ -209,27 +203,34 @@ export default function EnemyCard(props) {
                 break;
         };
 
-        e.target.parentElement.children[0].value = "";
+        e.target.parentElement.parentElement.children[0].children[0].value = "";
         updateenemyHp(newHpTotal);
     };
 
     const rolld20 = () => {
         const firstRoll = Math.floor(Math.random() * 20) + 1;
-        const secondRoll = Math.floor(Math.random() * 20) + 1;
 
-        // if (hasAdvantage && hasDisadvantage) {updatehasDisadvantage(false); updatehasAdvatage(false)};
+        if (hasAdvantage && hasDisadvantage) {
+            updatehasDisadvantage(false);
+            updatehasAdvatage(false);
+
+            return firstRoll;
+        };
 
         if (hasDisadvantage) {
-            // updatehasDisadvantage(false);
+            const secondRoll = Math.floor(Math.random() * 20) + 1;
             console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? secondRoll : firstRoll;
+            updatehasDisadvantage(false);
             return d20;
         };
 
         if (hasAdvantage) {
-            // updatehasAdvatage(false);
-            console.log(`rolling with disadvatage: ${firstRoll}, ${secondRoll}`)
+            const secondRoll = Math.floor(Math.random() * 20) + 1;
+            console.log(`rolling with advantage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? firstRoll : secondRoll;
+            updatehasAdvatage(false);
+            
             return d20;
         };
 
@@ -263,6 +264,11 @@ export default function EnemyCard(props) {
                     </div>
                 </StyledAction>
     };
+
+    const advantageToggle = (e) => {
+        e.preventDefault();
+        updatehasAdvatage(!hasAdvantage);
+    }
 
     // ============== //
     //   HOOKS AGAIN  //
@@ -312,14 +318,16 @@ export default function EnemyCard(props) {
                 </div>
                 <div className="bottom_section">
                     <div className="update_hp">
-                        <input className="adjustHpBy" type="number" name="adjustHpBy"/>
-                        {/* Damage */}
-                        <div className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
-                            Damage
+                        <div className="left">
+                            <input className="adjustHpBy" type="number" name="adjustHpBy"/>
                         </div>
-                        {/* Heal */}
-                        <div className="damage_heal_buttons" name="heal" onClick={adjustHpButton}>
-                            Heal
+                        <div className="right">
+                            <p className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
+                                Damage
+                            </p>
+                            <p className="damage_heal_buttons" name="heal" onClick={adjustHpButton}>
+                                Heal
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -369,7 +377,7 @@ export default function EnemyCard(props) {
             {/* COMBAT ACTIONS */}
             {/* <div className="title">Actions</div> */}
             <div className="toggles">
-                        <div className="advantage" onClick={() => updatehasAdvatage(!hasAdvantage)}>
+                        <div className="advantage" onClick={advantageToggle}>
                     <div className="toggle"></div>
                     <p>Advantage</p>
                 </div>
@@ -663,13 +671,33 @@ const StyledAcHpIn = styled.section`
             justify-content: center;
             align-items: center;
             border-right: 1px solid #bdc3c7;
+
+            .left,
+            .right {
+                width: 50%;
+                flex-grow: 1;
+                display: flex;
+                align-items: center;
+                color: #2d3436;
+            }
+
+            .left {
+                border-right: 1px solid #bdc3c7;
+            }
+
+            .right {
+                justify-content: space-around;
+                text-transform: uppercase;
+                font-weight: 900;
+            }
         }
 
         input {
             text-align: center;
-            width: 3em;
+            width: 100%;
             height: 1.5em;
-            font-size: 1em;
+            font-size: 1.5em;
+            margin: 0 .5em;
             color: #2d3436;
             border: 1px solid #bdc3c7;
             background-image:none;
@@ -690,12 +718,12 @@ const StyledAcHpIn = styled.section`
         }
 
         .damage_heal_buttons {
-            width: 25%;
             text-align: center;
             user-select: none;
 
             &:hover {
                 cursor: pointer;
+                color: #e74c3c;
             }
 
             &:active {
