@@ -148,6 +148,8 @@ export default function ActionAttack(props) {
         const diceType = +breakDiceString[1];
         totalNumberOfDice = numberOfDice;
 
+        if(nat20) { totalNumberOfDice * 2 };
+
         for(let i = 0; i < numberOfDice; i++) {
             const roll = Math.floor( Math.random() * diceType ) + 1;
             finalDamage += roll;
