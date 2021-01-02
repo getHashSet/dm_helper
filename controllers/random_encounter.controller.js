@@ -74,6 +74,8 @@ router.route("/").post(function (req, res) {
   function buildCallback() {
     return new Promise(() => {
 
+      let counter = 0;
+
       enemies.forEach((enemy_name, index) => {
         const monsterJSON = apiURI + category + enemy_name.toLowerCase().trim();
     
@@ -103,8 +105,9 @@ router.route("/").post(function (req, res) {
             };
 
             devEncounter.encounter.enemies.push(newEnemy);
-            
-            if(enemies.length === index + 1) {
+            counter++;
+
+            if(enemies.length === counter) {
               console.log(devEncounter.encounter.enemies);
               res.json(devEncounter);
             };
