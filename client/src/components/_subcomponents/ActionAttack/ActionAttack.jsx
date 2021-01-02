@@ -144,11 +144,11 @@ export default function ActionAttack(props) {
         };
 
         const breakDiceString = props.action.damageDice.split("d");
-        const numberOfDice = +breakDiceString[0];
+        let numberOfDice = +breakDiceString[0];
         const diceType = +breakDiceString[1];
         totalNumberOfDice = numberOfDice;
 
-        if(nat20) { totalNumberOfDice * 2 };
+        if(nat20) { numberOfDice =* 2 };
 
         for(let i = 0; i < numberOfDice; i++) {
             const roll = Math.floor( Math.random() * diceType ) + 1;
