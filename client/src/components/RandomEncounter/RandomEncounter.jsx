@@ -36,6 +36,7 @@ export default function RandomEncounter() {
     "Dungeon",
     "Friendly",
   ];
+  const [inputeEnemies, updateinputeEnemies] = useState([]);
 
   // ================ //
   //     Functions    //
@@ -49,7 +50,7 @@ export default function RandomEncounter() {
       .get(`/api/encounter?${challengeRating}`)
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
-        // console.log(enemyEncounter);
+        console.log(enemyEncounter);
       })
       .catch((err) => {
         console.log("There was an issue with the api call.");
@@ -120,6 +121,15 @@ export default function RandomEncounter() {
                 );
               })}
             </StyledFlexOptionsUL>
+          </StyledOptionBox>
+          
+          <StyledOptionBox>
+            <h3>Custom Encounter</h3>
+            <div className="search">
+              <label htmlFor="enemyName">Search</label>
+              <input type="search" name="enemyName"/>
+              <div><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" className="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></div>
+            </div>
           </StyledOptionBox>
 
           <StyledButton onClick={rollEnemyEncounter}>
@@ -225,6 +235,37 @@ const StyledOptionBox = styled.div`
     width: 100%;
   }
 
+  svg {
+    width: 1em;
+    display: inline-block;
+  }
+
+  .search {
+    display: flex;
+    flex-wrap: wrap;
+    padding: .5em;
+
+    lable {
+
+    }
+
+    input {
+      text-decoration: none;
+      box-shadow: none;
+      border: none;
+      outline: none;
+      padding: 0 .5em;
+      margin: 0 .5em;
+      min-width: 50vw;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+
+  }
+
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -309,16 +350,13 @@ const StyledBattleField = styled.section`
   position: relative;
   margin: 0;
   max-height: 0px;
-  background-color: #fff;
+  color: #fff;
+  background-color: #2d3436;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   transition: max-height 2s ease-in;
-
-  h2 {
-    color: #2f3640;
-  }
 
   &.show {
     max-height: 5000px;
@@ -334,7 +372,6 @@ const StyledBattleField = styled.section`
     position: absolute;
     top: 0.5em;
     right: 0.5em;
-    color: black;
 
     svg {
       width: 1em;

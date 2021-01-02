@@ -380,7 +380,7 @@ export default function EnemyCard(props) {
                 </div>
             </div>
 
-            <div className={props.enemy.actions.length > 1 ? "actions scrolling" : "actions"}>
+            <div className={props.enemy.actions?.length > 1 ? "actions scrolling" : "actions"}>
                 {props.enemy.actions.map((action, index) => buildAction(action, index))}
             </div>
         </StyledCard>
@@ -399,7 +399,7 @@ const StyledCard = styled.article`
     margin: .5em;
     overflow: hidden;
     background-color: #fff;
-    border: 2px solid #e84c3b;
+    border: 2px solid #636e72;
     border-radius: .5em;
     color:#2d3436;
     opacity: ${props => props.enemyHp <= 0 ? ".3" : "1"};
@@ -407,7 +407,7 @@ const StyledCard = styled.article`
 
     .card_name {
         flex-grow: 1;
-        background-color: #e84c3b;
+        background-color: #636e72;
         font-weight: 900;
         padding: .5em 1em;
         margin: 0;
