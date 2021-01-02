@@ -28,25 +28,19 @@ router.route("/").post(function (req, res) {
   const d100 = Math.floor(Math.random() * enemyTable.length);
 
   let enemies;
+  let devEncounter = {
+    encounter: {
+      desc: "",
+      info: "",
+      enemies: [],
+    },
+  };
 
   if (req.body.enemies.length === 0){
+    devEncounter = enemyTable[d100];
     enemies = enemyTable[d100].enemies;
   } else {
     enemies = req.body.enemies;
-  };
-
-
-  console.log("============================================");
-  console.log(enemies);
-  console.log("============================================");
-
-  const devEncounter = {
-    encounter: {
-      desc:
-        "As you walk further on your quest you can smell a campfire on the air. You stumble across some orcs cooking something over a campfire.",
-      info: "Perception check to see the hidden wolf up ahead. (15)",
-      enemies: [],
-    },
   };
 
   function Enemy(name, armor_class, challenge_rating, hit_dice, strength, dexterity, constitution, intelligence, wisdom, charisma,actions) {
