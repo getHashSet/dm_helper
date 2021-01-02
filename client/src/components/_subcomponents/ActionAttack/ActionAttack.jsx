@@ -191,7 +191,7 @@ export default function ActionAttack(props) {
                     {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
                     <p>Damage: <span>{damageRoll}</span></p>
                 </div>
-                {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName}: </span> {hitFormula}, {damageFormula} damage.</p>}
+                {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName} </span> {hitFormula}, {damageFormula} damage.</p>}
                 <p className="heading">Hit Roll</p>
                 {hitRolls.map((roll, index) => {
                     if (hitRolls[0] === hitRolls[1]) {return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>};
