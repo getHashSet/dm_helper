@@ -3,16 +3,9 @@ const db = require("../models");
 const axios = require('axios');
 
 // Read All
-router.route("/").get(function (req, res) {
-  // console.log(req.query)
-  // db.Enemy
-  //     .find()
-  //     .sort({ date: -1 })
-  //     .then(dbModel => {
-  //         console.log(dbModel)
-  //         res.json(dbModel)
-  //     })
-  //     .catch(err => res.status(422).json(err));
+router.route("/").post(function (req, res) {
+
+  const enemies = req.body.enemies.length <= 0 ? ["owlbear"] : req.body.enemies;
 
   const devEncounter = {
     encounter: {
@@ -36,41 +29,61 @@ router.route("/").get(function (req, res) {
     this.stats.WIS = wisdom;
     this.stats.CHA = charisma;
     this.actions = actions;
+    this.special_abilities = {};
   }
 
   // res.json(devEncounter);
 
-  const monsterNames = ["bugbear", "goblin"];
+  const category = 'monsters/';
 
-  const category = 'monsters/'
+  const apiURI = 'https://www.dnd5eapi.co/api/';
 
-  const apiURI = 'https://www.dnd5eapi.co/api/'
+  function buildCallback() {
+    return new Promise(() => {
 
-  const monsterJSON = apiURI + category + monsterNames[0];
-
-  axios.get(monsterJSON)
-  .then(callback => {
-
-    const e = callback.data;
-
-    const newEnemy = new Enemy(e.name,
-      e.armor_class,
-      e.challenge_rating,
-      e.hit_dice,
-      e.strength,
-      e.dexterity,
-      e.constitution,
-      e.intelligence,
-      e.wisdom,
-      e.charisma,
-      e.actions);
-
+      enemies.forEach((enemy_name, index) => {
+        const monsterJSON = apiURI + category + enemy_name;
+    
+        axios.get(monsterJSON)
+        .then(callback => {
       
-      devEncounter.encounter.enemies.push(newEnemy);
-      console.log(newEnemy);
+          const e = callback.data; // this is the monster object from the api
       
-    res.send(devEncounter);
-  });
+          const newEnemy = new Enemy(e.name,
+            e.armor_class,
+            e.challenge_rating,
+            e.hit_dice,
+            e.strength,
+            e.dexterity,
+            e.constitution,
+            e.intelligence,
+            e.wisdom,
+            e.charisma,
+            e.actions
+            )
+
+            // EDGECASE: may have special bilities. May be null or undefied.
+            if (e.special_abilities !== undefined && e.special_abilities !== null) {
+              newEnemy.special_abilities = e.special_abilities;
+            };
+
+            devEncounter.encounter.enemies.push(newEnemy);
+            
+            if(enemies.length === index + 1) {
+              res.json(devEncounter);
+            };
+        }).catch(err => {
+          // skip if you cant find it.
+        });
+      });
+    });
+  }
+  
+  async function asyncCall() {
+    await buildCallback();
+  };
+  
+  asyncCall();
 
 });
 

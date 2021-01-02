@@ -3,10 +3,11 @@
 // ========== //
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { useDispatch } from "react-redux";
 import Slider from "../_subcomponents/Slider/Slider";
 import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { showToastMenuState, updateToastData } from "../../redux/actions";
 
 // ===================== //
 //     DEFAULT PROPS     //
@@ -20,12 +21,12 @@ export default function RandomEncounter() {
   // =================== //
   //   HOOK INTO STATE   //
   // =================== //
+  const dispatch = useDispatch(); // used to send data back to redux
   const [userEncounterSelection, updateuserEncounterSelection] = useState("");
   const [partyLevel, updatepartyLevel] = useState("1");
   const [difficulty, updateDificulty] = useState(3);
   const challengeRating = +partyLevel + +difficulty;
-  const [enemyEncounter, updateenemyEncounter] = useState({ enemies: [] });
-  // const dispatch = useDispatch();
+  const [enemyEncounter, updateenemyEncounter] = useState({ description: "", info: "", enemies: [] });
   const partyLevelMax = 10;
   const rollTables = [
     "Mountains",
@@ -37,31 +38,43 @@ export default function RandomEncounter() {
     "Friendly",
   ];
   const [inputeEnemies, updateinputeEnemies] = useState([]);
+  const [searchInput, updatesearchInput] = useState("");
 
   // ================ //
   //     Functions    //
   // ================ //
+  const updateToastMenu = (str) => {
+      const html = <StyledToast>
+          {str}
+      </StyledToast>
+      dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
+      dispatch(updateToastData(html)); // default parent is a div with flex turned on.
+  };
+
   const rollEnemyEncounter = (e) => {
     e.preventDefault();
     // TODO: start load screen.
     console.log("Challenge table: " + challengeRating);
 
+    if (inputeEnemies.length <= 0) {return;};
     axios
-      .get(`/api/encounter?${challengeRating}`)
+      .post(`/api/encounter?${challengeRating}`, {
+        enemies: inputeEnemies
+      })
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
-        console.log(enemyEncounter);
       })
       .catch((err) => {
         console.log("There was an issue with the api call.");
       })
       .finally(() => {
+        console.log(enemyEncounter);
         // TODO: remove load screen.
       });
   };
 
   const clearEnemyEncounter = () => {
-    updateenemyEncounter({ enemies: [] });
+    updateenemyEncounter({ description: "", info: "", enemies: [] });
   };
 
   const partyLevelButtons = () => {
@@ -89,6 +102,29 @@ export default function RandomEncounter() {
 
   const partyLevelHandler = (e) => {
     updatepartyLevel(e.target.value);
+  };
+
+  const addEnemy = () => {
+
+    // STEP 1: Check if the enemy you are adding is a real thing
+    try {
+
+      const cleanedSearchResult = searchInput.trim().replace(/ /g, "-");
+
+      axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
+      .then(data => {
+        const newListOfEnemies = inputeEnemies;
+        newListOfEnemies.push(searchInput);
+        updateinputeEnemies(newListOfEnemies);
+        updatesearchInput("");
+      }).catch(err => {
+        updateToastMenu(<p>{`Unable to find ${searchInput} in our library.`}</p>); //todo add custom monster api
+        return;
+      });
+    } catch (error) {
+      updateToastMenu("Something has gone wrong.");
+      return;
+    };
   };
 
   // ========== //
@@ -122,15 +158,21 @@ export default function RandomEncounter() {
               })}
             </StyledFlexOptionsUL>
           </StyledOptionBox>
-          
+
           <StyledOptionBox>
             <h3>Custom Encounter</h3>
             <div className="search">
               <label htmlFor="enemyName">Search</label>
-              <input type="search" name="enemyName"/>
-              <div><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" className="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></div>
+              <input value={searchInput} onChange={(e) => { updatesearchInput(e.target.value) }} type="search" name="enemyName" />
+              <div className="add_enemy_button" onClick={addEnemy}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" className="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></div>
             </div>
           </StyledOptionBox>
+
+          <section>
+            {inputeEnemies.map((enemyName, index) => {
+              return <p key={index}>{enemyName}</p>;
+            })}
+          </section>
 
           <StyledButton onClick={rollEnemyEncounter}>
             Roll Initiative
@@ -180,6 +222,7 @@ const StyledSection = styled.section`
   background-color: #e74c3c;
   display: flex;
   justify-content: center;
+  user-select: none;
 `;
 
 const StyledFlexOptionsUL = styled.ul`
@@ -233,6 +276,7 @@ const StyledOptionBox = styled.div`
     font-weight: 700;
     display: block;
     width: 100%;
+    user-select: none;
   }
 
   svg {
@@ -244,9 +288,10 @@ const StyledOptionBox = styled.div`
     display: flex;
     flex-wrap: wrap;
     padding: .5em;
+    user-select: none;
 
-    lable {
-
+    label {
+      user-select: none;
     }
 
     input {
@@ -263,6 +308,15 @@ const StyledOptionBox = styled.div`
       }
     }
 
+    .add_enemy_button {
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        transform: translateY(4px);
+      }
+    }
 
   }
 
@@ -323,6 +377,7 @@ const StyledButton = styled.button`
   border: 1px solid #fff;
   text-transform: uppercase;
   font-weight: 900;
+  user-select: none;
 
   &:hover {
     cursor: pointer;
@@ -357,6 +412,7 @@ const StyledBattleField = styled.section`
   align-items: center;
   overflow: hidden;
   transition: max-height 2s ease-in;
+  user-select: none;
 
   &.show {
     max-height: 5000px;
