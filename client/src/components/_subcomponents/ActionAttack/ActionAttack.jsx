@@ -7,8 +7,6 @@ import { showToastMenuState, updateToastData } from "../../../redux/actions";
 //   COMPONENT   //
 // ============= //
 export default function ActionAttack(props) {
-    console.log(props);
-
     // =================== //
     //   HOOK INTO STATE   //
     // =================== //
@@ -22,6 +20,7 @@ export default function ActionAttack(props) {
     let hitRolls = [];
     let unusedHitRoll = "";
     let totalNumberOfDice = 0;
+    let diceType = "";
 
     // ================ //
     //     Functions    //
@@ -106,10 +105,11 @@ export default function ActionAttack(props) {
 
         const diceDamageArray = uncleanedDamage.replace(/ /g, "").split("+"); //["2d6", "10"];
 
-        const damageMod = diceDamageArray[1];
+        // Add this damage.
+        const damageMod = diceDamageArray[1] === undefined ? 0 : diceDamageArray[1];
         const breakDiceString = diceDamageArray[0].split("d");
         let numberOfDice = +breakDiceString[0];
-        const diceType = +breakDiceString[1];
+        diceType = +breakDiceString[1];
         totalNumberOfDice = numberOfDice;
 
         console.log(`DiceType ${diceType}, Numberofdice: ${numberOfDice}`);
@@ -124,7 +124,12 @@ export default function ActionAttack(props) {
         
         finalDamage += +damageMod;
         
-        damageFormula = `${numberOfDice}d${diceType} + ${damageMod}`;
+        if (damageMod === 0 || damageMod === "0" || damageMod === undefined) {
+            damageFormula = `${numberOfDice}d${diceType}`;
+        } else {
+            damageFormula = `${numberOfDice}d${diceType} + ${damageMod}`;
+        };
+        
         if (finalDamage < 1) {finalDamage = 1};
 
         return finalDamage;
@@ -158,7 +163,12 @@ export default function ActionAttack(props) {
             return;
         };
 
-        const hitRoll = rollToHit();
+        let hitRoll = 0;
+        if (props.action.dc !== undefined) {
+            hitRoll = -1;
+        } else {
+            hitRoll = rollToHit();
+        }
         const damageRoll = rollDamage();
         let hitRollText;
 
@@ -168,6 +178,8 @@ export default function ActionAttack(props) {
             hitRollText = <p><span>Nat 1...</span></p>
         } else if (hitRoll === 20 && !nat20) {
             hitRollText = <p>Dirty<span>20</span></p>
+        } else if(hitRoll === -1) {
+            hitRollText = <span>{`DC: ${props.action.dc.dc_value}`}</span>
         } else {
             hitRollText = <span>{hitRoll}</span>
         };
@@ -176,10 +188,10 @@ export default function ActionAttack(props) {
             <StyledToast>
                 <h4>{hitRollText}</h4>
                 <div className="totals">
-                    <p> Hit Roll: {hitRollText}</p>
-                    <p>Damage Roll: <span>{damageRoll}</span></p>
+                    {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
+                    <p>Damage: <span>{damageRoll}</span></p>
                 </div>
-                <p className="formula"><span>{props.action.actionName}: </span> {hitFormula}, {damageFormula} damage.</p>
+                {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName}: </span> {hitFormula}, {damageFormula} damage.</p>}
                 <p className="heading">Hit Roll</p>
                 {hitRolls.map((roll, index) => {
                     if (hitRolls[0] === hitRolls[1]) {return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>};
@@ -189,7 +201,7 @@ export default function ActionAttack(props) {
                 {damageRolls.map((roll, index) => {
                     return <div className="roll" >
                         <p>
-                            <span>{index + 1} of {totalNumberOfDice} </span> {props.action.damageDice}
+                            <span>{index + 1} of {totalNumberOfDice} </span> d{diceType}
                         </p>
                         <p>
                             {roll}
@@ -312,7 +324,7 @@ const StyledToast = styled.section`
     h4 {
         padding: 1em;
         font-weight: 900;
-        font-size: 4em;
+        font-size: 3em;
     }
 
     .heading {

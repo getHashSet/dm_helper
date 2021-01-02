@@ -81,13 +81,13 @@ const StyledToastBox = styled.div`
     min-width: 250px;
     max-width: calc(100vw - 1em);
     min-height: 50px;
+    max-height: 80vh;
+    overflow: auto;
     padding: 1em;
-
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-
     color: #2d3436;
     background-color: #fff;
     border-radius: .5em;

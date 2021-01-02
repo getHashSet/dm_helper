@@ -131,7 +131,7 @@ export default function RandomEncounter() {
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
       .then(data => {
         const newListOfEnemies = inputeEnemies;
-        newListOfEnemies.push(searchInput);
+        newListOfEnemies.push(cleanedSearchResult);
         updateinputeEnemies(newListOfEnemies);
         updatesearchInput("");
       }).catch(err => {
