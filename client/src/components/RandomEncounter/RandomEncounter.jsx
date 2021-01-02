@@ -26,7 +26,7 @@ export default function RandomEncounter() {
   const [partyLevel, updatepartyLevel] = useState("1");
   const [difficulty, updateDificulty] = useState(3);
   const challengeRating = +partyLevel + +difficulty;
-  const [enemyEncounter, updateenemyEncounter] = useState({ description: "", info: "", enemies: [] });
+  const [enemyEncounter, updateenemyEncounter] = useState({ desc: "", info: "", enemies: [] });
   const partyLevelMax = 10;
   const rollTables = [
     "Mountains",
@@ -244,6 +244,8 @@ export default function RandomEncounter() {
       >
         <StyledFrame>
           <h2>Battle Field</h2>
+          <p>{enemyEncounter.desc}</p>
+          <p>{enemyEncounter.info}</p>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
               return <EnemyCard key={index} enemy={enemy} />;
