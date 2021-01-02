@@ -38,6 +38,7 @@ router.route("/").post(function (req, res) {
 
   if (req.body.enemies.length === 0){
     devEncounter.encounter = enemyTable[d100];
+    devEncounter.encounter.enemies = [];
     enemies = enemyTable[d100].enemies;
   } else {
     enemies = req.body.enemies;
