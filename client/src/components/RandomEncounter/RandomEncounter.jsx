@@ -62,7 +62,7 @@ export default function RandomEncounter() {
 
     // TODO: start load screen.
 
-    if (inputeEnemies.length <= 0) {return;};
+    //if (inputeEnemies.length <= 0) {return;};
 
     const uriEncodedEnemies = [];
 
