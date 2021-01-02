@@ -40,6 +40,10 @@ export default function RandomEncounter() {
   const [inputeEnemies, updateinputeEnemies] = useState([]);
   const [searchInput, updatesearchInput] = useState("");
 
+  // FORCE UPDATE COMPONENT
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
   // ================ //
   //     Functions    //
   // ================ //
@@ -53,13 +57,22 @@ export default function RandomEncounter() {
 
   const rollEnemyEncounter = (e) => {
     e.preventDefault();
+
+    clearEnemyEncounter();
+
     // TODO: start load screen.
-    console.log("Challenge table: " + challengeRating);
 
     if (inputeEnemies.length <= 0) {return;};
+
+    const uriEncodedEnemies = [];
+
+    inputeEnemies.forEach(enemyName => {
+      uriEncodedEnemies.push(enemyName.trim().replace(/ /g, "-"));
+    });
+
     axios
       .post(`/api/encounter?${challengeRating}`, {
-        enemies: inputeEnemies
+        enemies: uriEncodedEnemies
       })
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
@@ -68,13 +81,15 @@ export default function RandomEncounter() {
         console.log("There was an issue with the api call.");
       })
       .finally(() => {
-        console.log(enemyEncounter);
         // TODO: remove load screen.
       });
   };
 
   const clearEnemyEncounter = () => {
     updateenemyEncounter({ description: "", info: "", enemies: [] });
+    updatesearchInput("");
+    updateinputeEnemies([]);
+    forceUpdate();
   };
 
   const partyLevelButtons = () => {
@@ -106,6 +121,8 @@ export default function RandomEncounter() {
 
   const addEnemy = () => {
 
+    if(searchInput === "") {return};
+    
     // STEP 1: Check if the enemy you are adding is a real thing
     try {
 
@@ -126,6 +143,41 @@ export default function RandomEncounter() {
       return;
     };
   };
+
+  const removeItemByIndex = (e) => {
+    // Step 1: get index of the array
+    const thisIndex = e.target.getAttribute("index");
+
+    // Step 2: get the object from that part of the array
+    const enemyToRemove = inputeEnemies[thisIndex];
+
+    // Step 3: make a copy of the input enemy array
+    const array = inputeEnemies;
+
+    // Step 4: splice the array by the object
+    const index = array.indexOf(enemyToRemove);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+
+    // log it
+    console.log(`Removed ${enemyToRemove} from the api call`);
+
+    // update State
+    updateinputeEnemies(array);
+
+    // refresh component
+    forceUpdate();
+  }
+
+  const inputData = (e) => {
+
+    if (e.key === "Enter") {
+      addEnemy();
+      forceUpdate();
+    };
+
+  }
 
   // ========== //
   //   RETURN   //
@@ -163,16 +215,22 @@ export default function RandomEncounter() {
             <h3>Custom Encounter</h3>
             <div className="search">
               <label htmlFor="enemyName">Search</label>
-              <input value={searchInput} onChange={(e) => { updatesearchInput(e.target.value) }} type="search" name="enemyName" />
+              <input value={searchInput} onKeyDown={inputData} onChange={(e) => updatesearchInput(e.target.value)} type="search" name="enemyName" />
               <div className="add_enemy_button" onClick={addEnemy}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" className="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></div>
             </div>
           </StyledOptionBox>
 
-          <section>
+          <StyledListOfEnemies>
             {inputeEnemies.map((enemyName, index) => {
-              return <p key={index}>{enemyName}</p>;
+              return <div className="enemy_list" key={index}>
+                <p>{enemyName}</p>
+                <p>
+                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" className="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path index={index} onClick={removeItemByIndex} fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
+                </p>
+                </div>;
             })}
-          </section>
+          </StyledListOfEnemies>
 
           <StyledButton onClick={rollEnemyEncounter}>
             Roll Initiative
@@ -217,6 +275,32 @@ export default function RandomEncounter() {
 // ========= //
 //   STYLE   //
 // ========= //
+const StyledListOfEnemies = styled.section`
+  .enemy_list {
+    display: flex;
+    flex-wrap: wrap;
+
+    p {
+      display: inline-block;
+    }
+
+    svg {
+      width: 1em;
+      max-width: 1em;
+      max-height: 1em;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        transform: translateY(4px);
+      }
+    }
+  }
+
+`;
+
 const StyledSection = styled.section`
   padding: 1em 0.5em;
   background-color: #e74c3c;

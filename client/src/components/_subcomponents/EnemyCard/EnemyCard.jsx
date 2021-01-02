@@ -74,6 +74,7 @@ EnemyCard.defaultProps = {
 //   COMPONENT   //
 // ============= //
 export default function EnemyCard(props) {
+
     // ==================== //
     //   FAKE CONSTRUCTOR   //
     // ==================== //
@@ -154,19 +155,22 @@ export default function EnemyCard(props) {
     };
 
     const getStatMod = (stat) => {
-        if (stat > 9 && stat < 12) {return};
-        
+        if (+stat > 9 && +stat < 12) {return };
         return `(${Math.floor((stat - 10) / 2)})`;
     };
 
     const getMod = (stat) => {
+
+        if (+stat > 9 && +stat < 12) {return 0};
+
         const uncleanedMod = getStatMod(stat);
         const mod = uncleanedMod.slice(1, uncleanedMod.length - 1); // remove string data
         return +mod;
     };
 
     const rollPlusMod = (stat) => {
-        const mod = +getMod(stat);
+        let mod = 0;
+        mod = mod + +getMod(stat);
         return (Math.floor(Math.random() * 20) +1) + mod;
     };
 
@@ -229,22 +233,25 @@ export default function EnemyCard(props) {
     }
 
     const buildAction = (action, index) => {
-        if (action.type === null || action.type === undefined) {return};
 
-        const mods = {
-            STR: props.enemy.stats.STR,
-            STR_mod: getMod(props.enemy.stats.STR),
-            DEX: props.enemy.stats.DEX,
-            DEX_mod: getMod(props.enemy.stats.DEX),
-        }
+        /*  
+        
+        attack_bonus: 7
+        damage: [{…}]
+        desc: "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. Hit: 11 (2d6 + 4) slashing damage."
+        name: "Claw"
+        
+        */
 
-        // console.log(action);
-        switch (`${action.type}`.toLowerCase()) {
-            case "attack":
-                return  <ActionAttack key={index} action={action} mods={mods} hasDisadvantage={hasDisadvantage} disadvantageToggle={disadvantageToggle} hasAdvantage={hasAdvantage} advantageToggle={advantageToggle}/>;   
-            default:
-                break;
-        };
+        return <ActionAttack 
+                    key={index}
+                    action={action}
+                    hasDisadvantage={hasDisadvantage}
+                    disadvantageToggle={disadvantageToggle}
+                    hasAdvantage={hasAdvantage}
+                    advantageToggle={advantageToggle}
+                />;
+
     };
 
     const advantageToggle = () => {
@@ -368,7 +375,6 @@ export default function EnemyCard(props) {
             </ul>
 
             {/* COMBAT ACTIONS */}
-            {/* <div className="title">Actions</div> */}
             <div className="toggles">
                         <div className="advantage" onClick={advantageToggle}>
                     <div className="toggle"></div>

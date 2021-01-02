@@ -7,6 +7,9 @@ router.route("/").post(function (req, res) {
 
   const enemies = req.body.enemies.length <= 0 ? ["owlbear"] : req.body.enemies;
 
+  console.log("============= CALLING 5e API ==============");
+  console.log(enemies);
+
   const devEncounter = {
     encounter: {
       description:
@@ -44,6 +47,8 @@ router.route("/").post(function (req, res) {
       enemies.forEach((enemy_name, index) => {
         const monsterJSON = apiURI + category + enemy_name;
     
+        console.log(`building ${enemy_name}`)
+
         axios.get(monsterJSON)
         .then(callback => {
       
@@ -70,6 +75,7 @@ router.route("/").post(function (req, res) {
             devEncounter.encounter.enemies.push(newEnemy);
             
             if(enemies.length === index + 1) {
+              console.log(devEncounter.encounter.enemies);
               res.json(devEncounter);
             };
         }).catch(err => {
