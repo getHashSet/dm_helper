@@ -62,17 +62,17 @@ export default function RandomEncounter() {
 
     // TODO: start load screen.
 
-    //if (inputeEnemies.length <= 0) {return;};
-
     const uriEncodedEnemies = [];
 
-    inputeEnemies.forEach(enemyName => {
-      uriEncodedEnemies.push(enemyName.trim().replace(/ /g, "-"));
-    });
+    if (inputeEnemies.length > 0) {
+      inputeEnemies.forEach(enemyName => {
+        uriEncodedEnemies.push(enemyName.trim().replace(/ /g, "-"));
+      });
+    }
 
     axios
-      .post(`/api/encounter?${challengeRating}`, {
-        enemies: uriEncodedEnemies
+      .post(`/api/encounter`, {
+        enemies: uriEncodedEnemies,
       })
       .then((data) => {
         updateenemyEncounter(data.data.encounter);

@@ -2,17 +2,47 @@ const router = require("express").Router();
 const db = require("../models");
 const axios = require('axios');
 
+// Enemy Encounters!
+
+const enemyTable = [
+  {
+    desc: "You hear a sound in the woods near by.",
+    info: "DC for finding the owlbear eating berries is 10.",
+    enemies: ["owlbear"]
+  },
+  {
+    desc: "You can smell smoke on the air. You are down wind from a campfire.",
+    info: "Players aproach orcs putting up camp. Sneak DC: 17.",
+    enemies: ["orc","orc","orc","wolf", "wolf"],
+  },
+  {
+    desc: "You stumble across a pile of loose coins mixed in with a lump of dirt on the ground.",
+    info: "If the players dig up the dirt they find 5d100 silver pieces. If they collect more than 200 they will be followed by the dragon. If the dragon feels he can take a party member from behind and drag them into the woods he will. If HP goes below half the dragon flees.",
+    enemies: ["young-green-dragon"],
+  }
+];
+
 // Read All
 router.route("/").post(function (req, res) {
 
-  const enemies = req.body.enemies.length <= 0 ? ["owlbear"] : req.body.enemies;
+  const d100 = Math.floor(Math.random() * enemyTable.length);
 
-  console.log("============= CALLING 5e API ==============");
+  let enemies;
+
+  if (req.body.enemies.length === 0){
+    enemies = enemyTable[d100].enemies;
+  } else {
+    enemies = req.body.enemies;
+  };
+
+
+  console.log("============================================");
   console.log(enemies);
+  console.log("============================================");
 
   const devEncounter = {
     encounter: {
-      description:
+      desc:
         "As you walk further on your quest you can smell a campfire on the air. You stumble across some orcs cooking something over a campfire.",
       info: "Perception check to see the hidden wolf up ahead. (15)",
       enemies: [],
@@ -45,7 +75,7 @@ router.route("/").post(function (req, res) {
     return new Promise(() => {
 
       enemies.forEach((enemy_name, index) => {
-        const monsterJSON = apiURI + category + enemy_name;
+        const monsterJSON = apiURI + category + enemy_name.toLowerCase().trim();
     
         console.log(`building ${enemy_name}`)
 
