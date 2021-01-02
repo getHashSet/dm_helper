@@ -30,8 +30,8 @@ router.route("/").post(function (req, res) {
   let enemies;
   let devEncounter = {
     encounter: {
-      desc: "",
-      info: "",
+      desc: "Welcome to enemy encounters!",
+      info: "To roll saving throws just click the stat you need to make a save on.",
       enemies: [],
     },
   };
