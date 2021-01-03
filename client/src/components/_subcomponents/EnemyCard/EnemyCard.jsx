@@ -237,9 +237,9 @@ export default function EnemyCard(props) {
         return <ActionPassive
                     key={index}
                     special_ability={action} />
-    }
+    };
 
-    const buildAction = (action, index) =>
+    const buildAction = (action, index) => {
         return <ActionAttack 
                     key={index}
                     action={action}
