@@ -233,10 +233,14 @@ export default function EnemyCard(props) {
         return firstRoll;
     }
 
-    const buildAbility = (special_ability, index) => {
+    const buildAbility = (ability, index) => {
         return <ActionPassive
                     key={index}
-                    special_ability={special_ability} />
+                    special_ability={ability}
+                    hasDisadvantage={hasDisadvantage}
+                    disadvantageToggle={disadvantageToggle}
+                    hasAdvantage={hasAdvantage}
+                    advantageToggle={advantageToggle} />;
     };
 
     const buildAction = (action, index) => {
@@ -383,14 +387,14 @@ export default function EnemyCard(props) {
                 </div>
             </div>
 
-            <div className={props.enemy.actions?.length > 1 ? "actions scrolling" : "actions"}>
+            <div className={props.enemy.actions?.length > 2 ? "actions scrolling" : "actions"}>
                 {props.enemy.actions.map((action, index) => buildAction(action, index))}
-                {props.enemy.special_abilities === undefined ? "" : props.enemy.special_abilities.map((special_abilities, index) => buildAbility(special_abilities, index))}
+                {props.enemy.special_abilities === undefined ? <div>Abilities</div> : props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index))}
             </div>
         </StyledCard>
     )
 }
-
+Yo
 // ========= //
 //   STYLE   //
 // ========= //
