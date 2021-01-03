@@ -26,7 +26,7 @@ export default function ActionPassive(props) {
     };
 
     const rollToHitAndDamage = (e) => {
-        updateToastMenu(props.special_ability.special_abilities.damage !== undefined ? props.special_ability.special_abilities.damage.damage_dice : props.special_ability.special_abilities.desc);
+        updateToastMenu(props.special_ability.special_abilities.desc);
     }
 
     // ========== //
