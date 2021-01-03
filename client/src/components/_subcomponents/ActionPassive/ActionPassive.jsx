@@ -20,9 +20,7 @@ export default function ActionPassive(props) {
     //     Functions    //
     // ================ //
     const updateToastMenu = (str) => {
-        const html = <StyledToast>
-            {str}
-        </StyledToast>
+        const html = <div>{str}</div>
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
