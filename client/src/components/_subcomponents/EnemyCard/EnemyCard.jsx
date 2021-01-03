@@ -394,7 +394,6 @@ export default function EnemyCard(props) {
         </StyledCard>
     )
 }
-Yo
 // ========= //
 //   STYLE   //
 // ========= //
