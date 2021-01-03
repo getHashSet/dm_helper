@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== "production") {
   // console.log('loading dev environments')
   require("dotenv").config();
 }
-require("dotenv").config();
+// require("dotenv").config();
 
 // ======================= //
 // ===== Dependencies ==== //
@@ -60,7 +60,11 @@ mongoose
     useUnifiedTopology: true,
   })
   .catch((err) => {
-    // console.log(err);
+    console.log("ERROR");
+    console.log("ERROR");
+    console.log("ERROR");
+    console.log("UNABLE TO CONNECT TO MONGODB")
+    console.log(err);
   });
 
 app.use(

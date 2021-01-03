@@ -29,12 +29,8 @@ router.route("/").post(function (req, res) {
   console.log(req.body);
   console.log("====");
 
-
   const location = req.body.location ? req.body.location : "woods" ;
   const cr = req.body.cr ? +req.body.cr : 5;
-
-  console.log("locatuon:" + location);
-  console.log("Cr:" + cr);
 
   db.Encounters
         .find({ "cr": +cr, "location": location })
