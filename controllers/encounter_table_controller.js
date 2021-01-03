@@ -21,6 +21,9 @@ router.route("/").get(function(req, res){
 // ============================ //
 router.route("/").post(function(req, res) {
 
+    console.log('===================');
+    console.log('===================');
+    console.log('===================');
     const location = req.body.location ? req.body.location : "woods" ;
     const cr = req.body.cr ? req.body.cr : "5";
 
