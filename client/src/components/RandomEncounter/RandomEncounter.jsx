@@ -8,7 +8,6 @@ import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
-
 // ===================== //
 //     DEFAULT PROPS     //
 // ===================== //
@@ -68,12 +67,14 @@ export default function RandomEncounter() {
       });
     }
 
+    const POSTbody = {
+      enemies: uriEncodedEnemies,
+      location: +userEncounterSelection > 0 ? rollTables[+userEncounterSelection - 1].toLowerCase() : "Woods",
+      cr: +partyLevel > 0 ? partyLevel : 1,
+    }
+
     axios
-      .post(`/api/encounter`, {
-        enemies: uriEncodedEnemies,
-        location: +userEncounterSelection > 0 ? rollTables[+userEncounterSelection - 1].toLowerCase() : "Woods",
-        cr: +partyLevel > 0 ? partyLevel : 1,
-      })
+      .post(`/api/encounter`, POSTbody)
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
       })
