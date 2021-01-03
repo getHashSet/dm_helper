@@ -1,5 +1,4 @@
 module.exports = {
-  Action: require("./action.model"),
-  Enemy: require("./enemy.model"),
-  Rumor: require("./rumor.model"),
+  Encounters: require("./encounter.model"),
+  Rumors: require("./rumor.model"),
   };

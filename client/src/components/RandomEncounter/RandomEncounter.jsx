@@ -25,13 +25,11 @@ export default function RandomEncounter() {
   const [userEncounterSelection, updateuserEncounterSelection] = useState("");
   const [partyLevel, updatepartyLevel] = useState("1");
   const [difficulty, updateDificulty] = useState(3);
-  const challengeRating = +partyLevel + +difficulty;
   const [enemyEncounter, updateenemyEncounter] = useState({ desc: "", info: "", enemies: [] });
   const partyLevelMax = 10;
   const rollTables = [
     "Mountains",
-    "Forest",
-    "on the Road",
+    "Woods",
     "City",
     "Underground",
     "Dungeon",

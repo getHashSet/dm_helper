@@ -36,7 +36,7 @@
     "if-env": "^1.0.4",
     "react-scripts": "^3.3.0"
   },
-  "description": "MTG Deck Builder",
+  "description": "Fetch me my dice, Squire.",
   "main": "server.js",
   "scripts": {
     "start": "npm run start:prod",
