@@ -3,8 +3,11 @@ const db = require("../models");
 
 // Read All
 router.route("/").get(function(req, res){
-    console.log('starting');
-    
+
+    // STEP 1: return all random encounters where dificulty is req.body.params.cr && location is req.body.params.location;
+    // STEP 2: encounter = return[Math.random(Math.floor() * return.length))];
+    // STEP 3: return encounter.
+
     db.Encounters
         .find({})
         .then(dbModel => {
@@ -14,6 +17,20 @@ router.route("/").get(function(req, res){
             
         })
         .catch(err => res.status(422).json(err));
+});
+
+// POST ALL
+router.route("/").post(function(req, res) {
+
+    console.log("Hit route for POST ALL");
+
+    const location = req.body.location;
+    const cr = req.body.cr;
+
+    res.json({
+        msg: `Find all where location is ${location} && cr is ${cr}`
+    });
+
 });
 
 // // Create

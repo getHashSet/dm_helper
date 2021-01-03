@@ -194,12 +194,12 @@ export default function ActionAttack(props) {
                 {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName} </span> {hitFormula}, {damageFormula} damage.</p>}
                 <p className="heading">Hit Roll</p>
                 {hitRolls.map((roll, index) => {
-                    if (hitRolls[0] === hitRolls[1]) {return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>};
-                    return <p className={hitRolls[index] === unusedHitRoll ? "hit_dice formula selectedRoll" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>
+                    if (hitRolls[0] === hitRolls[1]) {return <p key={index}  className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>};
+                    return <p key={index} className={hitRolls[index] === unusedHitRoll ? "hit_dice formula selectedRoll" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>
                 })}
                 <p className="heading">Damage Rolls</p>
                 {damageRolls.map((roll, index) => {
-                    return <div className="roll" >
+                    return <div key={index} className="roll" >
                         <p>
                             <span>{index + 1} of {totalNumberOfDice} </span> d{diceType}
                         </p>
@@ -285,9 +285,15 @@ const StyledAction = styled.div`
         }
 
         .body {
-            padding: 4px;
+            padding: 2px 4px;
             font-size: .8em;
             font-weight: 400;
+            font-family: 'Roboto Slab', serif;
+
+            p {
+                line-height: 1.2em;
+                margin: 0;
+            }
         }
     }
 

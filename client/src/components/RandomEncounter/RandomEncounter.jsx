@@ -498,6 +498,13 @@ const StyledBattleField = styled.section`
   transition: max-height 2s ease-in;
   user-select: none;
 
+  p {
+    margin: .5em 0;
+    padding: 2px 0;
+    max-width: 800px;
+    font-family: 'Roboto Slab', serif;
+  }
+
   &.show {
     max-height: 5000px;
     padding: 1em 0.5em;

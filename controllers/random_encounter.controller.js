@@ -19,8 +19,9 @@ const enemyTable = [
     desc: "You stumble across a pile of loose coins mixed in with a lump of dirt on the ground.",
     info: "If the players dig up the dirt they find 5d100 silver pieces. If they collect more than 200 they will be followed by the dragon. If the dragon feels he can take a party member from behind and drag them into the woods he will. If HP goes below half the dragon flees.",
     enemies: ["young-green-dragon"],
-  }
+  },
 ];
+
 
 // Read All
 router.route("/").post(function (req, res) {

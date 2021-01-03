@@ -92,6 +92,7 @@ const StyledAction = styled.div`
 
     .info {
         width: 100%;
+        font-family: 'Roboto Slab', serif;
 
         .title {
             padding: 4px;
