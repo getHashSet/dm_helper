@@ -45,6 +45,8 @@ router.route("/").post(function (req, res) {
 
           const d100 = Math.floor(Math.random() * enemyTable.length);
 
+          console.log(enemyTable[d100]);
+
           let enemies;
           let devEncounter = {
             encounter: {
