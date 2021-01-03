@@ -36,6 +36,7 @@ export default function RandomEncounter() {
   ];
   const [inputeEnemies, updateinputeEnemies] = useState([]);
   const [searchInput, updatesearchInput] = useState("");
+  const [enemyRoster, updateenemyRoster] = useState([]);
 
   // FORCE UPDATE COMPONENT
   const [, updateState] = React.useState();
@@ -249,8 +250,8 @@ export default function RandomEncounter() {
           <p>{enemyEncounter.info}</p>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
-              return <EnemyCard key={index} enemy={enemy} />;
-            })}
+      return <EnemyCard key={index} enemy={enemy} />;
+    })}
           </StyledDeck>
         </StyledFrame>
         <div className="end_battle" onClick={clearEnemyEncounter}>
