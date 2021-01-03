@@ -15,9 +15,7 @@ export default function ActionPassive(props) {
     //   HOOK INTO STATE   //
     // =================== //
     const dispatch = useDispatch(); // used to send data back to redux
-    const [hasAdvantage, updatehasAdvatage] = useState(false);
-    const [hasDisadvantage, updatehasDisadvantage] = useState(false);
-
+    
     // ================ //
     //     Functions    //
     // ================ //
@@ -30,7 +28,7 @@ export default function ActionPassive(props) {
     };
 
     const rollToHitAndDamage = (e) => {
-        updateToastMenu(props.special_abilities.damage !== undefined ? props.special_abilities.damage.damage_dice : props.special_abilities.desc);
+        updateToastMenu(props.special_ability.special_abilities.damage !== undefined ? props.special_ability.special_abilities.damage.damage_dice : props.special_ability.special_abilities.desc);
     }
 
     // ========== //
@@ -43,10 +41,10 @@ export default function ActionPassive(props) {
             </div>
             <div className="info">
                 <div className="title">
-                    {props.special_abilities.name}
+                    {props.special_ability.special_abilities.name}
                 </div>
                 <div className="body">
-                    <p>{props.special_abilities.desc}</p>
+                    <p>{props.special_ability.special_abilities.desc}</p>
                 </div>
             </div>
         </StyledAction>
