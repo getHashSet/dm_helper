@@ -144,7 +144,10 @@ router.route("/").post(function (req, res) {
 
 
         })
-        .catch(err => res.status(422).json(err));
+        .catch(err => {
+          console.log("failed api call");
+          console.log(err);
+          res.status(422).json(err)});
 });
 
 // Read One
