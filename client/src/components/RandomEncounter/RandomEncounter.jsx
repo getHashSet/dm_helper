@@ -30,7 +30,7 @@ export default function RandomEncounter() {
   const rollTables = [
     "Mountains",
     "Woods",
-    "City",
+    "Town",
     "Underground",
     "Dungeon",
     "Friendly",
