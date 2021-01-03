@@ -31,7 +31,7 @@ router.route("/").post(function (req, res) {
 
 
   const location = req.body.location ? req.body.location : "woods" ;
-  const cr = req.body.cr ? req.body.cr : "5";
+  const cr = req.body.cr ? +req.body.cr : 5;
 
   console.log("locatuon:" + location);
   console.log("Cr:" + cr);
