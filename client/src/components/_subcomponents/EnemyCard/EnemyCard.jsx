@@ -402,7 +402,8 @@ const StyledCard = styled.article`
     height: 55vh;
     min-width: 350px;
     max-height: 90vh;
-    max-width: 1000vw;
+    max-width: 50%;
+    flex-grow: 1;
     margin: .5em;
     overflow: hidden;
     background-color: #fff;

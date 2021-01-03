@@ -63,10 +63,11 @@ const StyledAction = styled.div`
 
     .dice_box {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         padding: .5em;
-        width: 1.2em;
+        width: 2em;
         overflow: hidden;
         user-select: none;
         background-color: #e74c3c;
@@ -81,11 +82,11 @@ const StyledAction = styled.div`
     }
 
     .info {
+        background-color: #e74c3c;
         width: 100%;
 
         .title {
             padding: 4px;
-            border-bottom: 1px solid #bdc3c7;
             font-size: 1.2em;
             font-weight: 700;
             color: #fff;
@@ -96,7 +97,9 @@ const StyledAction = styled.div`
             padding: 2px 4px;
             font-size: .8em;
             font-weight: 400;
+            border-radius: .5em 0 0 0;
             font-family: 'Roboto Slab', serif;
+            background-color: #fff;
 
             p {
                 line-height: 1.2em;
@@ -115,6 +118,8 @@ const StyledAction = styled.div`
         }
 
         .info {
+            background-color: #c0392b;
+
             .title {
                 background-color: #c0392b;
             }

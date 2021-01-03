@@ -273,11 +273,11 @@ const StyledAction = styled.div`
     }
 
     .info {
+        background-color: #e74c3c;
         width: 100%;
 
         .title {
             padding: 4px;
-            border-bottom: 1px solid #bdc3c7;
             font-size: 1.2em;
             font-weight: 700;
             color: #fff;
@@ -289,6 +289,8 @@ const StyledAction = styled.div`
             font-size: .8em;
             font-weight: 400;
             font-family: 'Roboto Slab', serif;
+            background-color: #fff;
+            border-radius: .5em 0 0 0;
 
             p {
                 line-height: 1.2em;
@@ -307,6 +309,7 @@ const StyledAction = styled.div`
         }
 
         .info {
+            background-color: #c0392b;
             .title {
                 background-color: #c0392b;
             }
