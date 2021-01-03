@@ -385,7 +385,7 @@ export default function EnemyCard(props) {
 
             <div className={props.enemy.actions?.length > 1 ? "actions scrolling" : "actions"}>
                 {props.enemy.actions.map((action, index) => buildAction(action, index))}
-                {props.enemy.special_abilities === undefined ? "" : props.enemy.special_abilities.map((action, index) => buildAbilitiy(special_abilities, index))}
+                {props.enemy.special_abilities === undefined ? "" : props.enemy.special_abilities.map((special_abilities, index) => buildAbility(special_abilities, index))}
             </div>
         </StyledCard>
     )
