@@ -11,6 +11,6 @@ const encounterSchema = new Schema({
     date: { type: Date, default: Date.now }
 });
 
-const Encounters = mongoose.model("Encounter", encounterSchema);
+const Encounters = mongoose.model("Encounters", encounterSchema);
 
 module.exports = Encounters;
