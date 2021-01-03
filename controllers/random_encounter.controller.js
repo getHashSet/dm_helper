@@ -37,7 +37,7 @@ router.route("/").post(function (req, res) {
   console.log("Cr:" + cr);
 
   db.Encounters
-        .find({ "cr": cr, "location": location })
+        .find({ "cr": +cr, "location": location })
         .then(encounterTable => {
           encounterTable.length > 0 ?
           enemyTable = encounterTable :

@@ -71,8 +71,8 @@ export default function RandomEncounter() {
     axios
       .post(`/api/encounter`, {
         enemies: uriEncodedEnemies,
-        location: rollTables[+userEncounterSelection - 1].toLowerCase(),
-        cr: partyLevel,
+        location: +userEncounterSelection > 0 ? rollTables[+userEncounterSelection - 1].toLowerCase() : "Woods",
+        cr: +partyLevel > 0 ? partyLevel : 1,
       })
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
