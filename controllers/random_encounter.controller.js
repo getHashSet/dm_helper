@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const db = require("../models");
 const axios = require('axios');
-const qs = require('querystring');
 
 // Enemy Encounters!
 let enemyTable = [
@@ -34,10 +33,15 @@ router.route("/").post(function (req, res) {
   const location = req.body.location ? req.body.location : "woods" ;
   const cr = req.body.cr ? req.body.cr : "5";
 
+  console.log("locatuon:" + location);
+  console.log("Cr:" + cr);
+
   db.Encounters
         .find({ "cr": cr, "location": location })
         .then(encounterTable => {
-          enemyTable = encounterTable;
+          encounterTable.length > 0 ?
+          enemyTable = encounterTable :
+          enemyTable = enemyTable;
 
           const d100 = Math.floor(Math.random() * enemyTable.length);
 
