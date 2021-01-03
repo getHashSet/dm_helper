@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
 import ActionAttack from '../ActionAttack/ActionAttack';
+import ActionPassive from '../ActionPassive/ActionPassive';
 
 EnemyCard.defaultProps = {
     enemy : {
@@ -232,17 +233,13 @@ export default function EnemyCard(props) {
         return firstRoll;
     }
 
-    const buildAction = (action, index) => {
+    const buildAbility = (special_ability, index) => {
+        return <ActionPassive
+                    key={index}
+                    special_ability={action} />
+    }
 
-        /*  
-        
-        attack_bonus: 7
-        damage: [{…}]
-        desc: "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. Hit: 11 (2d6 + 4) slashing damage."
-        name: "Claw"
-        
-        */
-
+    const buildAction = (action, index) =>
         return <ActionAttack 
                     key={index}
                     action={action}
@@ -388,6 +385,7 @@ export default function EnemyCard(props) {
 
             <div className={props.enemy.actions?.length > 1 ? "actions scrolling" : "actions"}>
                 {props.enemy.actions.map((action, index) => buildAction(action, index))}
+                {props.enemy.special_abilities === undefined ? "" : props.enemy.special_abilities.map((action, index) => buildAbilitiy(special_abilities, index))}
             </div>
         </StyledCard>
     )
