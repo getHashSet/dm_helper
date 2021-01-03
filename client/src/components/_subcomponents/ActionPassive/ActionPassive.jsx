@@ -6,17 +6,6 @@ import { showToastMenuState, updateToastData } from "../../../redux/actions";
 // ========= //
 //   PROPS   //
 // ========= //
-ActionPassive.defaultProps = {
-    type: "attack", // attack, item, spell
-    actionType: "action", // action, bonus action, passive, reaction.
-    actionName: "Potion",
-    hitMod : 5,
-    damageMod : 3, // number - or - "str", "dex" - or - "finess"
-    damageDice: "1d6",
-    description: "Red glittery ooze in a small glass jar.",
-    flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
-    charges : 1,
-};
 
 // ============= //
 //   COMPONENT   //
@@ -40,6 +29,10 @@ export default function ActionPassive(props) {
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
 
+    const rollToHitAndDamage = (e) => {
+        updateToastMenu(props.special_abilities.damage !== undefined ? props.special_abilities.damage.damage_dice : props.special_abilities.desc);
+    }
+
     // ========== //
     //   RETURN   //
     // ========== //
@@ -50,10 +43,10 @@ export default function ActionPassive(props) {
             </div>
             <div className="info">
                 <div className="title">
-                    {props.actionName}
+                    {props.special_abilities.name}
                 </div>
                 <div className="body">
-                    <p>{props.description}</p>
+                    <p>{props.special_abilities.desc}</p>
                 </div>
             </div>
         </StyledAction>
