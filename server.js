@@ -55,18 +55,7 @@ app.use(bodyParser.json());
 //     // console.log(err);
 //   });
 
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  })
-  .catch((err) => {
-    console.log("ERROR");
-    console.log("ERROR");
-    console.log("ERROR");
-    console.log("UNABLE TO CONNECT TO MONGODB")
-    console.log(err);
-  });
+mongoose.connect(process.env.MONGODB_URI);
 
 // app.use(
 //   session({
