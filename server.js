@@ -24,6 +24,7 @@ const routes = require("./controllers");
 // ======================= //
 
 const app = express();
+app.use(express.json());
 
 // ======================= //
 // ======== Ports ======== //
@@ -57,7 +58,7 @@ app.use(bodyParser.json());
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useUnifiedTopology: true,
   })
   .catch((err) => {
     console.log("ERROR");
