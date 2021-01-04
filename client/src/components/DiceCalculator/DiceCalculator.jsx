@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import styled from 'styled-components';
+import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 RollToHit.defaultProps = {}
 
@@ -295,7 +296,7 @@ export default function RollToHit() {
             <h4>{calculatorOutput}</h4>
 
             <div className={`overflow expand`}>
-                {cleanedDiceRolls.map((diceRollObject) => <div><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
+                {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
             </div>
 
         </StyledToastiness>;
@@ -311,6 +312,11 @@ export default function RollToHit() {
         dispatch(updateToastData(str)); // default parent is a div with flex turned on.
     }
 
+    const backspace = () => {
+        if (calculatorOutput.length === 1) {updatecalculatorOutput("0"); return;}
+        updatecalculatorOutput(calculatorOutput.slice(0,calculatorOutput.length - 1));
+    }
+
     // ========== //
     //   RETURN   //
     // ========== //
@@ -322,7 +328,9 @@ export default function RollToHit() {
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calculator" className="svg-inline--fa fa-calculator fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M400 0H48C22.4 0 0 22.4 0 48v416c0 25.6 22.4 48 48 48h352c25.6 0 48-22.4 48-48V48c0-25.6-22.4-48-48-48zM128 435.2c0 6.4-6.4 12.8-12.8 12.8H76.8c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4zm0-128c0 6.4-6.4 12.8-12.8 12.8H76.8c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4zm128 128c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4zm0-128c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4zm128 128c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8V268.8c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v166.4zm0-256c0 6.4-6.4 12.8-12.8 12.8H76.8c-6.4 0-12.8-6.4-12.8-12.8V76.8C64 70.4 70.4 64 76.8 64h294.4c6.4 0 12.8 6.4 12.8 12.8v102.4z"></path></svg>
                         Dice Calculator
                     </h2>
-                    <StyledButton onClick={() => {quickRoll(20)}}>d20</StyledButton>
+
+                    {/* <StyledButton onClick={() => {quickRoll(20)}}>d20</StyledButton> */}
+
                     <STyledDiceCalculator>
                         <div className="frame">
                             <div id="output" className="output">{calculatorOutput}</div>
@@ -369,6 +377,9 @@ export default function RollToHit() {
                             <div className="other_options"></div>
                         </div>
                     </STyledDiceCalculator>
+
+                    <StyledButton onClick={backspace}>Backspace</StyledButton>
+
                 </StyledFrame>
             </StyledSection>
         </React.Fragment>
