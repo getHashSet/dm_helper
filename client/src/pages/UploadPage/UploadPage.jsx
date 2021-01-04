@@ -24,7 +24,7 @@ export default function UploadPage() {
         info: infoField,
         desc: descField,
         cr: crField,
-        location: locationField,
+        location: locationField.toLowerCase(),
       }
     }
 
@@ -38,13 +38,20 @@ export default function UploadPage() {
       console.log(POSTrequest);
       return;
     } else {
+      // edgecase: all friendly encounters are level 1
+      if (POSTrequest.location === "friendly") {
+        POSTrequest = 1;
+      }
+
+      console.log(POSTrequest);
+
       // datas good. send it.
       console.log("Good data");
       console.log(POSTrequest);
 
       axios.post("/api/encounters/upload", POSTrequest)
       .then(data => {
-        console.log(data.msg);
+        // console.log(data.msg);
         resetFields();
       })
       .catch(err => {

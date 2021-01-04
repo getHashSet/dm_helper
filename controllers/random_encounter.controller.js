@@ -31,8 +31,11 @@ router.route("/").post(function (req, res) {
   // console.log("====");
 
   // STEP 1: Get location and cr from req.body. Or set them to default.
-  const location = req.body.location ? req.body.location : "default" ;
-  const cr = req.body.cr ? +req.body.cr : 5;
+  const location = req.body.location ? req.body.location.toLowerCase() : "default" ;
+  let cr = req.body.cr ? +req.body.cr : 5;
+
+  // EDGECASE: check if encounter is friendly
+  if (location === 'friendly') { cr = 1 };
 
   // STEP 2: check Encounters collection in the database for anything that meets that information.
   db.Encounters

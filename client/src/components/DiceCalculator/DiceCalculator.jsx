@@ -313,7 +313,20 @@ export default function RollToHit() {
 
     const backspace = () => {
         if (calculatorOutput.length === 1) {updatecalculatorOutput("0"); return;}
-        updatecalculatorOutput(calculatorOutput.slice(0,calculatorOutput.length - 1));
+
+        if (calculatorOutput[calculatorOutput.length - 1] === " ") {
+            updatecalculatorOutput(calculatorOutput.slice(0,calculatorOutput.length - 3));
+        } else {
+            updatecalculatorOutput(calculatorOutput.slice(0,calculatorOutput.length - 1));
+        };
+
+        if (calculatorOutput.length <= 0 
+            || calculatorOutput === " -" 
+            || calculatorOutput === " +" 
+            || calculatorOutput === " + " 
+            || calculatorOutput === " - ") {
+            updatecalculatorOutput("0");
+        };
     }
 
     // ========== //
@@ -332,7 +345,12 @@ export default function RollToHit() {
 
                     <STyledDiceCalculator>
                         <div className="frame">
-                            <div id="output" className="output">{calculatorOutput}</div>
+                            <div id="output" className="output">
+                                <div className="mathFormula">{calculatorOutput}</div>
+                                <div onClick={backspace} className="backspace">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-left" className="svg-inline--fa fa-caret-left fa-w-6" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path fill="currentColor" d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z"></path></svg>
+                                </div>
+                                </div>
                             <div className="buttons">
                                 <StyledCalcRow className="first_row">
                                     <li onClick={addANumberToTheProblem}><p>7</p></li>
@@ -376,8 +394,6 @@ export default function RollToHit() {
                             <div className="other_options"></div>
                         </div>
                     </STyledDiceCalculator>
-
-                    <StyledButton onClick={backspace}>Backspace</StyledButton>
 
                 </StyledFrame>
             </StyledSection>
@@ -467,11 +483,40 @@ const STyledDiceCalculator = styled.div`
         flex-wrap:  wrap;
 
         .output {
-            padding: .5em 1em;
             font-size: 1.5em;
             width: 100%;
             display: flex;
+            flex-grow: 1;
             justify-content: flex-end;
+
+            .mathFormula {
+                padding: .5em;
+            }
+
+            .backspace {
+                width: 10%;
+                background-color: #ff9f43;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+
+                svg {
+                    width: 1em;
+                    height: 1em;
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #e67e22;
+                }
+
+                &:active svg {
+                    transform: translateY(2px);
+                }
+            }
         }
 
         .buttons {
@@ -504,6 +549,10 @@ const StyledButton = styled.button`
     border: 1px solid #fff;
     text-transform: uppercase;
     font-weight: 900;
+
+    svg {
+        width: 1em;
+    }
 
     &:hover {
         cursor: pointer;

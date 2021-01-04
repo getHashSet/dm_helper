@@ -43,7 +43,6 @@ router.route("/").post(function(req, res) {
 router.route("/upload").post((req, res) => {
     // TODO: check to see if it already in the database to prevent duplicates.
 
-    console.log('hello');
     console.log(
         req.body
     );
@@ -63,6 +62,9 @@ router.route("/upload").post((req, res) => {
         .create(req.body.encounter)
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
+        res.json({
+            msg: "Uploaded"
+        });
     };
 });
 

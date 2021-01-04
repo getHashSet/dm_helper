@@ -80,6 +80,9 @@ export default function EnemyCard(props) {
     //   FAKE CONSTRUCTOR   //
     // ==================== //
     const getHp = (dice) => {
+        // Edgecase: hit_dice may not be a thing.
+        if(dice === undefined) {dice = "1d5"}
+        
         let totalHp = 0;
 
         // check if someone put in an bad hit dice value by mistake
@@ -399,7 +402,6 @@ export default function EnemyCard(props) {
 // ========= //
 const StyledCard = styled.article`
     width: 30%;
-    height: 55vh;
     min-width: 350px;
     max-height: 90vh;
     max-width: 50%;

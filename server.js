@@ -59,11 +59,11 @@ try {
      mongoose.connect(
       process.env.MONGODB_URI,
       { useNewUrlParser: true, useUnifiedTopology: true },
-      () => console.log("======================Mongoose is connected")
+      () => {}
     );
 
   } catch (e) {
-    console.log("=========================could not connect to Database");
+    console.log("could not connect to Database");
   }
 
 // app.use(

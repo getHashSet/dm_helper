@@ -54,7 +54,28 @@ const StyledNav = styled.nav`
     left: 0;
     display: flex;
     flex-wrap: nowrap;
-    z-index: 9000;
+    z-index: 2;
+    /* opacity: .8;
+    transform: translateY(2em);
+    transition: opacity .2s, transform .2s;
+
+    &:hover {
+        opacity: 1;
+        transform: translateY(0);
+
+        ul {
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        opacity: 1;
+        transform: none;
+
+        ul {
+            opacity: 1;
+        }
+    } */
 
     border-top: 1px solid rgba(255,255,255,.3);
     background: linear-gradient(#2c3e50, #2d3436);
@@ -75,6 +96,10 @@ const StyledNav = styled.nav`
             svg {
                 width: 1em;
                 color: #fff;
+            }
+
+            &:hover {
+                cursor: pointer;
             }
         }
     }
