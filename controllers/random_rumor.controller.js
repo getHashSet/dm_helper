@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const db = require("../models");
+const axios = require('axios');
 
 const rumors = [
     "Dont hunt in south forest. Druids like to turn into deer and prance around down there.",
@@ -41,6 +42,7 @@ router.route("/").post(function(req, res){
 
 
 router.route("/").get(function(req, res){
+
     db.Rumors
     .find({})
     .then(data => {

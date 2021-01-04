@@ -54,7 +54,7 @@ const StyledNav = styled.nav`
     left: 0;
     display: flex;
     flex-wrap: nowrap;
-    z-index: 2;
+    z-index: 9000;
     /* opacity: .8;
     transform: translateY(2em);
     transition: opacity .2s, transform .2s;
