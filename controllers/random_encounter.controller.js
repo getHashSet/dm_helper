@@ -24,6 +24,8 @@ let enemyTable = [
 // Read All
 router.route("/").post(function (req, res) {
 
+  // const data = await db.Encounters.find({});
+
   // console.log("====");
   // console.log(req.body);
   // console.log("====");

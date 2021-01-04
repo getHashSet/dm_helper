@@ -297,7 +297,7 @@ export default function EnemyCard(props) {
                         <div className="background"></div>
                         <div className="info">
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="shield-alt" className="svg-inline--fa fa-shield-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"></path></svg>
-                            {props.enemy.ac}
+                            {props.enemy.ac ? props.enemy.ac : 10}
                         </div>
                     </div>
                     {/* HP */}
@@ -387,9 +387,9 @@ export default function EnemyCard(props) {
                 </div>
             </div>
 
-            <div className={props.enemy.actions?.length > 2 ? "actions scrolling" : "actions"}>
-                {props.enemy.actions.map((action, index) => buildAction(action, index))}
-                {props.enemy.special_abilities === undefined ? <div>Abilities</div> : props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index))}
+            <div className="actions scrolling">
+                { props.enemy.hasOwnProperty('actions') ? props.enemy.actions.map((action, index) => buildAction(action, index)) : console.log("enemy has no actions.")}
+                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities. length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : console.log("enemy has no special abilities") : console.log("enemy has no special ability.")}
             </div>
         </StyledCard>
     )

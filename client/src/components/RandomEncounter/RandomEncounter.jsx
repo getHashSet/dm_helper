@@ -26,6 +26,9 @@ export default function RandomEncounter() {
   const [difficulty, updateDificulty] = useState(3);
   const [enemyEncounter, updateenemyEncounter] = useState({ desc: "", info: "", enemies: [] });
   const partyLevelMax = 10;
+  const [inputeEnemies, updateinputeEnemies] = useState([]);
+  const [searchInput, updatesearchInput] = useState("");
+  const [enemyRoster, updateenemyRoster] = useState([]);
   const rollTables = [
     "Mountains",
     "Woods",
@@ -34,9 +37,6 @@ export default function RandomEncounter() {
     "Dungeon",
     "Friendly",
   ];
-  const [inputeEnemies, updateinputeEnemies] = useState([]);
-  const [searchInput, updatesearchInput] = useState("");
-  const [enemyRoster, updateenemyRoster] = useState([]);
 
   // FORCE UPDATE COMPONENT
   const [, updateState] = React.useState();
@@ -93,6 +93,7 @@ export default function RandomEncounter() {
     updatesearchInput("");
     updateinputeEnemies([]);
     forceUpdate();
+    updateenemyRoster([]);
   };
 
   const partyLevelButtons = () => {
@@ -132,10 +133,19 @@ export default function RandomEncounter() {
       const cleanedSearchResult = searchInput.toLowerCase().trim().replace(/ /g, "-");
 
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
-      .then(data => {
+      .then(enemyFromApi => {
+        console.log(enemyFromApi);
+        // Step 1: update enemy roster.
+        const newEnemyRoster = enemyRoster;
+        newEnemyRoster.push(enemyFromApi.data);
+        updateenemyRoster(newEnemyRoster);
+
+        // Step 2: update the list we are going to send to the server.
         const newListOfEnemies = inputeEnemies;
         newListOfEnemies.push(cleanedSearchResult);
         updateinputeEnemies(newListOfEnemies);
+
+        // Step 3: Clear input
         updatesearchInput("");
       }).catch(err => {
         updateToastMenu(<p>{`Unable to find ${searchInput} in our library.`}</p>); //todo add custom monster api
@@ -149,25 +159,34 @@ export default function RandomEncounter() {
 
   const removeItemByIndex = (e) => {
     // Step 1: get index of the array
-    const thisIndex = e.target.getAttribute("index");
+    const thisIndex = e.target.getAttribute("index"); // 3
 
     // Step 2: get the object from that part of the array
-    const enemyToRemove = inputeEnemies[thisIndex];
+    const enemyToRemove = inputeEnemies[thisIndex]; // "enemy name"
+    const displayedEnemyRoster = enemyRoster[thisIndex]; // <div>enemey</div>
 
     // Step 3: make a copy of the input enemy array
-    const array = inputeEnemies;
+    const array = inputeEnemies; // ["enemy", "enemy-two"];
+    const updatedEnemyRoster = enemyRoster;
 
     // Step 4: splice the array by the object
     const index = array.indexOf(enemyToRemove);
     if (index > -1) {
       array.splice(index, 1);
-    }
+    };
+
+    // Step 5: remove enemy from view also.
+    const enemyIndex = updatedEnemyRoster.indexOf(displayedEnemyRoster);
+    if (enemyIndex > -1) {
+      updatedEnemyRoster.splice(enemyIndex, 1);
+    };
 
     // log it
     console.log(`Removed ${enemyToRemove} from the api call`);
 
     // update State
     updateinputeEnemies(array);
+    updateenemyRoster(updatedEnemyRoster);
 
     // refresh component
     forceUpdate();
@@ -216,6 +235,7 @@ export default function RandomEncounter() {
 
           <StyledOptionBox>
             <h3>Custom Encounter</h3>
+            <p className="instructions">Already have an encounter in mind? Thats great! Just input each of the enemies name here and build your roster.</p>
             <div className="search">
               <label htmlFor="enemyName">Search</label>
               <input value={searchInput} onKeyDown={inputData} onChange={(e) => updatesearchInput(e.target.value)} type="search" name="enemyName" />
@@ -224,19 +244,24 @@ export default function RandomEncounter() {
           </StyledOptionBox>
 
           <StyledListOfEnemies>
-            {inputeEnemies.map((enemyName, index) => {
-              return <div className="enemy_list" key={index}>
-                <p>{enemyName.charAt(0).toUpperCase()}{enemyName.slice(1)}</p>
-                <p>
-                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" className="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                    <path index={index} onClick={removeItemByIndex} fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
-                </p>
-                </div>;
-            })}
+            {enemyRoster.map((enemy, index) => {return <div className="enemy_list" key={index}>
+                <div className="stat_info">
+                  <h4>{enemy.name === undefined ? "Enemy" : enemy.name.charAt(0).toUpperCase()}{enemy.name.slice(1)}</h4>
+                  {enemy.challenge_rating === undefined ? "0" : <p>Challenge Rating: {enemy.challenge_rating}</p>}
+                  {enemy.hit_points === undefined ? null : <p>Average HP: {enemy.hit_points}</p>}
+                  {enemy.armor_class === undefined ? null : <p>AC: {enemy.armor_class}</p>}
+                </div>
+                <div className="trash">
+                  <p>
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" className="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path index={index} onClick={removeItemByIndex} fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
+                  </p>
+                </div>
+              </div>;})}
           </StyledListOfEnemies>
 
           <StyledButton onClick={rollEnemyEncounter}>
-            Roll Initiative
+            Roll Encounter
           </StyledButton>
         </StyledFrame>
       </StyledSection>
@@ -281,25 +306,55 @@ export default function RandomEncounter() {
 //   STYLE   //
 // ========= //
 const StyledListOfEnemies = styled.section`
+
   .enemy_list {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid white;
 
-    p {
-      display: inline-block;
-    }
+    .stat_info {
+      display: flex;
+      padding: 0;
 
-    svg {
-      width: 1em;
-      max-width: 1em;
-      max-height: 1em;
-
-      &:hover {
-        cursor: pointer;
+      h4 {
+        min-width: 7vw;
+        font-weight: 900;
+        padding: .2em .5em;
+        border-right: 1px solid white;
+        text-align: right;
       }
 
-      &:active {
-        transform: translateY(4px);
+      p {
+        display: inline-block;
+        padding: .2em .5em;
+      }
+    }
+
+    &:first-child {
+        border-top: 1px solid white;
+      }
+
+    .trash {
+      border-left: 1px solid white;
+      padding: .2em .5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+        svg {
+        width: 1em;
+        max-width: 1em;
+        max-height: 1em;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &:active {
+          transform: translateY(4px);
+        }
       }
     }
   }
@@ -371,6 +426,11 @@ const StyledOptionBox = styled.div`
   svg {
     width: 1em;
     display: inline-block;
+  }
+
+  .instructions {
+    font-style: italic;
+    padding: .5em;
   }
 
   .search {

@@ -101,7 +101,16 @@ export default function ActionAttack(props) {
     const rollDamage = () => {
         let finalDamage = 0;
 
-        const uncleanedDamage = props.action.damage[0].damage_dice; // 1d6 + 5
+        // how to deal with multiple damage types;
+        const multipleAttacks = [];
+        let fightingStyle = undefined;
+        if (props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
+            multipleAttacks.push(props.action.damage[0].from[0].damage_dice);
+            multipleAttacks.push(props.action.damage[0].from[1].damage_dice);
+            fightingStyle = multipleAttacks[Math.floor(Math.random() * multipleAttacks.length)];
+        };
+
+        const uncleanedDamage = fightingStyle === undefined ? props.action.damage[0].damage_dice : fightingStyle; // 1d6 + 5
 
         const diceDamageArray = uncleanedDamage.replace(/ /g, "").split("+"); //["2d6", "10"];
 
@@ -145,7 +154,6 @@ export default function ActionAttack(props) {
     }
 
     const rollToHitAndDamage = () => {
-
         // Disabled
         // if (chargesRemaining <= 0) {
         //     props.action.emptyChargesMessage !== undefined 
@@ -158,7 +166,9 @@ export default function ActionAttack(props) {
         //     updatechargesRemaining(chargesRemaining - 1);
         // };
 
-        if( props.action.damage[0]?.damage_dice === undefined ){
+        if (props.action.damage[0].hasOwnProperty("choose")) {
+            // continue, we will just pick one.
+        } else if (props.action.damage[0]?.damage_dice === undefined) {
             updateToastMenu(props.action.desc);
             return;
         };
