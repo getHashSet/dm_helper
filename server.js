@@ -24,7 +24,6 @@ const routes = require("./controllers");
 // ======================= //
 
 const app = express();
-app.use(express.json());
 
 // ======================= //
 // ======== Ports ======== //
@@ -38,11 +37,11 @@ const PORT = process.env.PORT || 8080;
 
 app.use(morgan("dev"));
 
-app.use(
+/*app.use(
   bodyParser.urlencoded({
     extended: false,
   })
-);
+);*/
 
 app.use(bodyParser.json());
 
@@ -55,7 +54,17 @@ app.use(bodyParser.json());
 //     // console.log(err);
 //   });
 
-mongoose.connect(process.env.MONGODB_URI);
+try {
+    // Connect to the MongoDB cluster
+     mongoose.connect(
+      process.env.MONGODB_URI,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      () => console.log("======================Mongoose is connected")
+    );
+
+  } catch (e) {
+    console.log("=========================could not connect to Database");
+  }
 
 // app.use(
 //   session({
