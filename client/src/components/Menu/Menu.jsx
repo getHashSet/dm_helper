@@ -64,6 +64,7 @@ const StyledNav = styled.nav`
         justify-content: space-around;
         align-items: center;
         padding: 8px;
+        padding-bottom: 12px;
         font-size: 2em;
         width: 100%;
 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import styled from 'styled-components';
-import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 RollToHit.defaultProps = {}
 

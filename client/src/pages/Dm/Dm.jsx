@@ -18,7 +18,6 @@ export default class Dm extends Component {
                 <Inn />
                 <ItemShop />
                 <Footer />
-                <GoHome />
             </React.Fragment>
         )
     }

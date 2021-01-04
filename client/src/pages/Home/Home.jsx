@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Menu from '../../components/Menu/Menu';
 import Toast from '../../components/Toast/Toast';
 

@@ -14,7 +14,6 @@ export default class Player extends Component {
                 <p>Status Chart, display status effects.</p>
                 <p></p>
                 <Footer />
-                <GoHome />
             </React.Fragment>
         )
     }

@@ -8,7 +8,6 @@ export default class Home extends Component {
                 <main>
                     <h1>404 Error</h1>
                 </main>
-                <GoHome />
             </React.Fragment>
         )
     }
