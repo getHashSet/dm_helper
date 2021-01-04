@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const db = require("../models");
 
 const rumors = [
     "Dont hunt in south forest. Druids like to turn into deer and prance around down there.",
@@ -19,14 +20,37 @@ const rumors = [
     "Somethin is funny about that there bar keep",
 ]
 
-const randomPicker = () => {
+const randomPicker = (rumors) => {
     const d100 = Math.floor(Math.random() * rumors.length);
     return rumors[d100];
 }
 
+router.route("/").post(function(req, res){
+    db.Rumors
+    .find({})
+    .then(data => {
+        res.json({
+            rumor: randomPicker(data).rumor
+        });
+    })
+    .catch(err => {
+        res.send("Error")
+        console.log(err);
+    });
+});
+
+
 router.route("/").get(function(req, res){
-    res.json({
-        rumor: randomPicker()
+    db.Rumors
+    .find({})
+    .then(data => {
+        res.json({
+            rumor: randomPicker(data).rumor
+        });
+    })
+    .catch(err => {
+        res.send("Error")
+        console.log(err);
     });
 });
 
