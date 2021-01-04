@@ -81,6 +81,7 @@ export default function RandomEncounter() {
       })
       .catch((err) => {
         console.log("There was an issue with the api call.");
+        console.log(err);
       })
       .finally(() => {
         // TODO: remove load screen.
