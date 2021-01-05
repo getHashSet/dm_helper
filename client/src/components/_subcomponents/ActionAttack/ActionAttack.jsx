@@ -33,6 +33,8 @@ export default function ActionAttack(props) {
                 return rolld(4) + 1;
             case "light crossbow":
                 return rolld(10) - 1;
+            case "tail spike":
+                return rolld(4, 6);
             default:
                 return 999;
         }
@@ -41,12 +43,20 @@ export default function ActionAttack(props) {
     const ammoMsg = () => {
         const weaponName = props.action.name.toLowerCase();
         switch (weaponName) {
-            case "heavy crossbow" || "hand crossbow" || "light crossbow":
+            case "heavy crossbow":
                 return "Out of crossbow bolts";
-            case "shortbow" || "longbow":
+            case "hand crossbow":
+                return "Out of crossbow bolts";
+            case "light crossbow":
+                return "Out of crossbow bolts";
+            case "shortbow":
+                return "Out of arrows";
+            case "longbow":
                 return "Out of arrows";
             case "javelin":
                 return "Out of javlins";
+            case "tail spike":
+                return "The Enemy has no more tail spikes left";
             default:
                 return "Unable to use that right now.";
         }
@@ -66,6 +76,7 @@ export default function ActionAttack(props) {
     let unusedHitRoll = "";
     let totalNumberOfDice = 0;
     let diceType = "";
+    const multipleAttacks = [];
 
     // ================ //
     //     Functions    //
@@ -147,11 +158,14 @@ export default function ActionAttack(props) {
         let finalDamage = 0;
 
         // how to deal with multiple damage types;
-        const multipleAttacks = [];
         let fightingStyle = undefined;
-        if (props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
-            multipleAttacks.push(props.action.damage[0].from[0].damage_dice);
-            multipleAttacks.push(props.action.damage[0].from[1].damage_dice);
+        if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
+            if (props.action.hasOwnProperty('attack_options')) {
+                multipleAttacks.push(props.action.attack_options.from[0].damage[0].damage_dice);
+            } else {
+                multipleAttacks.push(props.action.damage[0].from[0].damage_dice);
+                multipleAttacks.push(props.action.damage[0].from[1].damage_dice);
+            }
             fightingStyle = multipleAttacks[Math.floor(Math.random() * multipleAttacks.length)];
         };
 
@@ -199,7 +213,11 @@ export default function ActionAttack(props) {
     }
 
     const rollToHitAndDamage = () => {
-        // Disabled
+        if (props.action.name.toLowerCase() === "multiattack") {
+            updateToastMenu(<p className="multiattack">{props.action.desc}</p>);
+            return;
+        }
+        
         if (chargesRemaining <= 0) {
             const msg = ammoMsg();
             props.action.emptyChargesMessage !== undefined 
@@ -212,7 +230,7 @@ export default function ActionAttack(props) {
             updatechargesRemaining(chargesRemaining - 1);
         };
 
-        if (props.action.damage[0].hasOwnProperty("choose")) {
+        if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) {
             // continue, we will just pick one.
         } else if (props.action.damage[0]?.damage_dice === undefined) {
             updateToastMenu(props.action.desc);
@@ -236,6 +254,10 @@ export default function ActionAttack(props) {
             hitRollText = <p>Dirty<span>20</span></p>
         } else if(hitRoll === -1) {
             hitRollText = <span>{`DC: ${props.action.dc.dc_value}`}</span>
+        } else if (Number.isNaN(hitRoll) && multipleAttacks.length > 0) {
+
+        } else if (Number.isNaN(hitRoll)) {
+            hitRoll = 0;
         } else {
             hitRollText = <span>{hitRoll}</span>
         };
@@ -387,7 +409,7 @@ const StyledToast = styled.section`
     color: #2d3436;
 
     h4 {
-        padding: 1em;
+        padding: 1em .5em;
         font-weight: 900;
         font-size: 3em;
     }
@@ -480,5 +502,10 @@ const StyledToast = styled.section`
                 border-right: 1px solid #bdc3c7;
             }
         }
+    }
+
+    .multiattack {
+        font-weight: 400;
+        padding: .5em;
     }
 `;

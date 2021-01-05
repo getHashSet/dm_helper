@@ -76,7 +76,6 @@ EnemyCard.defaultProps = {
 //   COMPONENT   //
 // ============= //
 export default function EnemyCard(props) {
-    console.log('enemy refreshed');
     // ==================== //
     //   FAKE CONSTRUCTOR   //
     // ==================== //
@@ -405,7 +404,7 @@ export default function EnemyCard(props) {
 
             <div className="actions scrolling">
                 { props.enemy.hasOwnProperty('actions') ? props.enemy.actions.map((action, index) => buildAction(action, index)) : console.log("enemy has no actions.")}
-                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities.length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : console.log("enemy has no special abilities") : console.log("enemy has no special ability.")}
+                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities.length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : null : null}
                 { props.enemy.spell_caster ? props.enemy.spells.map((spell, index) => buildMagic(spell, index)) : null}
 
             </div>

@@ -73,11 +73,11 @@ const StyledToastBox = styled.div`
     left: 50%;
     top: 50%;
     min-width: 250px;
-    max-width: calc(100vw - 1em);
+    max-width: calc(100vw - .25em);
     min-height: 50px;
-    max-height: 80vh;
+    max-height: 65vh;
     overflow: auto;
-    padding: 1em;
+    padding: 1em .5em;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

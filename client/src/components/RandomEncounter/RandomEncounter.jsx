@@ -321,11 +321,14 @@ const StyledListOfEnemies = styled.section`
       padding: 0;
 
       h4 {
-        min-width: 7vw;
+        min-width: 100px;
         font-weight: 900;
         padding: .2em .5em;
         border-right: 1px solid white;
         text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
       }
 
       p {
