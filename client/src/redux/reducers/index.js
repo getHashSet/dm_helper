@@ -11,8 +11,10 @@ import encounterChallengeRating from './encounterChallengeRating';
 import { combineReducers } from 'redux';
 import showToastReducer from './showToast';
 import toastData from './toastData_reducer';
+import userNameReducer from './userName_reducer';
 
 const allReducers = combineReducers({
+    userName: userNameReducer,
     isLoggedIn: loggedReducer,
     headerTag: headerReducer,
     partyLevel: encounterPartyLevel,
