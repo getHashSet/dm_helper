@@ -78,6 +78,8 @@ export default function RandomEncounter() {
       .post(`/api/encounter`, POSTbody)
       .then((data) => {
         updateenemyEncounter(data.data.encounter);
+        console.log("Encounter");
+        console.log(enemyEncounter);
       })
       .catch((err) => {
         console.log("There was an issue with the api call.");
@@ -134,7 +136,7 @@ export default function RandomEncounter() {
 
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
       .then(enemyFromApi => {
-        console.log(enemyFromApi);
+        // console.log(enemyFromApi);
         // Step 1: update enemy roster.
         const newEnemyRoster = enemyRoster;
         newEnemyRoster.push(enemyFromApi.data);

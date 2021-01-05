@@ -16,12 +16,6 @@ export default function Toast(props) {
     // ================ //
     //     Functions    //
     // ================ //
-    document.addEventListener('scroll',function(){
-        if(toastMenuIsVisible){
-            hideTheToast();
-        }
-    });
-
     const hideTheToast = () => {
         dispatch(showToastMenuState(false));
     }

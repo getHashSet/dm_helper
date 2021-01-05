@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
 import ActionAttack from '../ActionAttack/ActionAttack';
 import ActionPassive from '../ActionPassive/ActionPassive';
+import ActionMagic from '../ActionMagic/ActionMagic';
 
 EnemyCard.defaultProps = {
     enemy : {
@@ -75,7 +76,7 @@ EnemyCard.defaultProps = {
 //   COMPONENT   //
 // ============= //
 export default function EnemyCard(props) {
-
+    console.log('enemy refreshed');
     // ==================== //
     //   FAKE CONSTRUCTOR   //
     // ==================== //
@@ -114,6 +115,7 @@ export default function EnemyCard(props) {
     const [maxHp] = useState(enemyHp);
     const [hasAdvantage, updatehasAdvatage] = useState(false);
     const [hasDisadvantage, updatehasDisadvantage] = useState(false);
+    const [magicSpells, updateMagicSpells] = useState([]);
 
     // ================ //
     //     Functions    //
@@ -236,6 +238,19 @@ export default function EnemyCard(props) {
         return firstRoll;
     }
 
+    const buildMagic = (spell, index) => {
+
+        // collect spell first
+
+        return <ActionMagic
+                    key={index}
+                    spell={spell}
+                    hasDisadvantage={hasDisadvantage}
+                    disadvantageToggle={disadvantageToggle}
+                    hasAdvantage={hasAdvantage}
+                    advantageToggle={advantageToggle} />;
+    }
+
     const buildAbility = (ability, index) => {
         return <ActionPassive
                     key={index}
@@ -253,9 +268,7 @@ export default function EnemyCard(props) {
                     hasDisadvantage={hasDisadvantage}
                     disadvantageToggle={disadvantageToggle}
                     hasAdvantage={hasAdvantage}
-                    advantageToggle={advantageToggle}
-                />;
-
+                    advantageToggle={advantageToggle} />;
     };
 
     const advantageToggle = () => {
@@ -392,7 +405,9 @@ export default function EnemyCard(props) {
 
             <div className="actions scrolling">
                 { props.enemy.hasOwnProperty('actions') ? props.enemy.actions.map((action, index) => buildAction(action, index)) : console.log("enemy has no actions.")}
-                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities. length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : console.log("enemy has no special abilities") : console.log("enemy has no special ability.")}
+                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities.length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : console.log("enemy has no special abilities") : console.log("enemy has no special ability.")}
+                { props.enemy.spell_caster ? props.enemy.spells.map((spell, index) => buildMagic(spell, index)) : null}
+
             </div>
         </StyledCard>
     )
@@ -465,9 +480,20 @@ const StyledCard = styled.article`
         }
     }
 
+    .spell_slots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            padding: 4px;
+            margin: 4px;
+        }
+    }
+
     .actions {
         margin: 0 .5em .5em .5em;
-        height: 20vh;
+        height: 35vh;
         border: 1px solid #bdc3c7;
         border-radius: .5em;
         background-color: #ecf0f1;
@@ -538,7 +564,6 @@ const StyledCard = styled.article`
             }
         }
     }
-
 
     @media (max-width: 768px) {
         width: 100%;

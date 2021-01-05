@@ -83,6 +83,9 @@ router.route("/").post(function (req, res) {
         this.stats.CHA = charisma;
         this.actions = actions;
         this.special_abilities = {};
+        this.spells = [];
+        this.spellSlots = {};
+        this.spell_caster = false;
       }
 
       // STEP 3: Create URL that will be used.
@@ -105,6 +108,10 @@ router.route("/").post(function (req, res) {
           
               const e = callback.data; // this is the monster object from the api
           
+              const spells = [];
+
+              const spellSlots = {};
+
               const newEnemy = new Enemy(e.name,
                 e.armor_class,
                 e.challenge_rating,
@@ -115,8 +122,21 @@ router.route("/").post(function (req, res) {
                 e.intelligence,
                 e.wisdom,
                 e.charisma,
-                e.actions
+                e.actions,
+                spells,
+                spellSlots,
+                e.spell_caster
                 )
+                
+                // check if caster
+                try {
+                  console.log(e.special_abilities[0].spellcasting);
+                  newEnemy.spells = e.special_abilities[0].spellcasting.spells ? e.special_abilities[0].spellcasting.spells : [];
+                  newEnemy.spellSlots = e.special_abilities[0].spellcasting.slots ? e.special_abilities[0].spellcasting.slots : {};
+                  newEnemy.spell_caster = true;
+                } catch (error) {
+                  // skip
+                };
 
                 // EDGECASE: may have special bilities. May be null or undefied.
                 if (e.special_abilities !== undefined && e.special_abilities !== null) {

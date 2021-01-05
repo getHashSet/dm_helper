@@ -21,9 +21,6 @@ router.route("/").get(function(req, res){
 // ============================ //
 router.route("/").post(function(req, res) {
 
-    console.log('===================');
-    console.log('===================');
-    console.log('===================');
     const location = req.body.location ? req.body.location : "woods" ;
     const cr = req.body.cr ? req.body.cr : "5";
 
@@ -43,9 +40,7 @@ router.route("/").post(function(req, res) {
 router.route("/upload").post((req, res) => {
     // TODO: check to see if it already in the database to prevent duplicates.
 
-    console.log(
-        req.body
-    );
+    console.log(req.body);
 
     if (req.body.password !== process.env.UPLOADPASSWORD) {
         res.json({

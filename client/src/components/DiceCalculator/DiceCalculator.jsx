@@ -500,6 +500,7 @@ const STyledDiceCalculator = styled.div`
                 justify-content: center;
                 align-items: center;
                 color: #fff;
+                user-select: none;
 
                 svg {
                     width: 1em;

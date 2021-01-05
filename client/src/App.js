@@ -6,6 +6,7 @@ import Dm from "./pages/Dm/Dm";
 import Player from "./pages/Player/Player";
 import UploadPage from "./pages/UploadPage/UploadPage.jsx";
 import Login from "./pages/Login/Login.jsx";
+import Calculator from "./pages/Calculator/Calculator";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route exact path="/upload" render={() => <UploadPage />} />
 
         <Route exact path="/login" render={() => <Login />} />
+
+        <Route exact path="/calc" render={() => <Calculator />} />
 
         {/* DO NOT ADD CODE BELOW THIS LINE */}
         <Route render={() => <Error />} />

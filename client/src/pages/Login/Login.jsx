@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
+import axios from 'axios';
+import Menu from '../../components/Menu/Menu';
 import Toast from '../../components/Toast/Toast';
 import { 
     showToastMenuState,
     updateToastData,
-    updateUserName } from "../../redux/actions";
-import axios from 'axios';
+    updateUserName,
+    updateLogin } from "../../redux/actions";
 
 export default function Login(props) {
     // ========= //
@@ -50,7 +53,10 @@ export default function Login(props) {
         .then(serverData => {
             console.log(serverData.data);
             updateToastMenu(serverData.data.msg);
-            // now you are logged in. Update token
+            
+            if(serverData.data.msg === "I like cake") {
+                dispatch(updateLogin(true));
+            };
         })
         .catch(err => {
             updateToastMenu(err.data.err)
@@ -66,10 +72,12 @@ export default function Login(props) {
             <input value={userNameState} type="text" name="user_name" onChange={updateUserNameField}/>
 
             <label htmlFor="password">Enter Password:</label>
-            <input value={userPasswordState} name="password" type="text" onChange={(e) => updateUserPasswordState(e.target.value)}/>
+            <input value={userPasswordState} name="password" type="password" onChange={(e) => updateUserPasswordState(e.target.value)}/>
 
             <div className="login" onClick={submitUserName}>Sign In</div>
             <Toast />
+            <Link to={'/upload'}>Upload</Link>
+            <Menu />
         </StyledLogin>
     )
 }

@@ -1,10 +1,11 @@
 const router = require("express").Router();
+require("dotenv").config();
 
 router.route("/").post(function(req, res){
     try {
-        if ( req.body.password === "cake" ){
+        if ( req.body.password === process.env.UPLOADPASSWORD ){
             res.json({
-                msg: "I like cake"
+                msg: "I like cake",
             });
         } else {
             res.json({
