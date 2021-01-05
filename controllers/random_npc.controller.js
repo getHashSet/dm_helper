@@ -28,6 +28,14 @@ const heldItem = [
     'a healers kit',
     'an iron lock',
     'a small box',
+    'a magic card',
+    'a deck of cards',
+    'Dragon Ante',
+    '3 magic beans',
+    'Ink & a Quill',
+    'A Book',
+    'Another pouch with 2 gold in it',
+    'vial of unknown poison'
 ]
 
 const npcName = [
@@ -176,14 +184,14 @@ const modifier = [ // perks and flaws
     'focused on a small wooden puzzle in their hand while biting their lip and rubbing their head with the other',
     'walking quickly with their hand over their side pouch',
     'humming to themselves',
-    `and is currently is playing the ${random(insterments)}`,
+    `and is currently playing the ${random(insterments)}`,
     ', and doesnt believe in magic',
     ", and is so hairy they could pass for a bugbear",
     "smoking a pipe",
     "selling flowers",
     "sharpening a wood axe",
     "rubbing their forhead",
-    "and is currently is playing with a pet rat",
+    "and is currently playing with a pet rat",
     "holding a drink",
     `and is currently is playing with a ${random(heldItem)}`,
     `counting a stack of about ${d(100)} coins`,

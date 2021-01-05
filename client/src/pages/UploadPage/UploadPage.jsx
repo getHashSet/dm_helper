@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default function UploadPage() {
   // HOOKS
+  const [rumorField, updateRumorField] = useState("");
   const [passwordField, updatePasswordField] = useState("");
   const [locationField, updateLocationField] = useState("error");
   const [enemyField, updateEnemyField] = useState("");
@@ -150,6 +151,23 @@ export default function UploadPage() {
     return;
   }
 
+  const uploadRumor = () => {
+    if (rumorField.length < 5) {return};
+
+    const POSTrequest = {
+      password: passwordField,
+      rumor: rumorField,
+    }
+
+    const url = '/api/rumor/upload';
+
+    axios.post(url, POSTrequest)
+    .then(data => {
+      console.log(data.msg);
+      updateRumorField("");
+    });
+  }
+
   // ========== //
   //   RETURN   //
   // ========== //
@@ -172,11 +190,11 @@ export default function UploadPage() {
         <h2>Rumor</h2>
         <div className="block">
           <label htmlFor="rumor">Add A Rumor:</label>
-          <textarea className="rumor" name="rumor" type="text" />
+          <textarea value={rumorField} className="rumor" name="rumor" type="text" onChange={(e) => updateRumorField(e.target.value)}/>
         </div>
 
         <div className="block">
-          <div className="button">Submit Rumor</div>
+          <div className="button" onClick={uploadRumor}>Submit Rumor</div>
         </div>
       </StyledUploadForm>
 
