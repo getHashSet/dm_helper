@@ -122,12 +122,10 @@ export default function UploadPage() {
   }
 
   const resetFields = () => {
-    updateLocationField("error");
     updateEnemyField("");
     updateEnemyArray([]);
     updateInfoField("");
     updateDescField("");
-    updateCrField("0");
     updateCr(0);
     updateListOfApiEnemies([]);
   };
