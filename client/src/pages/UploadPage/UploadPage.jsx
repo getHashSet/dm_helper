@@ -38,7 +38,7 @@ export default function UploadPage() {
       || descField === ""
       || +crField < 1
       || locationField === "error"
-      || location === "select"
+      || location === "select a location"
     ) {
      alert(`Bad Data: Check password, enemies, And information fields. `);
       console.log(POSTrequest);
@@ -258,6 +258,7 @@ export default function UploadPage() {
           <label htmlFor="location">Encounter Location</label>
           <select type="text" name="location" onChange={(e) => {updateLocationField(e.target.value)}}>
             <option value="error">select a location</option>
+            <option value="plains">Road / Plains</option>
             <option value="woods">The Woods</option>
             <option value="mountains">Mountains</option>
             <option value="dungeon">Dungeon</option>
