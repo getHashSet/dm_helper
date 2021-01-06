@@ -15,9 +15,7 @@ export default function Menu() {
     //     Functions    //
     // ================ //
     const updateToastMenu = (str) => {
-        const html = <div>
-            {str}
-        </div>
+        const html = <div>{str}</div>
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
