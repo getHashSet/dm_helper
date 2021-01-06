@@ -34,10 +34,10 @@ export default function UploadPage() {
     if ( passwordField.length < 1
       || enemyArray.length < 1
       || descField === ""
-      || +crField < 0
+      || +crField < 1
       || locationField === "error"
     ) {
-      console.log("BAD DATA");
+     alert("Bad Data" + crField);
       console.log(POSTrequest);
       return;
     } else {
