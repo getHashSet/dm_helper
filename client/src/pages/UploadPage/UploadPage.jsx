@@ -38,7 +38,7 @@ export default function UploadPage() {
       || descField === ""
       || +crField < 1
       || locationField === "error"
-      || location === "select a location"
+      || locationField === "select a location"
     ) {
      alert(`Bad Data: Check password, enemies, And information fields. `);
       console.log(POSTrequest);
