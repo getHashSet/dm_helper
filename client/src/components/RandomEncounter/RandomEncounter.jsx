@@ -72,6 +72,7 @@ export default function RandomEncounter() {
       enemies: uriEncodedEnemies,
       location: +userEncounterSelection > 0 ? rollTables[+userEncounterSelection - 1].toLowerCase() : "Woods",
       cr: +partyLevel > 0 ? partyLevel : 1,
+      mod: + difficulty - 3,
     }
 
     axios
