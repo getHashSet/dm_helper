@@ -43,6 +43,7 @@ router.route("/").post(function (req, res) {
   // EDGECASE: check if encounter is friendly
   if (location === 'friendly') { lowCr = 1 };
 
+  console.log("Low: " + lowCr + " High: " + highCr);
   // STEP 2: check Encounters collection in the database for anything that meets that information.
   db.Encounters
     .find({ "cr": {$gt : lowCr, $lt : highCr}, "location": location })
