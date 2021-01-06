@@ -26,14 +26,14 @@ router.route("/").post(function (req, res) {
   // console.log("====");
 
 
-  // let theCr = 1;
-  // let theMod = 0;
-  // if (req.body.cr !== undefined || req.body.cr !== null) { theCr = req.body.cr };
-  // if (req.body.mod !== undefined || req.body.mod !== null) { theMod = req.body.mod };
-  // const highCr = +theCr + 1 + +theMod;
-  // const lowCr = +theCr + - 1 + +theMod;
-  // if (lowCr > 10) {lowCr = 10};
-  // if (highCr < 1) {highCr = 1};
+  let theCr = 1;
+  let theMod = 0;
+  if (req.body.cr !== undefined || req.body.cr !== null) { theCr = req.body.cr };
+  if (req.body.mod !== undefined || req.body.mod !== null) { theMod = req.body.mod };
+  const highCr = +theCr + 1 + +theMod;
+  const lowCr = +theCr + - 1 + +theMod;
+  if (lowCr > 10) {lowCr = 10};
+  if (highCr < 1) {highCr = 1};
   // db.Encounters.find({ "cr": {$gt : lowCr, $lt : highCr}});
 
   // STEP 1: Get location and cr from req.body. Or set them to default.
@@ -41,11 +41,11 @@ router.route("/").post(function (req, res) {
   let cr = req.body.cr ? +req.body.cr : 5;
 
   // EDGECASE: check if encounter is friendly
-  if (location === 'friendly') { cr = 1 };
+  if (location === 'friendly') { lowCr = 1 };
 
   // STEP 2: check Encounters collection in the database for anything that meets that information.
   db.Encounters
-    .find({ "cr": +cr, "location": location })
+    .find({ "cr": {$gt : lowCr, $lt : highCr}, "location": location })
     .then(encounterTable => {
 
       // Check to see if that encounter table we got back was empty []. If it was then use the backup table up top.
