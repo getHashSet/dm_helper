@@ -30,7 +30,7 @@ export default function RandomEncounter() {
   const [searchInput, updatesearchInput] = useState("");
   const [enemyRoster, updateenemyRoster] = useState([]);
   const rollTables = [
-    "Road",
+    "Plains",
     "Mountains",
     "Woods",
     "Town",
