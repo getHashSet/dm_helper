@@ -209,6 +209,21 @@ export default function UploadPage() {
         </div>
 
         <div className="block">
+          <label htmlFor="location">Encounter Location</label>
+          <select type="text" name="location" onChange={(e) => {updateLocationField(e.target.value)}}>
+            <option value="error">select a location</option>
+            <option value="plains">Road / Plains</option>
+            <option value="woods">The Woods</option>
+            <option value="mountains">Mountains</option>
+            <option value="dungeon">Dungeon</option>
+            <option value="friendly">Friendly</option>
+            <option value="town">Town</option>
+            <option value="underground">Underground</option>
+          </select>
+        </div>
+
+        <div className="block">
+          <label htmlFor="selectEnemy">Enemy Index (coming soon)</label>
           <label htmlFor="enemies">Enemies:</label>
           <input type="text" name="enemies" value={enemyField} onKeyDown={submitToEnemyList} onChange={(e) => updateEnemyField(e.target.value)}/>
           <div className="add_button" onClick={addEnemy}>Add Enemy</div>
@@ -252,20 +267,6 @@ export default function UploadPage() {
         <div className="block">
           <label htmlFor="info">DM Notes:</label>
           <textarea value={infoField} type="text" name="info" onChange={(e) => updateInfoField(e.target.value)} />
-        </div>
-
-        <div className="block">
-          <label htmlFor="location">Encounter Location</label>
-          <select type="text" name="location" onChange={(e) => {updateLocationField(e.target.value)}}>
-            <option value="error">select a location</option>
-            <option value="plains">Road / Plains</option>
-            <option value="woods">The Woods</option>
-            <option value="mountains">Mountains</option>
-            <option value="dungeon">Dungeon</option>
-            <option value="friendly">Friendly</option>
-            <option value="town">Town</option>
-            <option value="underground">Underground</option>
-          </select>
         </div>
 
         <div className="block">
