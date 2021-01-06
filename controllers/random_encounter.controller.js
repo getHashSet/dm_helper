@@ -46,7 +46,7 @@ router.route("/").post(function (req, res) {
   console.log("Low: " + lowCr + " High: " + highCr);
   // STEP 2: check Encounters collection in the database for anything that meets that information.
   db.Encounters
-    .find({ "cr": {$gt : lowCr, $lt : highCr}, "location": location })
+    .find({ "cr": {$gte : lowCr, $lte : highCr}, "location": location })
     .then(encounterTable => {
 
       // console.log(encounterTable.length);
