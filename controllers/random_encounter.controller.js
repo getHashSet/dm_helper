@@ -49,6 +49,8 @@ router.route("/").post(function (req, res) {
     .find({ "cr": {$gt : lowCr, $lt : highCr}, "location": location })
     .then(encounterTable => {
 
+      // console.log(encounterTable.length);
+
       // Check to see if that encounter table we got back was empty []. If it was then use the backup table up top.
       const goodData = encounterTable[0] !== undefined ? encounterTable : enemyTable; //[ {enemies, _id, info, } ]
 
