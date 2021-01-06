@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
+import DiceCalculator from "../DiceCalculator/DiceCalculator";
 
 export default function Menu() {
     // =================== //
@@ -23,7 +24,7 @@ export default function Menu() {
 
     const d20 = () => {
         let d20 = Math.floor(Math.random() * 20) + 1;
-        updateToastMenu(d20);
+        updateToastMenu(<DiceCalculator/>);
     };
 
     return (
