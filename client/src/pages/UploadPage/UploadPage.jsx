@@ -11,7 +11,7 @@ export default function UploadPage() {
   const [enemyArray, updateEnemyArray] = useState([]);
   const [infoField, updateInfoField] = useState("");
   const [descField, updateDescField] = useState("");
-  const [crField, updateCrField] = useState("5");
+  const [crField, updateCrField] = useState("1");
   const [listOfApiEnemies, updateListOfApiEnemies] = useState([]);
   const [cr, updateCr] = useState(0);
 
@@ -19,6 +19,8 @@ export default function UploadPage() {
   //    FUNCTIONS    //
   // =============== //
   const submitEncounter = () => {
+
+   // TODO: add confirm field. 
 
     const POSTrequest = {
       password: passwordField,
@@ -36,8 +38,9 @@ export default function UploadPage() {
       || descField === ""
       || +crField < 1
       || locationField === "error"
+      || location === "select"
     ) {
-     alert("Bad Data" + crField);
+     alert(`Bad Data: Check password, enemies, And information fields. `);
       console.log(POSTrequest);
       return;
     } else {
