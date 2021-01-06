@@ -10,11 +10,6 @@ let enemyTable = [
     enemies: ["owlbear"]
   },
   {
-    desc: "You can smell smoke on the air. You are down wind from a campfire.",
-    info: "Players aproach orcs putting up camp. Sneak DC: 17.",
-    enemies: ["orc","orc","orc","wolf", "wolf"],
-  },
-  {
     desc: "You stumble across a pile of loose coins mixed in with a lump of dirt on the ground.",
     info: "If the players dig up the dirt they find 5d100 silver pieces. If they collect more than 200 they will be followed by the dragon. If the dragon feels he can take a party member from behind and drag them into the woods he will. If HP goes below half the dragon flees.",
     enemies: ["young-green-dragon"],
@@ -29,6 +24,17 @@ router.route("/").post(function (req, res) {
   // console.log("====");
   // console.log(req.body);
   // console.log("====");
+
+
+  // let theCr = 1;
+  // let theMod = 0;
+  // if (req.body.cr !== undefined || req.body.cr !== null) { theCr = req.body.cr };
+  // if (req.body.mod !== undefined || req.body.mod !== null) { theMod = req.body.mod };
+  // const highCr = +theCr + 1 + +theMod;
+  // const lowCr = +theCr + - 1 + +theMod;
+  // if (lowCr > 10) {lowCr = 10};
+  // if (highCr < 1) {highCr = 1};
+  // db.Encounters.find({ "cr": {$gt : lowCr, $lt : highCr}});
 
   // STEP 1: Get location and cr from req.body. Or set them to default.
   const location = req.body.location ? req.body.location.toLowerCase() : "default" ;
