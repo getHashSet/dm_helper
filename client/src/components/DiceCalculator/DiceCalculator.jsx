@@ -449,7 +449,6 @@ const StyledCalcRow = styled.ul`
 `;
 
 const StyledFrame = styled.div`
-    width: 100%;
     max-width: 1200px;
 
     h2 {
@@ -473,6 +472,7 @@ const STyledDiceCalculator = styled.div`
     align-items: center;
     justify-content: center;
     margin: 1em 0;
+    max-width: 100%;
 
     .frame {
         background-color: #dfe6e9;
@@ -535,6 +535,7 @@ const StyledSection = styled.section`
     background: #2d3436;
     color: #fff;
     min-height: 30vh;
+    max-width: 100%;
     padding: .5em;
     display: flex;
     justify-content: center;
