@@ -61,7 +61,7 @@ const StyledShadowBox = styled.div`
     z-index: -1;
     width: 100%;
     height: 100%;
-    /* background-color: rgba(0,0,0, .6); */
+    background-color: rgba(0,0,0, .6);
 
     &:hover {
         cursor: pointer;
@@ -73,17 +73,15 @@ const StyledToastBox = styled.div`
     left: 50%;
     top: 40%;
     min-width: 250px;
-    max-width: calc(100vw - .25em);
-    min-height: 50px;
+    max-width: calc(100vw);
+    min-height: 1em;
     max-height: 70vh;
     overflow: auto;
-    padding: 1em .5em;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     color: #2d3436;
-    background-color: #fff;
     border-radius: .5em;
     box-shadow: 1px 1px 8px #000;
     opacity: 0;

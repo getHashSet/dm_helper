@@ -404,7 +404,7 @@ const StyledCalcRow = styled.ul`
         flex-grow: 1;
         border: 1px solid #3498db;
         background-color: #2980b9;
-        min-height: 80px;
+        min-height: 10vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -443,7 +443,7 @@ const StyledFrame = styled.div`
     width: 100%;
     margin: 0;
     padding: 0;
-    max-width: 1200px;
+    max-width: 500px;
 
     h2 {
         font-size: 2em;
@@ -465,14 +465,11 @@ const STyledDiceCalculator = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
-    margin: 1em 0;
-    max-width: 100%;
 
     .frame {
         background-color: #dfe6e9;
-        color: #2d3436;
         font-size: 1.5em;
-        width: 500px;
+        width: 100vw;
         display: flex;
         flex-wrap:  wrap;
 
@@ -526,11 +523,11 @@ const STyledDiceCalculator = styled.div`
 `;
 
 const StyledSection = styled.section`
-    background: #2d3436;
-    color: #fff;
+    color: #2d3436;
     min-height: 30vh;
+    height: 100%;
     max-width: 100%;
-    padding: .5em;
+    background-color: #dfe4ea;
     display: flex;
     justify-content: center;
 `;
@@ -570,6 +567,9 @@ const StyledToastiness = styled.section`
     width: 100%;
     color: #34495e;
     overflow: hidden;
+    background-color: #fff;
+    padding: .5em;
+    width: 100%;
 
     p {
         width: 100%;

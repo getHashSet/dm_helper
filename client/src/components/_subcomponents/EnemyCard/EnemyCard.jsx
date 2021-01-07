@@ -720,6 +720,9 @@ const StyledToast = styled.section`
     font-weight: 400;
     font-size: 16px;
     text-align: center;
+    color: #2d3436;
+    background-color: #fff;
+    padding: .5em;
 
     h4 {
         font-weight: 900;

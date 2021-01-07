@@ -8,3 +8,10 @@ export const showToastMenuState = (bool) => {
         payload: bool
     }
 };
+
+export const updateToastData = (child) => {
+    return {
+        type: 'TOASTDATA',
+        payload: child
+    }
+};

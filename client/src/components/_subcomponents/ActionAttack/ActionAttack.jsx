@@ -407,6 +407,9 @@ const StyledToast = styled.section`
     font-size: 16px;
     text-align: center;
     color: #2d3436;
+    color: #2d3436;
+    background-color: #fff;
+    padding: .5em;
 
     h4 {
         padding: 1em .5em;

@@ -8,7 +8,6 @@ export default class Player extends Component {
     render() {
         return (
             <React.Fragment>
-                <DiceCalculator />
                 <RollPlayToHit />
                 <p>Actions Chart, displays actions you can do.</p>
                 <p>Status Chart, display status effects.</p>

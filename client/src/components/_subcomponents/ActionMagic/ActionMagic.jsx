@@ -140,8 +140,12 @@ const StyledAction = styled.div`
 `; 
 
 const StyledToast = styled.p`
+    background-color: #fff;
     font-size: 20px;
     font-weight: 300;
     font-family: 'Roboto Slab', serif;
     line-height: 1.2em;
+    color: #2d3436;
+    background-color: #fff;
+    padding: .5em;
 `;

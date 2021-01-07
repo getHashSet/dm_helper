@@ -6,15 +6,19 @@ import allReducers from './redux/reducers';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
+import { ThemeProvider } from "styled-components";
+import * as theme from "./styles/theme";
 
 // create store and add chrome extension tools for debuging via chrome. source: https://github.com/zalmoxisus/redux-devtools-extension
 const store = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
   <Provider store={store}> {/* This takes one attribute. store={theNameOfYourStore} */}
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
+  <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root')
 );

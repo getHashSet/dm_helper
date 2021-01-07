@@ -225,6 +225,8 @@ const StyledToast = styled.section`
   font-weight: 400;
   font-size: 16px;
   text-align: center;
+  background-color: #fff;
+  padding: .5em;
 
   p {
     padding: 0.5em 0;

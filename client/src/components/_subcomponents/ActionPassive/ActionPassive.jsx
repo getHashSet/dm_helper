@@ -136,4 +136,7 @@ const StyledToast = styled.p`
     font-weight: 300;
     font-family: 'Roboto Slab', serif;
     line-height: 1.2em;
+    color: #2d3436;
+    background-color: #fff;
+    padding: .5em;
 `;
