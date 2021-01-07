@@ -7,56 +7,56 @@ import ActionPassive from '../ActionPassive/ActionPassive';
 import ActionMagic from '../ActionMagic/ActionMagic';
 
 EnemyCard.defaultProps = {
-    enemy : {
-        enemyName : "Enemy",
-        ac : 14,
-        cr : 1,
-        hitDice : "2d10",
-        movement : ["walk", "swim", "fly", "dig"],
-        stats : {
-            STR : 14,
-            DEX : 20,
-            CON : 1,
-            INT : 28,
-            WIS : 5,
-            CHA : 16
+    enemy: {
+        enemyName: "Enemy",
+        ac: 14,
+        cr: 1,
+        hitDice: "2d10",
+        movement: ["walk", "swim", "fly", "dig"],
+        stats: {
+            STR: 14,
+            DEX: 20,
+            CON: 1,
+            INT: 28,
+            WIS: 5,
+            CHA: 16
         },
-        pageNumber : "Monster Manual",
-        actionsNumber : 1,
-        actions : [
+        pageNumber: "Monster Manual",
+        actionsNumber: 1,
+        actions: [
             {
                 type: "attack", // attack, item, spell
                 actionType: "action", // action, bonus action, passive, reaction.
                 actionName: "Battle Axe",
-                hitMod : 5,
-                damageMod : "STR",
+                hitMod: 5,
+                damageMod: "STR",
                 damageDice: "1d6",
                 description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText : "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
-                charges : 1,
+                flavorText: "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
+                charges: 1,
             },
             {
                 type: "attack", // attack, item, spell
                 actionType: "action", // action, bonus action, passive, reaction.
                 actionName: "Bow & Arrow",
-                hitMod : 5,
-                damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
+                hitMod: 5,
+                damageMod: "DEX", // number - or - "str", "dex" - or - "finess"
                 damageDice: "1d6",
                 description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText : "You get shot.",
-                charges : 1,
+                flavorText: "You get shot.",
+                charges: 1,
             },
             {
                 type: "attack", // attack, item, spell
                 actionType: "action", // action, bonus action, passive, reaction.
                 actionName: "Bite",
-                hitMod : 5,
-                damageMod : "DEX", // number - or - "str", "dex" - or - "finess"
+                hitMod: 5,
+                damageMod: "DEX", // number - or - "str", "dex" - or - "finess"
                 damageDice: "2d4",
                 description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText : "The enemy rears back and bites your arm.",
-                charges : 1,
-                sideAffect : "Roll vs being tripped. DC 11 or fall prone.",
+                flavorText: "The enemy rears back and bites your arm.",
+                charges: 1,
+                sideAffect: "Roll vs being tripped. DC 11 or fall prone.",
             },
             {
                 type: "item",
@@ -65,11 +65,11 @@ EnemyCard.defaultProps = {
                 roll: "2d4", // edge case. what if its like 2d4 + 2?
                 diceMod: 2,
                 description: "Drink potion to heal 2d4 + 2 hp.",
-                flavorText : "A potion of red goo that smells tart."
+                flavorText: "A potion of red goo that smells tart."
             },
         ]
     }
-    
+
 }
 
 // ============= //
@@ -81,8 +81,8 @@ export default function EnemyCard(props) {
     // ==================== //
     const getHp = (dice) => {
         // Edgecase: hit_dice may not be a thing.
-        if(dice === undefined) {dice = "1d5"}
-        
+        if (dice === undefined) { dice = "1d5" }
+
         let totalHp = 0;
 
         // check if someone put in an bad hit dice value by mistake
@@ -114,7 +114,6 @@ export default function EnemyCard(props) {
     const [maxHp] = useState(enemyHp);
     const [hasAdvantage, updatehasAdvatage] = useState(false);
     const [hasDisadvantage, updatehasDisadvantage] = useState(false);
-    const [magicSpells, updateMagicSpells] = useState([]);
 
     // ================ //
     //     Functions    //
@@ -126,14 +125,14 @@ export default function EnemyCard(props) {
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
-    
+
     const rollSavingThrow = (e) => {
         let statMod = 0;
 
-        if (e.target.parentElement.getAttribute('data-mod') !== null){
+        if (e.target.parentElement.getAttribute('data-mod') !== null) {
             statMod = e.target.parentElement.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
-        } else if (e.target.getAttribute('data-mod') !== null){
+        } else if (e.target.getAttribute('data-mod') !== null) {
             statMod = e.target.getAttribute('data-mod');
             statMod = statMod.slice(1, statMod.length - 1); // trim the () off the string
         } else {
@@ -141,7 +140,7 @@ export default function EnemyCard(props) {
         }
 
         // Edgecase check if statmod broke during our terible logic
-        if (typeof(statMod) !== 'string' || statMod === undefined || statMod === 'ndefine') {statMod = 0};
+        if (typeof (statMod) !== 'string' || statMod === undefined || statMod === 'ndefine') { statMod = 0 };
 
         const d20 = rolld20();
 
@@ -150,23 +149,23 @@ export default function EnemyCard(props) {
         console.log(`Mod: ${statMod} d20: ${d20}`);
 
         // Edgecases
-        if (savingThrow === 20 && statMod > 0) {savingThrow = "Dirty 20"};
+        if (savingThrow === 20 && statMod > 0) { savingThrow = "Dirty 20" };
         if (savingThrow < 1 && d20 !== 1) { savingThrow = "Dirty 1"; };
-        if (d20 === 20) {savingThrow = "Nat 20"};
-        if (d20 === 1) {savingThrow = "Nat 1"};
+        if (d20 === 20) { savingThrow = "Nat 20" };
+        if (d20 === 1) { savingThrow = "Nat 1" };
 
         savingThrow = <h4>{savingThrow}</h4>;
         updateToastMenu(savingThrow);
     };
 
     const getStatMod = (stat) => {
-        if (+stat > 9 && +stat < 12) {return };
+        if (+stat > 9 && +stat < 12) { return };
         return `(${Math.floor((stat - 10) / 2)})`;
     };
 
     const getMod = (stat) => {
 
-        if (+stat > 9 && +stat < 12) {return 0};
+        if (+stat > 9 && +stat < 12) { return 0 };
 
         const uncleanedMod = getStatMod(stat);
         const mod = uncleanedMod.slice(1, uncleanedMod.length - 1); // remove string data
@@ -176,7 +175,7 @@ export default function EnemyCard(props) {
     const rollPlusMod = (stat) => {
         let mod = 0;
         mod = mod + +getMod(stat);
-        return (Math.floor(Math.random() * 20) +1) + mod;
+        return (Math.floor(Math.random() * 20) + 1) + mod;
     };
 
     const adjustHpButton = (e) => {
@@ -187,7 +186,7 @@ export default function EnemyCard(props) {
         let inputData = e.target.parentElement.parentElement.children[0].children[0].value;
 
         // Edgecase user didnt put in a value
-        if ( inputData === undefined || +inputData <= 0 ) { inputData = 1 };
+        if (inputData === undefined || +inputData <= 0) { inputData = 1 };
 
         // current HP total
         let newHpTotal = +enemyHp;
@@ -195,7 +194,7 @@ export default function EnemyCard(props) {
         switch (type) {
             case "heal":
                 newHpTotal = enemyHp + +inputData;
-                if (newHpTotal > maxHp) {newHpTotal = maxHp};
+                if (newHpTotal > maxHp) { newHpTotal = maxHp };
                 break;
             default:
                 newHpTotal = enemyHp - +inputData;
@@ -230,7 +229,7 @@ export default function EnemyCard(props) {
             console.log(`rolling with advantage: ${firstRoll}, ${secondRoll}`)
             const d20 = firstRoll > secondRoll ? firstRoll : secondRoll;
             updatehasAdvatage(false);
-            
+
             return d20;
         };
 
@@ -242,36 +241,36 @@ export default function EnemyCard(props) {
         // collect spell first
 
         return <ActionMagic
-                    key={index}
-                    spell={spell}
-                    hasDisadvantage={hasDisadvantage}
-                    disadvantageToggle={disadvantageToggle}
-                    hasAdvantage={hasAdvantage}
-                    advantageToggle={advantageToggle} />;
+            key={index}
+            spell={spell}
+            hasDisadvantage={hasDisadvantage}
+            disadvantageToggle={disadvantageToggle}
+            hasAdvantage={hasAdvantage}
+            advantageToggle={advantageToggle} />;
     }
 
     const buildAbility = (ability, index) => {
         return <ActionPassive
-                    key={index}
-                    special_ability={ability}
-                    hasDisadvantage={hasDisadvantage}
-                    disadvantageToggle={disadvantageToggle}
-                    hasAdvantage={hasAdvantage}
-                    advantageToggle={advantageToggle} />;
+            key={index}
+            special_ability={ability}
+            hasDisadvantage={hasDisadvantage}
+            disadvantageToggle={disadvantageToggle}
+            hasAdvantage={hasAdvantage}
+            advantageToggle={advantageToggle} />;
     };
 
     const buildAction = (action, index) => {
-        return <ActionAttack 
-                    key={index}
-                    action={action}
-                    hasDisadvantage={hasDisadvantage}
-                    disadvantageToggle={disadvantageToggle}
-                    hasAdvantage={hasAdvantage}
-                    advantageToggle={advantageToggle} />;
+        return <ActionAttack
+            key={index}
+            action={action}
+            hasDisadvantage={hasDisadvantage}
+            disadvantageToggle={disadvantageToggle}
+            hasAdvantage={hasAdvantage}
+            advantageToggle={advantageToggle} />;
     };
 
     const advantageToggle = () => {
-        
+
         if (hasDisadvantage) {
             updatehasDisadvantage(false);
         };
@@ -279,7 +278,7 @@ export default function EnemyCard(props) {
     }
 
     const disadvantageToggle = () => {
-        
+
         if (hasAdvantage) {
             updatehasAdvatage(false);
         };
@@ -290,14 +289,14 @@ export default function EnemyCard(props) {
     //   HOOKS AGAIN  //
     // ============== //
     // because of a rookie mistake that I cant be bothered to fix Im just going to put this hook here.
-    const [initiative, updateinitiative] = useState(rollPlusMod(props.enemy.stats.DEX));
+    const [initiative] = useState(rollPlusMod(props.enemy.stats.DEX));
 
     // ========== //
     //   RETURN   //
     // ========== //
     return (
         <StyledCard hasAdvantage={hasAdvantage} hasDisadvantage={hasDisadvantage} enemyHp={enemyHp}>
-            
+
             {/* Enemy Name */}
             <div className="card_name">
                 <h2>{props.enemy.enemyName}</h2>
@@ -319,7 +318,7 @@ export default function EnemyCard(props) {
                     <div className="block" title="Hit Points">
                         <div className="background"></div>
                         <div className="info">
-                            <svg xmlns='http://www.w3.org/2000/svg' className='ionicon' viewBox='0 0 512 512'><title>Heart</title><path d='M256 448a32 32 0 01-18-5.57c-78.59-53.35-112.62-89.93-131.39-112.8-40-48.75-59.15-98.8-58.61-153C48.63 114.52 98.46 64 159.08 64c44.08 0 74.61 24.83 92.39 45.51a6 6 0 009.06 0C278.31 88.81 308.84 64 352.92 64c60.62 0 110.45 50.52 111.08 112.64.54 54.21-18.63 104.26-58.61 153-18.77 22.87-52.8 59.45-131.39 112.8a32 32 0 01-18 5.56z'/></svg>
+                            <svg xmlns='http://www.w3.org/2000/svg' className='ionicon' viewBox='0 0 512 512'><title>Heart</title><path d='M256 448a32 32 0 01-18-5.57c-78.59-53.35-112.62-89.93-131.39-112.8-40-48.75-59.15-98.8-58.61-153C48.63 114.52 98.46 64 159.08 64c44.08 0 74.61 24.83 92.39 45.51a6 6 0 009.06 0C278.31 88.81 308.84 64 352.92 64c60.62 0 110.45 50.52 111.08 112.64.54 54.21-18.63 104.26-58.61 153-18.77 22.87-52.8 59.45-131.39 112.8a32 32 0 01-18 5.56z' /></svg>
                             {enemyHp} / {maxHp}
                         </div>
                     </div>
@@ -335,7 +334,7 @@ export default function EnemyCard(props) {
                 <div className="bottom_section">
                     <div className="update_hp">
                         <div className="left">
-                            <input className="adjustHpBy" type="number" name="adjustHpBy"/>
+                            <input className="adjustHpBy" type="number" name="adjustHpBy" />
                         </div>
                         <div className="right">
                             <p className="damage_heal_buttons" name="damage" onClick={adjustHpButton}>
@@ -352,10 +351,10 @@ export default function EnemyCard(props) {
             {/* STATS */}
             <ul className="stats">
 
-                <li className="class" 
-                    data-mod={`${getStatMod(props.enemy.stats.STR)}`} 
+                <li className="class"
+                    data-mod={`${getStatMod(props.enemy.stats.STR)}`}
                     onClick={rollSavingThrow}>
-                    STR 
+                    STR
                     <span>{props.enemy.stats.STR}{getStatMod(props.enemy.stats.STR)}</span>
                 </li>
 
@@ -366,8 +365,8 @@ export default function EnemyCard(props) {
                 </li>
 
                 <li className="class"
-                data-mod={`${getStatMod(props.enemy.stats.CON)}`}
-                onClick={rollSavingThrow}>
+                    data-mod={`${getStatMod(props.enemy.stats.CON)}`}
+                    onClick={rollSavingThrow}>
                     CON <span>{props.enemy.stats.CON}{getStatMod(props.enemy.stats.CON)}</span>
                 </li>
 
@@ -392,7 +391,7 @@ export default function EnemyCard(props) {
 
             {/* COMBAT ACTIONS */}
             <div className="toggles">
-                        <div className="advantage" onClick={advantageToggle}>
+                <div className="advantage" onClick={advantageToggle}>
                     <div className="toggle"></div>
                     <p>Advantage</p>
                 </div>
@@ -403,9 +402,9 @@ export default function EnemyCard(props) {
             </div>
 
             <div className="actions scrolling">
-                { props.enemy.hasOwnProperty('actions') ? props.enemy.actions.map((action, index) => buildAction(action, index)) : console.log("enemy has no actions.")}
-                { props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities.length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : null : null}
-                { props.enemy.spell_caster ? props.enemy.spells.map((spell, index) => buildMagic(spell, index)) : null}
+                {props.enemy.hasOwnProperty('actions') ? props.enemy.actions.map((action, index) => buildAction(action, index)) : console.log("enemy has no actions.")}
+                {props.enemy.hasOwnProperty('special_abilities') ? props.enemy.special_abilities.length > 0 ? props.enemy.special_abilities.map((ability, index) => buildAbility(ability, index)) : null : null}
+                {props.enemy.spell_caster ? props.enemy.spells.map((spell, index) => buildMagic(spell, index)) : null}
 
             </div>
         </StyledCard>

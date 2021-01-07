@@ -47,11 +47,11 @@ export default function RandomEncounter() {
   //     Functions    //
   // ================ //
   const updateToastMenu = (str) => {
-      const html = <StyledToast>
-          {str}
-      </StyledToast>
-      dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-      dispatch(updateToastData(html)); // default parent is a div with flex turned on.
+    const html = <StyledToast>
+      {str}
+    </StyledToast>
+    dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
+    dispatch(updateToastData(html)); // default parent is a div with flex turned on.
   };
 
   const rollEnemyEncounter = (e) => {
@@ -129,32 +129,32 @@ export default function RandomEncounter() {
 
   const addEnemy = () => {
 
-    if(searchInput === "") {return};
-    
+    if (searchInput === "") { return };
+
     // STEP 1: Check if the enemy you are adding is a real thing
     try {
 
       const cleanedSearchResult = searchInput.toLowerCase().trim().replace(/ /g, "-");
 
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
-      .then(enemyFromApi => {
-        // console.log(enemyFromApi);
-        // Step 1: update enemy roster.
-        const newEnemyRoster = enemyRoster;
-        newEnemyRoster.push(enemyFromApi.data);
-        updateenemyRoster(newEnemyRoster);
+        .then(enemyFromApi => {
+          // console.log(enemyFromApi);
+          // Step 1: update enemy roster.
+          const newEnemyRoster = enemyRoster;
+          newEnemyRoster.push(enemyFromApi.data);
+          updateenemyRoster(newEnemyRoster);
 
-        // Step 2: update the list we are going to send to the server.
-        const newListOfEnemies = inputeEnemies;
-        newListOfEnemies.push(cleanedSearchResult);
-        updateinputeEnemies(newListOfEnemies);
+          // Step 2: update the list we are going to send to the server.
+          const newListOfEnemies = inputeEnemies;
+          newListOfEnemies.push(cleanedSearchResult);
+          updateinputeEnemies(newListOfEnemies);
 
-        // Step 3: Clear input
-        updatesearchInput("");
-      }).catch(err => {
-        updateToastMenu(<p>{`Unable to find ${searchInput} in our library.`}</p>); //todo add custom monster api
-        return;
-      });
+          // Step 3: Clear input
+          updatesearchInput("");
+        }).catch(err => {
+          updateToastMenu(<p>{`Unable to find ${searchInput} in our library.`}</p>); //todo add custom monster api
+          return;
+        });
     } catch (error) {
       updateToastMenu("Something has gone wrong.");
       return;
@@ -248,7 +248,8 @@ export default function RandomEncounter() {
           </StyledOptionBox>
 
           <StyledListOfEnemies>
-            {enemyRoster.map((enemy, index) => {return <div className="enemy_list" key={index}>
+            {enemyRoster.map((enemy, index) => {
+              return <div className="enemy_list" key={index}>
                 <div className="stat_info">
                   <h4>{enemy.name === undefined ? "Enemy" : enemy.name.charAt(0).toUpperCase()}{enemy.name.slice(1)}</h4>
                   {enemy.challenge_rating === undefined ? "0" : <p>Challenge Rating: {enemy.challenge_rating}</p>}
@@ -261,7 +262,8 @@ export default function RandomEncounter() {
                       <path index={index} onClick={removeItemByIndex} fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
                   </p>
                 </div>
-              </div>;})}
+              </div>;
+            })}
           </StyledListOfEnemies>
 
           <StyledButton onClick={rollEnemyEncounter}>
@@ -280,8 +282,8 @@ export default function RandomEncounter() {
           <p>{enemyEncounter.info}</p>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
-      return <EnemyCard key={index} enemy={enemy} />;
-    })}
+              return <EnemyCard key={index} enemy={enemy} />;
+            })}
           </StyledDeck>
         </StyledFrame>
         <div className="end_battle" onClick={clearEnemyEncounter}>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import StyledToastWindow from "../../styles/StyledToastWindow";
+import StyledToast from "../../styles/StyledToast";
 import { useDispatch } from "react-redux";
 import { updateToastData, showToastMenuState } from "../../redux/actions";
 import Footer from "../../components/Footer/Footer";
-import { svg_book } from "../../styles/svg";
+import { svg_book } from "../../styles";
 
 export default function UploadPage() {
   // HOOKS
@@ -29,7 +29,7 @@ export default function UploadPage() {
 
     // TODO: add confirm field. 
 
-    const POSTrequest = {
+    let POSTrequest = {
       password: passwordField,
       encounter: {
         enemies: enemyArray,
@@ -48,7 +48,7 @@ export default function UploadPage() {
       || locationField === "select a location"
     ) {
       alert(`Bad Data: Check password, enemies, And information fields. `);
-      console.log(POSTrequest);
+
       return;
     } else {
       // edgecase: all friendly encounters are level 1
@@ -203,12 +203,14 @@ export default function UploadPage() {
       // ======= //
       //   JSX   //
       // ======= //
-      <StyledToastWindow>
-        <h4>Title</h4>
+      <StyledToast>
         <section>
+          <h2>Title</h2>
+          <h3>Title</h3>
+          <h4>Title</h4>
           <p>Body</p>
         </section>
-      </StyledToastWindow>
+      </StyledToast>
 
     // ============== //
     //   CALL TOAST   //

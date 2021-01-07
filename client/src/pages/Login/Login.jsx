@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import axios from 'axios';
-import Menu from '../../components/Menu/Menu';
-import Toast from '../../components/Toast/Toast';
-import { 
+import Nav from '../../components/Nav/Nav';
+import {
     showToastMenuState,
     updateToastData,
     updateUserName,
-    updateLogin } from "../../redux/actions";
+    updateLogin
+} from "../../redux/actions";
 
 export default function Login(props) {
     // ========= //
@@ -50,17 +50,17 @@ export default function Login(props) {
         };
 
         axios.post("/login/attempt", POSTobject)
-        .then(serverData => {
-            console.log(serverData.data);
-            updateToastMenu(serverData.data.msg);
-            
-            if(serverData.data.msg === "I like cake") {
-                dispatch(updateLogin(true));
-            };
-        })
-        .catch(err => {
-            updateToastMenu(err.data.err)
-        })
+            .then(serverData => {
+                console.log(serverData.data);
+                updateToastMenu(serverData.data.msg);
+
+                if (serverData.data.msg === "I like cake") {
+                    dispatch(updateLogin(true));
+                };
+            })
+            .catch(err => {
+                updateToastMenu(err.data.err)
+            })
 
     }
 
@@ -69,15 +69,14 @@ export default function Login(props) {
             <h1>Hello World</h1>
 
             <label htmlFor="user_name">Enter User Name:</label>
-            <input value={userNameState} type="text" name="user_name" onChange={updateUserNameField}/>
+            <input value={userNameState} type="text" name="user_name" onChange={updateUserNameField} />
 
             <label htmlFor="password">Enter Password:</label>
-            <input value={userPasswordState} name="password" type="password" onChange={(e) => updateUserPasswordState(e.target.value)}/>
+            <input value={userPasswordState} name="password" type="password" onChange={(e) => updateUserPasswordState(e.target.value)} />
 
             <div className="login" onClick={submitUserName}>Sign In</div>
-            <Toast />
             <Link to={'/upload'}>Upload</Link>
-            <Menu />
+            <Nav/>
         </StyledLogin>
     )
 }

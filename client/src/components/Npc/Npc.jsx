@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
+import StyledToast from "../../styles/StyledToast"; // folder path may be different
+
 
 export default function Npc() {
     // =================== //
@@ -13,12 +15,23 @@ export default function Npc() {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastMenu = (str) => {
-        const tempValue = <StyledToast>
-            {str}
-        </StyledToast>
-        dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-        dispatch(updateToastData(tempValue)); // default parent is a div with flex turned on.
+    const updateToastHandler = (data) => {
+        const toastData =
+
+            // ======= //
+            //   JSX   //
+            // ======= //
+            <StyledToast>
+                <section>
+                    {data}
+                </section>
+            </StyledToast>
+
+        // ============== //
+        //   CALL TOAST   //
+        // ============== //
+        dispatch(updateToastData(toastData));
+        dispatch(showToastMenuState(true));
     }
 
     const createNPC = {
@@ -28,22 +41,22 @@ export default function Npc() {
         weapon: "",
         coin: "",
         item: "",
-      };
+    };
 
-      const updateNPC = () => {
+    const updateNPC = () => {
         axios.get("/api/npc")
-        .then(data => {
-          const toast =  <p>{data.data.name}, {data.data.desc}</p>;
-          updateToastMenu(toast);
-          updateNpc(data.data);
-        }).catch(err => {
-          // do nothin
-        });
-      }
+            .then(data => {
+                const toast = <p>{data.data.name}, {data.data.desc}</p>;
+                updateToastHandler(toast)
+                updateNpc(data.data);
+            }).catch(err => {
+                // do nothin
+            });
+    }
 
 
-      // HOOK //
-    const [ npc, updateNpc ] = useState(createNPC);
+    // HOOK //
+    const [npc, updateNpc] = useState(createNPC);
 
     // ========== //
     //   RETURN   //
@@ -144,39 +157,3 @@ const StyledButton = styled.button`
         outline: none;
     }
 `;
-
-// ======= //
-//   NPC   //
-// ======= //
-const StyledNpc = styled.div`
-
-`;
-
-// ========= //
-//   TOAST   //
-// ========= //
-const StyledToast = styled.section`
-    font-weight: 400;
-    font-size: 16px;
-    text-align: center;
-    color: #2d3436;
-    background-color: #fff;
-    padding: .5em;
-
-    p {
-        padding: .5em 0;
-
-        i {
-            font-style: italic;
-        }
-
-        span {
-            font-weight: 600;
-        }
-    }
-
-    h4 {
-        font-weight: 600;
-        font-size: 1.5em;
-    }
-`

@@ -1,7 +1,7 @@
 // ========== //
 //   IMPORT   //
 // ========== //
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
@@ -29,7 +29,7 @@ export default function RollPlayToHit() {
             <p>Gripping my mace <span><i>Adinnale</i></span> tightly in my hand. I take a breath all the way down into my belly then shout!</p>
             <h4>"Whost thy father!"</h4>
             <p>And unleash my blow upon thy head.</p>
-            <p>(Hit roll: {Math.floor(Math.random() * 20 ) + 1}) (Damage: {Math.floor(Math.random() * 8) + 3})</p>
+            <p>(Hit roll: {Math.floor(Math.random() * 20) + 1}) (Damage: {Math.floor(Math.random() * 8) + 3})</p>
         </StyledToast>
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(tempValue)); // default parent is a div with flex turned on.

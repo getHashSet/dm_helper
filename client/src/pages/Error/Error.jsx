@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GoHome from '../../components/GoHome/GoHome';
 
 export default class Home extends Component {
     render() {

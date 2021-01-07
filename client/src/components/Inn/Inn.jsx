@@ -30,12 +30,12 @@ export default function Inn() {
     e.preventDefault();
 
     axios.get("/api/rumor")
-    .then(data => {
-      const toast =  <p>{data.data.rumor.toString()}</p>;
-      updateToastMenu(toast);
-    }).catch(err => {
-      // do nothin
-    });
+      .then(data => {
+        const toast = <p>{data.data.rumor.toString()}</p>;
+        updateToastMenu(toast);
+      }).catch(err => {
+        // do nothin
+      });
   };
 
   const refreshTavern = (e) => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
@@ -8,15 +8,11 @@ import axios from 'axios';
 //   COMPONENT   //
 // ============= //
 export default function ActionMagic(props) {
-    // =================== //
-    //   HOOK INTO STATE   //
-    // =================== //
-    const [spellData, updateSpellData] = useState({
-        desc: "magic",
-        name: "spell",
-    });
+    // =============================== //
+    //   HOOKS & COMPONENT VARIABLES   //
+    // =============================== //
     const dispatch = useDispatch(); // used to send data back to redux
-    
+
     // ================ //
     //     Functions    //
     // ================ //
@@ -27,13 +23,13 @@ export default function ActionMagic(props) {
     };
 
     const creatToastMessage = () => {
-        
+
         axios.get(`https://www.dnd5eapi.co${props.spell.url}`)
-        .then(spellInfo => {
-            console.log(spellInfo.data);
-            const toastMsg = <StyledToast>{spellInfo.data.desc}</StyledToast>;
-            updateToastMenu(toastMsg);
-        });
+            .then(spellInfo => {
+                console.log(spellInfo.data);
+                const toastMsg = <StyledToast>{spellInfo.data.desc}</StyledToast>;
+                updateToastMenu(toastMsg);
+            });
     }
 
     // ========== //
@@ -137,7 +133,7 @@ const StyledAction = styled.div`
     &:active {
         transform: translateY(3px);
     }
-`; 
+`;
 
 const StyledToast = styled.p`
     background-color: #fff;

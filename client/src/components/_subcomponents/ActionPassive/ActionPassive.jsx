@@ -15,7 +15,7 @@ export default function ActionPassive(props) {
     //   HOOK INTO STATE   //
     // =================== //
     const dispatch = useDispatch(); // used to send data back to redux
-    
+
     // ================ //
     //     Functions    //
     // ================ //
@@ -129,7 +129,7 @@ const StyledAction = styled.div`
     &:active {
         transform: translateY(3px);
     }
-`; 
+`;
 
 const StyledToast = styled.p`
     font-size: 20px;

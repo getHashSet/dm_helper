@@ -4,10 +4,10 @@ import styled from "styled-components";
 
 export default function DiscreteSlider(props) {
   function valuetext(value) {
-      if (props.difficulty !== value) {
-        console.log(value);
-        props.updateDificulty(value);
-      }
+    if (props.difficulty !== value) {
+      console.log(value);
+      props.updateDificulty(value);
+    }
     return `${value}`;
   }
 
