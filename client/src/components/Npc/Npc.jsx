@@ -75,12 +75,9 @@ export default function Npc() {
                     <p>Side Pouch: {npc.coin}</p>
                     <p>Other Items: {npc.item}</p>
                     <p>Equip: {npc.weapon}</p>
+                    <p>Story:</p>
                     <p>Passive Perception: {npc.passivePerception}</p>
                 </div>
-                <StyledButton onClick={updateNPC}>
-                    {svg_d20}
-                    <span>Pick Pocket</span>
-                </StyledButton>
 
                 <StyledRefresh onClick={() => { updateToastHandler("Refreshed NPC") }} title="Refresh Shop">
                     {svg_refresh}

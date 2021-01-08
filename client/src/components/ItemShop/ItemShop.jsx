@@ -36,8 +36,10 @@ export default function ItemShop() {
 
                 <p className="description">Select the type of shop your adventures have wandered into. This will list the shop owner, whats for sale in the shop and how much gold they have on their person and behind the counter.</p>
 
+                <label htmlFor="shop">Type of shop: </label> 
+                {/* TODO create a toast menu to pick the shop type */}
                 <select name="shop">
-                    <option value="item_shop">Item Shop</option>
+                    <option value="item_shop" selected>Item Shop</option>
                     <option value="black_smith">Black Smith</option>
                     <option value="stable">Stable</option>
                     <option value="magic_shop">Magic Shop</option>
@@ -52,12 +54,16 @@ export default function ItemShop() {
                     <p>Gold in shop</p>
                 </section>
 
-                <section>
+                <section className="wire_block">
                     <h3>Menu</h3>
-                    <p>Items</p>
+                    <div className="menu">
+                        <p>Healing Potion <span>Heals 2d4 + 2 hp</span> <span>10gp</span></p>
+                        <p>Dagger <span>Deals 1d4 damage.</span><span>2gp</span></p>
+                        <p>Travel Mead <span>A drink for the road</span><span>4sp</span></p>
+                    </div>
                 </section>
 
-                <StyledRefresh onClick={() => { updateToastHandler("Refreshed This Shop") }} title="Refresh Shop">
+                <StyledRefresh className="clickable" onClick={() => { updateToastHandler("Refreshed This Shop") }} title="Refresh Shop">
                     {svg_refresh}
                 </StyledRefresh>
 
@@ -70,14 +76,40 @@ export default function ItemShop() {
 //   STYLES   //
 // ========== //
 const StyledRoot = styled.section`
+    padding: 3em .5em 4em;
+    background-color: ${props => props.theme.color.gold};
+    color: white;
 
+    .wire_block {
+        max-width: 500px;
+        background-color: white;
+        border: 1px solid white;
+
+        h3 {
+            left: 1em;
+            background-color: ${props => props.theme.color.gold};
+            color: white;
+            border: 2px solid white;
+        }
+
+        .menu {
+            p {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid ${props => props.theme.color.gold};
+            }
+            background-color: white;
+            color: ${props => props.theme.color.dark};
+        }
+
+    }
 `;
 
 const StyledRefresh = styled.div`
   position: absolute;
   top: 1em;
   right: 1em;
-  color: ${props => props.theme.color.dark};
+  color: ${props => props.theme.color.white};
 
   @media (max-width: ${props => props.theme.breakpoint.mobile}) {
     svg {
