@@ -4,7 +4,8 @@ import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
 import StyledToast from "../../styles/StyledToast"; // folder path may be different
-import { svg_d20, svg_npc, svg_refresh } from "../../styles";
+import { svg_npc, svg_refresh } from "../../styles";
+import { StyledChapter } from '../../styles/Styled';
 
 
 export default function Npc() {
@@ -63,7 +64,7 @@ export default function Npc() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection>
+        <StyledChapter>
             <StyledFrame>
                 <h2>
                     {svg_npc}NPC Generator
@@ -84,7 +85,7 @@ export default function Npc() {
                 </StyledRefresh>
 
             </StyledFrame>
-        </StyledSection>
+        </StyledChapter>
     )
 }
 
