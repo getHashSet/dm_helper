@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
-import StyledToast from '../../../styles/StyledToast';
+import { StyledToast } from '../../../styles/StyledElements';
 import ActionAttack from '../ActionAttack/ActionAttack';
 import ActionPassive from '../ActionPassive/ActionPassive';
 import ActionMagic from '../ActionMagic/ActionMagic';

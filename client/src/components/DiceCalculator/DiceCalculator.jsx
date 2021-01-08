@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
-import StyledToast from '../../styles/StyledToast';
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_caret_left, svg_d20 } from '../../styles';
+import { StyledToast } from '../../styles/StyledElements';
+
 
 export default function RollToHit() {
     // =================== //

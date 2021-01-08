@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { updateToastData, showToastMenuState } from "../../redux/actions"; // folder path may be different
 import { svg_search } from '../../styles';
-import { StyledChapter, StyledFrame, StyledToast, StyledWireFrame } from '../../styles/Styled';
+import { StyledChapter, StyledFrame, StyledToast, StyledWireFrame } from '../../styles/StyledElements';
 
 // ============== //
 //     EXPORT     //

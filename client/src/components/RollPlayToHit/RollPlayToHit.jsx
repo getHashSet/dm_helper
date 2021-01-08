@@ -3,10 +3,11 @@
 // ========== //
 import React from 'react';
 import styled from 'styled-components';
-import StyledToast from '../../styles/StyledToast';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_d20 } from '../../styles';
+import { StyledToast } from '../../styles/StyledElements';
+
 
 // ============== //
 //     EXPORT     //

@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import { StyledFrame, StyledChapter } from '../../styles/StyledElements';
+
 
 // ============= //
 //   COMPONENT   //
@@ -17,8 +18,8 @@ export default function Conditions() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection className="chapter">
-            <div className="frame">
+        <StyledChapter>
+            <StyledFrame>
                 <h2>Conditions</h2>
                 <p>Display all the conditions here for the toast menu.</p>
                 <p>Unconscious Stunned, Restrained, Prone, Poisoned, Petrified, Paralyzed, Invisible, Incapacitated, Grappled, Frightened, Deafened, Charmed, Blinded</p>
@@ -56,14 +57,7 @@ export default function Conditions() {
                         <div className="desc">Death</div>
                     </li>
                 </ul>
-            </div>
-        </StyledSection>
+            </StyledFrame>
+        </StyledChapter>
     )
 }
-
-// ========== //
-//   STYLES   //
-// ========== //
-const StyledSection = styled.section`
-    padding: .5em;
-`;

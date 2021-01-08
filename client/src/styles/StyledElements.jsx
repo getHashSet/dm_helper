@@ -101,6 +101,7 @@ export const StyledToast = styled.article`
     color: ${props => props.theme.color.text};
     width: 100%;
     max-width: ${props => props.theme.max.width};
+    z-index: 10000;
 
     section {
         padding: 1em;
@@ -303,4 +304,22 @@ export const StyledToast = styled.article`
     @media (max-width: ${props => props.theme.breakpoint.mobile}) {
         width: calc(100vw - 1em);
     }
+`;
+
+//   REFRESH BUTTON   //
+export const StyledRefresh = styled.div`
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  color: ${props => props.fontColor ? props.fontColor : props.theme.color.dark};
+
+  @media (max-width: ${props => props.theme.breakpoint.mobile}) {
+    svg {
+      transition: transform 0;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
 `;

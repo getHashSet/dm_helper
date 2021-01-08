@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
 import { svg_beer, svg_d20, svg_refresh } from "../../styles";
+import { StyledToast } from '../../styles/StyledElements';
+
 
 Inn.defaultProps = {};
 
@@ -180,27 +182,27 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledToast = styled.section`
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-  background-color: #fff;
-  padding: .5em;
+// const StyledToast = styled.section`
+//   font-weight: 400;
+//   font-size: 16px;
+//   text-align: center;
+//   background-color: #fff;
+//   padding: .5em;
 
-  p {
-    padding: 0.5em 0;
+//   p {
+//     padding: 0.5em 0;
 
-    i {
-      font-style: italic;
-    }
+//     i {
+//       font-style: italic;
+//     }
 
-    span {
-      font-weight: 600;
-    }
-  }
+//     span {
+//       font-weight: 600;
+//     }
+//   }
 
-  h4 {
-    font-weight: 600;
-    font-size: 1.5em;
-  }
-`;
+//   h4 {
+//     font-weight: 600;
+//     font-size: 1.5em;
+//   }
+// `;

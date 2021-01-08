@@ -6,10 +6,11 @@ import styled from "styled-components";
 import Slider from "../_subcomponents/Slider/Slider";
 import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
 import axios from "axios";
-import StyledToast from "../../styles/StyledToast";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_plus, svg_trash } from '../../styles';
+import { StyledToast } from '../../styles/StyledElements';
+
 // ===================== //
 //     DEFAULT PROPS     //
 // ===================== //

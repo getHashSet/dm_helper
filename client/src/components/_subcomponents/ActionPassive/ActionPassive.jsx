@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
+import { StyledToast } from '../../../styles/StyledElements';
 
 // ========= //
 //   PROPS   //
@@ -129,14 +130,4 @@ const StyledAction = styled.div`
     &:active {
         transform: translateY(3px);
     }
-`;
-
-const StyledToast = styled.div`
-    font-size: 20px;
-    font-weight: 300;
-    font-family: 'Roboto Slab', serif;
-    line-height: 1.2em;
-    color: #2d3436;
-    background-color: #fff;
-    padding: .5em;
 `;
