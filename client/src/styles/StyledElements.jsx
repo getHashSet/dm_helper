@@ -106,198 +106,180 @@ export const StyledToast = styled.article`
     section {
         padding: 1em;
     }
+`;
 
-    //   DiceRolls   //
-    .dice_rolls {
-        font-size: 1.5em; // make larger
+//   DICE ROLL   //
+export const StyledDiceRoll = styled.div`
+    text-align: center;
+    padding: .5em .5em 2em .5em;
+
+    h3 {
+        text-align: center;
+        font-size: 2em;
+        padding: 0 0 .5em 0;
+        margin: .3em 0;
+        border-bottom: 1px solid #bdc3c7;
+    }
+
+    h4 {
+        padding: 1em .5em;
+        font-weight: 200;
+        font-size: 3em;
+        font-family: ${props => props.theme.font.title};
+
+        span {
+            font-weight: 900;
+        }
+    }
+
+    .heading {
+        width: 100%;
+        padding: .5em 0 .3em 0;
+        font-weight: 400;
+        font-size: .8em;
+        color: #7f8c8d;
+    }
+
+    .roll { //div
+        display: flex;
+        margin: 0;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid #bdc3c7;
 
         p {
-            width: 100%;
-            margin-bottom: 1em;
-            text-align: center;
-        }
+            width: 50%;
+            padding: .3em;
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
 
-        h3 {
-            text-align: center;
-            font-size: 2em;
-            padding: 0 0 .5em 0;
-            margin: .3em 0;
-            border-bottom: 1px solid #bdc3c7;
-        }
-
-        h4 {
-            padding: .5em .5em 1em .5em;
-            font-weight: 600;
-            text-align: center;
-            border-bottom: 1px solid #bdc3c7;
-        }
-
-        .overflow {
-            height: 0px;
-            max-height: 50vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 0 .5;
-            margin: .5;
-
-            div {
-                text-align: center;
-                display: flex;
-                flex-wrap: nowrap;
-                width: 100%;
-                border-bottom: 1px solid #bdc3c7;
-
-                .the_roll {
-                    text-align: center;
-                    border-left: 1px solid #bdc3c7;
-                }
-            }
-
-            span {
-                font-weight: 200;
-                font-style: italic;
-                font-size: .8em;
-                color: #34495e;
-            }
-
-            p {
-                display: block;
+            &:first-child {
+                border-right: 1px solid #bdc3c7;
                 font-weight: 400;
-                font-size: .5em;
-                padding: .2em;
-                margin: 0;
-                text-align: center;
-            }
 
-            &.expand {
-                height: auto;
-            }
-
-            &::-webkit-scrollbar {
-                width: 5px;
-                height: 80%;
-                background-color: rgba(255, 255, 255, 0.6);
-            }
-            
-            &::-webkit-scrollbar-track {
-                background-color: #bdc3c7;
-            }
-            
-            &::-webkit-scrollbar-thumb {
-                background-color: #7f8c8d;
+                span {
+                    padding-right: .5em;
+                    font-size: .8em;
+                    font-style: italic;
+                    color: #7f8c8d;
+                }
             }
         }
     }
 
-    //   TODO: Pick a dice roll format   //
-    .dice_roll {
-        text-align: center;
-        padding: .5em .5em 2em .5em;
+    .formula {
+        padding: 1em;
+        border: 1px solid #bdc3c7;
+        font-weight: 400;
+        font-style: italic;
 
-        h4 {
-            padding: 1em .5em;
-            font-weight: 200;
-            font-size: 3em;
-            font-family: ${props => props.theme.font.title};
-
-            span {
-                font-weight: 900;
-            }
+        span {
+            font-weight: 600;
+            font-style: normal;
         }
 
-        .heading {
-            width: 100%;
-            padding: .5em 0 .3em 0;
-            font-weight: 400;
-            font-size: .8em;
-            color: #7f8c8d;
+        &.selectedRoll {
+            opacity: .5;
         }
+    }
 
-        .roll { //div
+    .hit_dice {
+        &:last-child {
+            border-top: none;
+        }
+    }
+
+    .totals {
+        font-weight: 400;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px 8px 0 0;
+        border: 1px solid #bdc3c7;
+        border-bottom: none;
+
+        p {
             display: flex;
-            margin: 0;
-            flex-wrap: nowrap;
+            flex-grow: 1;
             justify-content: center;
             align-items: center;
-            border-top: 1px solid #bdc3c7;
-
-            p {
-                width: 50%;
-                padding: .3em;
-                display: flex;
-                flex-grow: 1;
-                justify-content: center;
-                align-items: center;
-
-                &:first-child {
-                    border-right: 1px solid #bdc3c7;
-                    font-weight: 400;
-
-                    span {
-                        padding-right: .5em;
-                        font-size: .8em;
-                        font-style: italic;
-                        color: #7f8c8d;
-                    }
-                }
-            }
-        }
-
-        .formula {
-            padding: 1em;
-            border: 1px solid #bdc3c7;
-            font-weight: 400;
-            font-style: italic;
+            padding: .5em;
+            margin-bottom: 0;
+            width: 50%;
 
             span {
                 font-weight: 600;
-                font-style: normal;
+                padding: 0 .2em;
             }
 
-            &.selectedRoll {
-                opacity: .5;
-            }
-        }
-
-        .hit_dice {
-            &:last-child {
-                border-top: none;
+            &:first-child {
+                border-right: 1px solid #bdc3c7;
             }
         }
+    }
 
-        .totals {
-            font-weight: 400;
+    .multiattack {
+        font-weight: 400;
+        padding: .5em;
+    }
+
+    .overflow {
+        height: 0px;
+        max-height: 50vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0 .5;
+        margin: .5;
+
+        div {
+            text-align: center;
             display: flex;
             flex-wrap: nowrap;
-            justify-content: center;
-            align-items: center;
-            border-radius: 8px 8px 0 0;
-            border: 1px solid #bdc3c7;
-            border-bottom: none;
+            width: 100%;
+            border-bottom: 1px solid #bdc3c7;
 
-            p {
-                display: flex;
-                flex-grow: 1;
-                justify-content: center;
-                align-items: center;
-                padding: .5em;
-                margin-bottom: 0;
-                width: 50%;
-
-                span {
-                    font-weight: 600;
-                    padding: 0 .2em;
-                }
-
-                &:first-child {
-                    border-right: 1px solid #bdc3c7;
-                }
+            .the_roll {
+                text-align: center;
+                border-left: 1px solid #bdc3c7;
             }
         }
 
-        .multiattack {
+        span {
+            font-weight: 200;
+            font-style: italic;
+            font-size: .8em;
+            color: #34495e;
+        }
+
+        p {
+            display: block;
             font-weight: 400;
-            padding: .5em;
+            font-size: .5em;
+            padding: .2em;
+            margin: 0;
+            text-align: center;
+        }
+
+        &.expand {
+            height: auto;
+        }
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 80%;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: #bdc3c7;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #7f8c8d;
         }
     }
 

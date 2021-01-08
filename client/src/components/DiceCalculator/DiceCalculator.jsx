@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_caret_left, svg_d20 } from '../../styles';
-import { StyledToast } from '../../styles/StyledElements';
+import { StyledDiceRoll, StyledToast } from '../../styles/StyledElements';
 
 
 export default function RollToHit() {
@@ -266,15 +266,15 @@ export default function RollToHit() {
         // ===== //
         const toast =
             <StyledToast>
-                <section className="dice_rolls">
-                    <h3>{finalValue}</h3>
+                <StyledDiceRoll>
+                    <h4>{finalValue}</h4>
 
-                    <h4>{calculatorOutput}</h4>
+                    <h3>{calculatorOutput}</h3>
 
                     <div className={`overflow expand`}>
                         {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
                     </div>
-                </section>
+                </StyledDiceRoll>
             </StyledToast>;
 
         // Edge Case: Negative Numbers

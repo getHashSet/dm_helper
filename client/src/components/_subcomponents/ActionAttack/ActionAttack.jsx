@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
-import { StyledToast } from '../../../styles/StyledElements';
+import { StyledToast, StyledDiceRoll } from '../../../styles/StyledElements';
 
 // ============= //
 //   COMPONENT   //
@@ -277,7 +277,7 @@ export default function ActionAttack(props) {
 
         const reactElement =
             <StyledToast>
-                <section className="dice_roll">
+                <StyledDiceRoll>
                     <h4>{hitRollText}</h4>
                     <div className="totals">
                         {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
@@ -300,7 +300,7 @@ export default function ActionAttack(props) {
                             </p>
                         </div>
                     })}
-                </section>
+                </StyledDiceRoll>
             </StyledToast>
         updateToastHandler(reactElement);
         reset();
