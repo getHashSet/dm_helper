@@ -6,7 +6,8 @@ STEP 1: Import the following into your component.
 import StyledToast from "../../styles/StyledToast"; // folder path may be different
 import { useDispatch } from "react-redux";
 import { updateToastData, showToastMenuState } from "../../redux/actions"; // folder path may be different
-import Footer from "../../components/Footer/Footer"; // folder path may be different
+
+// dipendencey on Nav Menu else you need to import Toast into the app.
 
 STEP 2: Add dispatch to a variable
 const dispatch = useDispatch();
@@ -34,6 +35,13 @@ dispatch(updateToastData(toastData));
 dispatch(showToastMenuState(true));
 }
 
+// SHORT VERISON //
+const updateToastHandler = data => {
+    const toastData = <StyledToast>{data}</StyledToast>;
+    dispatch(updateToastData(toastData));
+    dispatch(showToastMenuState(true));
+};
+
 Example Use:
 <div onClick={updateToastHandler}> Click Me! </div>
 */
@@ -58,37 +66,90 @@ const StyledToastTag = styled.article`
     width: 100%;
     max-width: ${props => props.theme.max.width};
 
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family: ${props => props.theme.font.title};
-        font-weight: 900;
-    }
-
-    h2 {
-        font-size: 2em;
-    }
-
-    h3 {
-        font-size: 1.5em;
-    }
-
-    h4 {
-        font-size: 1.2em;
-    }
-
-    h5 {
-        font-size: 1em;
-    }
-
-    h6 {
-        font-size: .8em;
-    }
-
     section {
         padding: 1em;
+    }
+
+    //   DiceRolls   //
+    .dice_rolls {
+        font-size: 1.5em; // make larger
+
+        p {
+            width: 100%;
+            margin-bottom: 1em;
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 2em;
+            padding: 0 0 .5em 0;
+            margin: .3em 0;
+            border-bottom: 1px solid #bdc3c7;
+        }
+
+        h4 {
+            padding: .5em .5em 1em .5em;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid #bdc3c7;
+        }
+
+        .overflow {
+            height: 0px;
+            max-height: 50vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 .5;
+            margin: .5;
+
+            div {
+                text-align: center;
+                display: flex;
+                flex-wrap: nowrap;
+                width: 100%;
+                border-bottom: 1px solid #bdc3c7;
+
+                .the_roll {
+                    text-align: center;
+                    border-left: 1px solid #bdc3c7;
+                }
+            }
+
+            span {
+                font-weight: 200;
+                font-style: italic;
+                font-size: .8em;
+                color: #34495e;
+            }
+
+            p {
+                display: block;
+                font-weight: 400;
+                font-size: .5em;
+                padding: .2em;
+                margin: 0;
+                text-align: center;
+            }
+
+            &.expand {
+                height: auto;
+            }
+
+            &::-webkit-scrollbar {
+                width: 5px;
+                height: 80%;
+                background-color: rgba(255, 255, 255, 0.6);
+            }
+            
+            &::-webkit-scrollbar-track {
+                background-color: #bdc3c7;
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background-color: #7f8c8d;
+            }
+        }
     }
 
     @media (max-width: ${props => props.theme.breakpoint.mobile}) {

@@ -3,9 +3,9 @@ import styled from "styled-components";
 import axios from "axios";
 import StyledToast from "../../styles/StyledToast";
 import { useDispatch } from "react-redux";
+import Nav from "../../components/Nav/Nav";
 import { updateToastData, showToastMenuState } from "../../redux/actions";
-import Footer from "../../components/Footer/Footer";
-import { svg_book } from "../../styles";
+import { svg_d20 } from "../../styles";
 
 export default function UploadPage() {
   // HOOKS
@@ -225,7 +225,7 @@ export default function UploadPage() {
   return (
     <React.Fragment>
       <StyledMain>
-        <h1 onClick={updateToastHanddler}>{svg_book}</h1>
+        <h1 className="clickable" onClick={updateToastHanddler}>{svg_d20}</h1>
 
         <StyledUploadForm>
           <h2>Authentication Token</h2>
@@ -449,7 +449,7 @@ export default function UploadPage() {
 
         </StyledUploadForm>
       </StyledMain>
-      <Footer />
+      <Nav />
     </React.Fragment>
   );
 }

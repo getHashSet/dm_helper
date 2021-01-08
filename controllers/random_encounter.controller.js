@@ -30,8 +30,8 @@ router.route("/").post(function (req, res) {
   let theMod = 0;
   if (req.body.cr !== undefined || req.body.cr !== null) { theCr = req.body.cr };
   if (req.body.mod !== undefined || req.body.mod !== null) { theMod = req.body.mod };
-  const highCr = +theCr + 1 + +theMod;
-  const lowCr = +theCr + - 1 + +theMod;
+  let highCr = +theCr + 1 + +theMod;
+  let lowCr = +theCr + - 1 + +theMod;
   if (lowCr > 10) {lowCr = 10};
   if (highCr < 1) {highCr = 1};
   // db.Encounters.find({ "cr": {$gt : lowCr, $lt : highCr}});

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
-import { showToastMenuState, updateToastData } from "../../redux/actions";
 import styled from 'styled-components';
-
-RollToHit.defaultProps = {}
+import { useDispatch } from "react-redux";
+import StyledToast from '../../styles/StyledToast';
+import { showToastMenuState, updateToastData } from "../../redux/actions";
+import { svg_caret_left, svg_d20 } from '../../styles';
 
 export default function RollToHit() {
     // =================== //
@@ -143,32 +143,8 @@ export default function RollToHit() {
         return randomNumber.toString();
     }
 
-    // const quickRoll = (max, min) => {
-    //     let d20 = rollRandomNumber(20);
-
-    //     // if(d20 === "20"){
-    //     //     d20 = "Nat 20!"
-    //     // } else if (d20 === "1") {
-    //     //     d20 = "Nat 1..."
-    //     // };
-
-    //     const styledDiceBox = <React.Fragment>
-    //         <StyledDiceBox>
-    //             <div className="background_image">
-    //                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="dice-d20" className="svg-inline--fa fa-dice-d20 fa-w-15" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path fill="currentColor" d="M106.75 215.06L1.2 370.95c-3.08 5 .1 11.5 5.93 12.14l208.26 22.07-108.64-190.1zM7.41 315.43L82.7 193.08 6.06 147.1c-2.67-1.6-6.06.32-6.06 3.43v162.81c0 4.03 5.29 5.53 7.41 2.09zM18.25 423.6l194.4 87.66c5.3 2.45 11.35-1.43 11.35-7.26v-65.67l-203.55-22.3c-4.45-.5-6.23 5.59-2.2 7.57zm81.22-257.78L179.4 22.88c4.34-7.06-3.59-15.25-10.78-11.14L17.81 110.35c-2.47 1.62-2.39 5.26.13 6.78l81.53 48.69zM240 176h109.21L253.63 7.62C250.5 2.54 245.25 0 240 0s-10.5 2.54-13.63 7.62L130.79 176H240zm233.94-28.9l-76.64 45.99 75.29 122.35c2.11 3.44 7.41 1.94 7.41-2.1V150.53c0-3.11-3.39-5.03-6.06-3.43zm-93.41 18.72l81.53-48.7c2.53-1.52 2.6-5.16.13-6.78l-150.81-98.6c-7.19-4.11-15.12 4.08-10.78 11.14l79.93 142.94zm79.02 250.21L256 438.32v65.67c0 5.84 6.05 9.71 11.35 7.26l194.4-87.66c4.03-1.97 2.25-8.06-2.2-7.56zm-86.3-200.97l-108.63 190.1 208.26-22.07c5.83-.65 9.01-7.14 5.93-12.14L373.25 215.06zM240 208H139.57L240 383.75 340.43 208H240z"></path></svg>
-    //             </div>
-    //             <div className="roll_result">
-    //                 {d20}
-    //             </div>
-    //         </StyledDiceBox>
-    //     </React.Fragment>
-
-    //     updateToastMenu(styledDiceBox);
-    // }
-
     const doRollCalculation = (e) => {
         e.preventDefault();
-        console.log("-- Start of Roll --");
 
         let cleanedOutput = calculatorOutput;
         let arrayOfChaos = [];
@@ -245,7 +221,6 @@ export default function RollToHit() {
                         // add it to the nonclean running total array.
                         allTheRolls.push(randomlyRolledNumber);
                     }
-                    console.log(`d${newArrayOfNumbers[1]} Rolls in order: ${allTheRolls}`);
                 } else {
                     // this will catch + - x / and errors.
                     arrayOfChaos[i] = newArrayOfNumbers[0];
@@ -289,28 +264,27 @@ export default function RollToHit() {
         // TOAST //
         // ===== //
         const toast =
-            <StyledToastiness>
+            <StyledToast>
+                <section className="dice_rolls">
+                    <h3>{finalValue}</h3>
 
-                <h3>{finalValue}</h3>
+                    <h4>{calculatorOutput}</h4>
 
-                <h4>{calculatorOutput}</h4>
-
-                <div className={`overflow expand`}>
-                    {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
-                </div>
-
-            </StyledToastiness>;
+                    <div className={`overflow expand`}>
+                        {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
+                    </div>
+                </section>
+            </StyledToast>;
 
         // Edge Case: Negative Numbers
-        updateToastMenu(toast)
-        console.log("-- End of Roll --");
+        updateToastHandler(toast)
     }
 
-    const updateToastMenu = (str) => {
-        // removed. needs to be a prop now updatetoastMenuText(str);
-        dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-        dispatch(updateToastData(str)); // default parent is a div with flex turned on.
-    }
+    const updateToastHandler = data => {
+        const toastData = <StyledToast>{data}</StyledToast>;
+        dispatch(updateToastData(toastData));
+        dispatch(showToastMenuState(true));
+    };
 
     const backspace = () => {
         if (calculatorOutput.length === 1) { updatecalculatorOutput("0"); return; }
@@ -341,7 +315,7 @@ export default function RollToHit() {
                         <div id="output" className="output">
                             <div className="mathFormula">{calculatorOutput}</div>
                             <div onClick={backspace} className="backspace">
-                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-left" className="svg-inline--fa fa-caret-left fa-w-6" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path fill="currentColor" d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z"></path></svg>
+                                {svg_caret_left}    
                             </div>
                         </div>
                         <div className="buttons">
@@ -368,18 +342,7 @@ export default function RollToHit() {
                                 <li onClick={addANumberToTheProblem}><p>d</p></li>
                                 <li onClick={doRollCalculation}>
                                     <p>
-                                        <svg
-                                            aria-hidden="true"
-                                            focusable="false"
-                                            data-prefix="fas"
-                                            data-icon="dice-d20"
-                                            className="svg-inline--fa fa-dice-d20 fa-w-15"
-                                            role="img" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 480 512">
-                                            <path fill="currentColor"
-                                                d="M106.75 215.06L1.2 370.95c-3.08 5 .1 11.5 5.93 12.14l208.26 22.07-108.64-190.1zM7.41 315.43L82.7 193.08 6.06 147.1c-2.67-1.6-6.06.32-6.06 3.43v162.81c0 4.03 5.29 5.53 7.41 2.09zM18.25 423.6l194.4 87.66c5.3 2.45 11.35-1.43 11.35-7.26v-65.67l-203.55-22.3c-4.45-.5-6.23 5.59-2.2 7.57zm81.22-257.78L179.4 22.88c4.34-7.06-3.59-15.25-10.78-11.14L17.81 110.35c-2.47 1.62-2.39 5.26.13 6.78l81.53 48.69zM240 176h109.21L253.63 7.62C250.5 2.54 245.25 0 240 0s-10.5 2.54-13.63 7.62L130.79 176H240zm233.94-28.9l-76.64 45.99 75.29 122.35c2.11 3.44 7.41 1.94 7.41-2.1V150.53c0-3.11-3.39-5.03-6.06-3.43zm-93.41 18.72l81.53-48.7c2.53-1.52 2.6-5.16.13-6.78l-150.81-98.6c-7.19-4.11-15.12 4.08-10.78 11.14l79.93 142.94zm79.02 250.21L256 438.32v65.67c0 5.84 6.05 9.71 11.35 7.26l194.4-87.66c4.03-1.97 2.25-8.06-2.2-7.56zm-86.3-200.97l-108.63 190.1 208.26-22.07c5.83-.65 9.01-7.14 5.93-12.14L373.25 215.06zM240 208H139.57L240 383.75 340.43 208H240z">
-                                            </path>
-                                        </svg>
+                                        {svg_d20}
                                     </p>
                                 </li>
                             </StyledCalcRow>
@@ -532,153 +495,3 @@ const StyledSection = styled.section`
     display: flex;
     justify-content: center;
 `;
-
-// const StyledButton = styled.button`
-//     background: none;
-//     color: #fff;
-//     font-size: 1.5em;
-//     padding: .5em 1em;
-//     margin: .5em;
-//     border-radius: 2em;
-//     border: 1px solid #fff;
-//     text-transform: uppercase;
-//     font-weight: 900;
-
-//     svg {
-//         width: 1em;
-//     }
-
-//     &:hover {
-//         cursor: pointer;
-//         background-color: #2d3436;
-//         color: #fff;
-//         transform: translateY(2px);
-//     }
-
-//     &:active {
-//         transform: translateY(4px);
-//     }
-
-//     &:focus {
-//         outline: none;
-//     }
-// `;
-
-const StyledToastiness = styled.section`
-    width: 100%;
-    color: #34495e;
-    overflow: hidden;
-    background-color: #fff;
-    padding: .5em;
-    width: 100%;
-
-    p {
-        width: 100%;
-        margin-bottom: 1em;
-        text-align: center;
-    }
-
-    h3 {
-        text-align: center;
-        font-size: 2em;
-        padding: 0 0 .5em 0;
-        margin: .3em 0;
-        border-bottom: 1px solid #bdc3c7;
-    }
-
-    h4 {
-        padding: .5em .5em 1em .5em;
-        font-weight: 600;
-        text-align: center;
-        border-bottom: 1px solid #bdc3c7;
-    }
-
-    .overflow {
-        height: 0px;
-        max-height: 50vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 0 .5;
-        margin: .5;
-
-        div {
-            text-align: center;
-            display: flex;
-            flex-wrap: nowrap;
-            width: 100%;
-            border-bottom: 1px solid #bdc3c7;
-
-            .the_roll {
-                text-align: center;
-                border-left: 1px solid #bdc3c7;
-            }
-        }
-
-        span {
-            font-weight: 200;
-            font-style: italic;
-            font-size: .8em;
-            color: #34495e;
-        }
-
-        p {
-            display: block;
-            font-weight: 400;
-            font-size: .5em;
-            padding: .2em;
-            margin: 0;
-            text-align: center;
-        }
-
-        &.expand {
-            height: auto;
-        }
-
-        &::-webkit-scrollbar {
-            width: 5px;
-            height: 80%;
-            background-color: rgba(255, 255, 255, 0.6);
-        }
-        
-        &::-webkit-scrollbar-track {
-            background-color: #bdc3c7;
-        }
-        
-        &::-webkit-scrollbar-thumb {
-            background-color: #7f8c8d;
-        }
-    }
-`;
-
-// ============ //
-//   DICE BOX   //
-// ============ //
-// const StyledDiceBox = styled.section`
-//     position: relative;
-//     width: 220px;
-//     height: 220px;
-//     background-color: #fff;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-
-//     .background_image {
-//         position: absolute;
-//         top: 0;
-//         left: 0;
-//         width: 100%;
-
-//         svg {
-//             color: #e74c3c;
-//             z-index: 0;
-//         }
-//     }
-
-//     .roll_result {
-//         margin-top: .5em;
-//         color: #fff;
-//         font-weight: 900;
-//         font-size: 1.2em;
-//         z-index: 1;
-//     }
-// `;

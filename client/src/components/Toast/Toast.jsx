@@ -69,9 +69,6 @@ const StyledShadowBox = styled.div`
 `;
 
 const StyledToastBox = styled.div`
-    position: absolute;
-    left: 50%;
-    top: 40%;
     min-width: 250px;
     max-width: calc(100vw);
     min-height: 1em;
@@ -86,11 +83,11 @@ const StyledToastBox = styled.div`
     box-shadow: 1px 1px 8px #000;
     opacity: 0;
     transition: transform .3s, opacity .2s;
-    transform: translate(-50%, -90%);
+    transform: translateY(-30%);
     user-select: none;
 
     &.fadeIn {
-        transform: translate(-50%, -50%);
+        transform: translateY(0);
         opacity: 1;
     }
 

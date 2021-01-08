@@ -16,6 +16,8 @@ export const color = {
     darkOrange: "#e67e22",
     yellow: "#f6e58d",
     darkYellow: "#f9ca24",
+    gold: "#ccae62",
+    darkGold: "#a68736",
     text: "#2d3436",
 };
 
@@ -42,5 +44,5 @@ export const font = {
 //   MAX  //
 // ====== //
 export const max = {
-    width: "1400px",
+    width: "1200px",
 }

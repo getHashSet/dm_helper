@@ -450,7 +450,7 @@ const StyledCard = styled.article`
         border-bottom: 1px solid #bdc3c7;
         display: flex;
         flex-wrap: nowrap;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
 
         li {
@@ -514,6 +514,11 @@ const StyledCard = styled.article`
         
         &::-webkit-scrollbar-thumb {
             background-color: #7f8c8d;
+        }
+
+        @media (max-width: ${props => props.theme.breakpoint.mobile}) {
+            height: auto;
+            max-height: 40vh;
         }
     }
 
@@ -642,7 +647,7 @@ const StyledAcHpIn = styled.section`
         overflow: hidden;
         display: flex;
         flex-wrap: nowrap;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
 
         .update_hp {

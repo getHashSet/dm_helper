@@ -6,8 +6,10 @@ import styled from "styled-components";
 import Slider from "../_subcomponents/Slider/Slider";
 import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
 import axios from "axios";
+import StyledToast from "../../styles/StyledToast";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
+import { svg_plus, svg_trash } from '../../styles';
 // ===================== //
 //     DEFAULT PROPS     //
 // ===================== //
@@ -30,7 +32,7 @@ export default function RandomEncounter() {
   const [searchInput, updatesearchInput] = useState("");
   const [enemyRoster, updateenemyRoster] = useState([]);
   const rollTables = [
-    "Plains",
+    "Road",
     "Mountains",
     "Woods",
     "Town",
@@ -46,12 +48,15 @@ export default function RandomEncounter() {
   // ================ //
   //     Functions    //
   // ================ //
-  const updateToastMenu = (str) => {
-    const html = <StyledToast>
-      {str}
-    </StyledToast>
-    dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-    dispatch(updateToastData(html)); // default parent is a div with flex turned on.
+  const updateToastHandler = data => {
+    const toastData =
+      <StyledToast>
+        <section>
+          {data}
+        </section>
+      </StyledToast>;
+    dispatch(updateToastData(toastData));
+    dispatch(showToastMenuState(true));
   };
 
   const rollEnemyEncounter = (e) => {
@@ -152,18 +157,24 @@ export default function RandomEncounter() {
           // Step 3: Clear input
           updatesearchInput("");
         }).catch(err => {
-          updateToastMenu(<p>{`Unable to find ${searchInput} in our library.`}</p>); //todo add custom monster api
+          updateToastHandler(`Unable to find ${searchInput} in our library.`); //todo add custom monster api
           return;
         });
     } catch (error) {
-      updateToastMenu("Something has gone wrong.");
+      updateToastHandler("OOPS!Something has gone wrong.");
       return;
     };
   };
 
   const removeItemByIndex = (e) => {
+
     // Step 1: get index of the array
-    const thisIndex = e.target.getAttribute("index"); // 3
+    let thisIndex;
+
+    // check 3 levels deep, theres got to be a better way of doing this.
+    if (e.target.getAttribute("index") !== null) { thisIndex = e.target.getAttribute("index") }
+    else if (e.target.parentElement.getAttribute("index") !== null) { thisIndex = e.target.parentElement.getAttribute("index") }
+    else if (e.target.parentElement.parentElement.getAttribute("index") !== null) { thisIndex = e.target.parentElement.parentElement.getAttribute("index") }
 
     // Step 2: get the object from that part of the array
     const enemyToRemove = inputeEnemies[thisIndex]; // "enemy name"
@@ -243,23 +254,24 @@ export default function RandomEncounter() {
             <div className="search">
               <label htmlFor="enemyName">Search</label>
               <input value={searchInput} onKeyDown={inputData} onChange={(e) => updatesearchInput(e.target.value)} type="search" name="enemyName" />
-              <div className="add_enemy_button" onClick={addEnemy}><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" className="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></div>
+              <div className="clickable" onClick={addEnemy}>{svg_plus}</div>
             </div>
           </StyledOptionBox>
 
           <StyledListOfEnemies>
             {enemyRoster.map((enemy, index) => {
               return <div className="enemy_list" key={index}>
-                <div className="stat_info">
+                <div className="enemy_name">
                   <h4>{enemy.name === undefined ? "Enemy" : enemy.name.charAt(0).toUpperCase()}{enemy.name.slice(1)}</h4>
-                  {enemy.challenge_rating === undefined ? "0" : <p>Challenge Rating: {enemy.challenge_rating}</p>}
-                  {enemy.hit_points === undefined ? null : <p>Average HP: {enemy.hit_points}</p>}
-                  {enemy.armor_class === undefined ? null : <p>AC: {enemy.armor_class}</p>}
+                </div>
+                <div className="stat_info">
+                  {enemy.challenge_rating === undefined ? "0" : <p>CR {enemy.challenge_rating}</p>}
+                  {enemy.hit_points === undefined ? null : <p>HP {enemy.hit_points}</p>}
+                  {enemy.armor_class === undefined ? null : <p>AC {enemy.armor_class}</p>}
                 </div>
                 <div className="trash">
-                  <p>
-                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" className="svg-inline--fa fa-trash fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                      <path index={index} onClick={removeItemByIndex} fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
+                  <p className="clickable" index={index} onClick={removeItemByIndex} >
+                    {svg_trash}
                   </p>
                 </div>
               </div>;
@@ -286,22 +298,8 @@ export default function RandomEncounter() {
             })}
           </StyledDeck>
         </StyledFrame>
-        <div className="end_battle" onClick={clearEnemyEncounter}>
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="times"
-            className="svg-inline--fa fa-times fa-w-11"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 352 512"
-          >
-            <path
-              fill="currentColor"
-              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-            ></path>
-          </svg>
+        <div className="end_battle clickable" onClick={clearEnemyEncounter}>
+          {svg_trash}
         </div>
       </StyledBattleField>
     </React.Fragment>
@@ -320,20 +318,27 @@ const StyledListOfEnemies = styled.section`
     align-items: center;
     border-bottom: 1px solid white;
 
-    .stat_info {
-      display: flex;
-      padding: 0;
+    .enemy_name {
+      flex-grow: 1;
+      border-right: 1px solid white;
 
       h4 {
-        min-width: 100px;
+        flex-grow: 2;
+        min-width: 15vw;
         font-weight: 900;
         padding: .2em .5em;
-        border-right: 1px solid white;
         text-align: right;
         display: flex;
         justify-content: flex-end;
         align-items: center;
       }
+    }
+
+    .stat_info {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      padding: 0;
 
       p {
         display: inline-block;
@@ -341,33 +346,21 @@ const StyledListOfEnemies = styled.section`
       }
     }
 
-    &:first-child {
-        border-top: 1px solid white;
-      }
-
     .trash {
+      min-width: 20%;
+      flex-grow: 1;
+      font-size: 1em;
       border-left: 1px solid white;
       padding: .2em .5em;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
 
-        svg {
-        width: 1em;
-        max-width: 1em;
-        max-height: 1em;
-
-        &:hover {
-          cursor: pointer;
-        }
-
-        &:active {
-          transform: translateY(4px);
-        }
-      }
+    &:first-child {
+      border-top: 1px solid white;
     }
   }
-
 `;
 
 const StyledSection = styled.section`
@@ -465,17 +458,6 @@ const StyledOptionBox = styled.div`
         outline: none;
       }
     }
-
-    .add_enemy_button {
-      &:hover {
-        cursor: pointer;
-      }
-
-      &:active {
-        transform: translateY(4px);
-      }
-    }
-
   }
 
   ul {
@@ -593,18 +575,6 @@ const StyledBattleField = styled.section`
     position: absolute;
     top: 0.5em;
     right: 0.5em;
-
-    svg {
-      width: 1em;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:active {
-      transform: translateY(4px);
-    }
   }
 `;
 
@@ -630,28 +600,28 @@ const StyledDeck = styled.section`
 // ========= //
 //   TOAST   //
 // ========= //
-const StyledToast = styled.section`
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-  color: #2d3436;
-  background-color: #fff;
-  padding: .5em;
+// const StyledToast = styled.section`
+//   font-weight: 400;
+//   font-size: 16px;
+//   text-align: center;
+//   color: #2d3436;
+//   background-color: #fff;
+//   padding: .5em;
 
-  p {
-    padding: 0.5em 0;
+//   p {
+//     padding: 0.5em 0;
 
-    i {
-      font-style: italic;
-    }
+//     i {
+//       font-style: italic;
+//     }
 
-    span {
-      font-weight: 600;
-    }
-  }
+//     span {
+//       font-weight: 600;
+//     }
+//   }
 
-  h4 {
-    font-weight: 600;
-    font-size: 1.5em;
-  }
-`;
+//   h4 {
+//     font-weight: 600;
+//     font-size: 1.5em;
+//   }
+// `;
