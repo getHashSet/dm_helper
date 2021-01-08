@@ -221,8 +221,8 @@ export default function RandomEncounter() {
   // ========== //
   return (
     <React.Fragment>
-      <StyledSection>
-        <StyledFrame>
+      <StyledSection className="chapter">
+        <StyledFrame className="frame">
           <h2>Random Encounter</h2>
 
           <StyledOptionBox partyLevel={partyLevel}>
@@ -285,13 +285,17 @@ export default function RandomEncounter() {
       </StyledSection>
 
       {/* BATTLE FIELD */}
-      <StyledBattleField
-        className={enemyEncounter.enemies.length > 0 ? "show" : "hide"}
-      >
-        <StyledFrame>
+      <StyledBattleField className={`chapter ${enemyEncounter.enemies.length > 0 ? "show" : "hide"}`} >
+        <StyledFrame className="frame">
           <h2>Battle Field</h2>
-          <p>{enemyEncounter.desc}</p>
-          <p>{enemyEncounter.info}</p>
+          <div className="block">
+            <h3>Description</h3>
+            <p>{enemyEncounter.desc}</p>
+          </div>
+          <div className="wire_block">
+            <h3>DM Notes</h3>
+            <p>{enemyEncounter.info}</p>
+          </div>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
               return <EnemyCard key={index} enemy={enemy} />;
@@ -425,11 +429,6 @@ const StyledOptionBox = styled.div`
     user-select: none;
   }
 
-  svg {
-    width: 1em;
-    display: inline-block;
-  }
-
   .instructions {
     font-style: italic;
     padding: .5em;
@@ -498,14 +497,21 @@ const StyledOptionBox = styled.div`
   }
 `;
 const StyledFrame = styled.div`
-  width: 100%;
-  max-width: 1200px;
   color: #fff;
 
-  h2 {
-    font-size: 2em;
-    font-weight: 800;
+  .wire_block {
+    margin-left: .5em;
+    margin-right: .5em;
+    max-width: 800px;
+    border: 1px solid white;
+
+    h3 {
+      font-size: 1em;
+      border: 1px solid white;
+      background-color: ${props => props.theme.color.dark};
+    }
   }
+
 `;
 const StyledButton = styled.button`
   background: none;
@@ -557,7 +563,6 @@ const StyledBattleField = styled.section`
   p {
     margin: .5em 0;
     padding: 2px 0;
-    max-width: 800px;
     font-family: 'Roboto Slab', serif;
   }
 
@@ -569,6 +574,7 @@ const StyledBattleField = styled.section`
   &.hide {
     max-height: 0px;
     transition: max-height 0s ease-out;
+    visibility: hidden;
   }
 
   .end_battle {

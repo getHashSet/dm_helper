@@ -131,7 +131,7 @@ const StyledAction = styled.div`
     }
 `;
 
-const StyledToast = styled.p`
+const StyledToast = styled.div`
     font-size: 20px;
     font-weight: 300;
     font-family: 'Roboto Slab', serif;

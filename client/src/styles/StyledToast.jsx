@@ -152,6 +152,118 @@ const StyledToastTag = styled.article`
         }
     }
 
+    //   TODO: Pick a dice roll format   //
+    .dice_roll {
+        text-align: center;
+        padding: .5em .5em 2em .5em;
+
+        h4 {
+            padding: 1em .5em;
+            font-weight: 200;
+            font-size: 3em;
+            font-family: ${props => props.theme.font.title};
+
+            span {
+                font-weight: 900;
+            }
+        }
+
+        .heading {
+            width: 100%;
+            padding: .5em 0 .3em 0;
+            font-weight: 400;
+            font-size: .8em;
+            color: #7f8c8d;
+        }
+
+        .roll { //div
+            display: flex;
+            margin: 0;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #bdc3c7;
+
+            p {
+                width: 50%;
+                padding: .3em;
+                display: flex;
+                flex-grow: 1;
+                justify-content: center;
+                align-items: center;
+
+                &:first-child {
+                    border-right: 1px solid #bdc3c7;
+                    font-weight: 400;
+
+                    span {
+                        padding-right: .5em;
+                        font-size: .8em;
+                        font-style: italic;
+                        color: #7f8c8d;
+                    }
+                }
+            }
+        }
+
+        .formula {
+            padding: 1em;
+            border: 1px solid #bdc3c7;
+            font-weight: 400;
+            font-style: italic;
+
+            span {
+                font-weight: 600;
+                font-style: normal;
+            }
+
+            &.selectedRoll {
+                opacity: .5;
+            }
+        }
+
+        .hit_dice {
+            &:last-child {
+                border-top: none;
+            }
+        }
+
+        .totals {
+            font-weight: 400;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #bdc3c7;
+            border-bottom: none;
+
+            p {
+                display: flex;
+                flex-grow: 1;
+                justify-content: center;
+                align-items: center;
+                padding: .5em;
+                margin-bottom: 0;
+                width: 50%;
+
+                span {
+                    font-weight: 600;
+                    padding: 0 .2em;
+                }
+
+                &:first-child {
+                    border-right: 1px solid #bdc3c7;
+                }
+            }
+        }
+
+        .multiattack {
+            font-weight: 400;
+            padding: .5em;
+        }
+    }
+
     @media (max-width: ${props => props.theme.breakpoint.mobile}) {
         width: calc(100vw - 1em);
     }

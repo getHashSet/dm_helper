@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
+import StyledToast from '../../../styles/StyledToast';
 
 // ============= //
 //   COMPONENT   //
@@ -81,10 +82,8 @@ export default function ActionAttack(props) {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastMenu = (str) => {
-        const html = <StyledToast>
-            {str}
-        </StyledToast>
+    const updateToastHandler = (data) => {
+        const html = <StyledToast>{data}</StyledToast>;
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
@@ -160,6 +159,9 @@ export default function ActionAttack(props) {
         // how to deal with multiple damage types;
         let fightingStyle = undefined;
         if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
+            
+            if (props.action.attack_options === undefined) {return};
+
             if (props.action.hasOwnProperty('attack_options')) {
                 multipleAttacks.push(props.action.attack_options.from[0].damage[0].damage_dice);
             } else {
@@ -213,16 +215,23 @@ export default function ActionAttack(props) {
     }
 
     const rollToHitAndDamage = () => {
+
+        if (props.action.damage.length < 1 && props.action.dc === undefined) {
+            const toastObject = <StyledToastBit>{props.action.desc}</StyledToastBit>;
+            updateToastHandler(toastObject);
+            return;
+        };
+
         if (props.action.name.toLowerCase() === "multiattack") {
-            updateToastMenu(<p className="multiattack">{props.action.desc}</p>);
+            updateToastHandler(<p className="multiattack">{props.action.desc}</p>);
             return;
         }
 
         if (chargesRemaining <= 0) {
             const msg = ammoMsg();
             props.action.emptyChargesMessage !== undefined
-                ? updateToastMenu(<p>{props.action.emptyChargesMessage}</p>)
-                : updateToastMenu(<p>{msg}</p>)
+                ? updateToastHandler(<p>{props.action.emptyChargesMessage}</p>)
+                : updateToastHandler(<p>{msg}</p>)
             return;
         };
 
@@ -231,29 +240,33 @@ export default function ActionAttack(props) {
         };
 
         if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) {
-            // continue, we will just pick one.
+            // TODO this is trying to catch multi attack
+            
         } else if (props.action.damage[0]?.damage_dice === undefined) {
-            updateToastMenu(props.action.desc);
+            updateToastHandler(props.action.desc);
             return;
         };
 
         let hitRoll = 0;
         if (props.action.dc !== undefined) {
             hitRoll = -1;
+        } else if (props.action.damage.length < 1 && !props.action.damage.hasOwnProperty("choose")) {
+            hitRoll = -1;
         } else {
             hitRoll = rollToHit();
         }
+
         const damageRoll = rollDamage();
         let hitRollText;
 
         if (nat20) {
-            hitRollText = <p><span>Nat 20!</span></p>
+            hitRollText = <React.Fragment><span>Nat 20!</span></React.Fragment>
         } else if (nat1) {
-            hitRollText = <p><span>Nat 1...</span></p>
+            hitRollText = <React.Fragment><span>Nat 1...</span></React.Fragment>
         } else if (hitRoll === 20 && !nat20) {
-            hitRollText = <p>Dirty<span>20</span></p>
-        } else if (hitRoll === -1) {
-            hitRollText = <span>{`DC: ${props.action.dc.dc_value}`}</span>
+            hitRollText = <React.Fragment>Dirty<span>20</span></React.Fragment>;
+        } else if (hitRoll === -1 && props.action.hasOwnProperty("dc")) {
+            hitRollText = <span>{`DC: ${props.action.dc.dc_value}`}</span>;
         } else if (Number.isNaN(hitRoll) && multipleAttacks.length > 0) {
 
         } else if (Number.isNaN(hitRoll)) {
@@ -264,30 +277,32 @@ export default function ActionAttack(props) {
 
         const reactElement =
             <StyledToast>
-                <h4>{hitRollText}</h4>
-                <div className="totals">
-                    {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
-                    <p>Damage: <span>{damageRoll}</span></p>
-                </div>
-                {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName} </span> {hitFormula}, {damageFormula} damage.</p>}
-                <p className="heading">Hit Roll</p>
-                {hitRolls.map((roll, index) => {
-                    if (hitRolls[0] === hitRolls[1]) { return <p key={index} className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p> };
-                    return <p key={index} className={hitRolls[index] === unusedHitRoll ? "hit_dice formula selectedRoll" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>
-                })}
-                <p className="heading">Damage Rolls</p>
-                {damageRolls.map((roll, index) => {
-                    return <div key={index} className="roll" >
-                        <p>
-                            <span>{index + 1} of {totalNumberOfDice} </span> d{diceType}
-                        </p>
-                        <p>
-                            {roll}
-                        </p>
+                <section className="dice_roll">
+                    <h4>{hitRollText}</h4>
+                    <div className="totals">
+                        {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
+                        <p>Damage: <span>{damageRoll}</span></p>
                     </div>
-                })}
+                    {props.action.dc ? <p className="formula">{damageFormula} damage.</p> : <p className="formula"><span>{props.action.actionName} </span> {hitFormula}, {damageFormula} damage.</p>}
+                    <p className="heading">Hit Roll</p>
+                    {hitRolls.map((roll, index) => {
+                        if (hitRolls[0] === hitRolls[1]) { return <p key={index} className={hitRolls[index] === unusedHitRoll ? "hit_dice formula" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p> };
+                        return <p key={index} className={hitRolls[index] === unusedHitRoll ? "hit_dice formula selectedRoll" : "hit_dice formula"}>Hit roll 1d20: <span>{roll}</span></p>
+                    })}
+                    <p className="heading">Damage Rolls</p>
+                    {damageRolls.map((roll, index) => {
+                        return <div key={index} className="roll" >
+                            <p>
+                                <span>{index + 1} of {totalNumberOfDice} </span> d{diceType}
+                            </p>
+                            <p>
+                                {roll}
+                            </p>
+                        </div>
+                    })}
+                </section>
             </StyledToast>
-        updateToastMenu(reactElement);
+        updateToastHandler(reactElement);
         reset();
     }
 
@@ -399,116 +414,12 @@ const StyledAction = styled.div`
     }
 `;
 
-// ========= //
-//   TOAST   //
-// ========= //
-const StyledToast = styled.section`
-    font-weight: 600;
-    font-size: 16px;
-    text-align: center;
-    color: #2d3436;
+const StyledToastBit = styled.div`
+    font-size: 20px;
+    font-weight: 300;
+    font-family: 'Roboto Slab', serif;
+    line-height: 1.2em;
     color: #2d3436;
     background-color: #fff;
     padding: .5em;
-
-    h4 {
-        padding: 1em .5em;
-        font-weight: 900;
-        font-size: 3em;
-    }
-
-    .heading {
-        width: 100%;
-        padding: .5em 0 .3em 0;
-        font-weight: 400;
-        font-size: .8em;
-        color: #7f8c8d;
-    }
-
-    .roll { //div
-        display: flex;
-        margin: 0;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        border-top: 1px solid #bdc3c7;
-
-        p {
-            width: 50%;
-            padding: .3em;
-            display: flex;
-            flex-grow: 1;
-            justify-content: center;
-            align-items: center;
-
-            &:first-child {
-                border-right: 1px solid #bdc3c7;
-                font-weight: 400;
-
-                span {
-                    padding-right: .5em;
-                    font-size: .8em;
-                    font-style: italic;
-                    color: #7f8c8d;
-                }
-            }
-        }
-    }
-
-    .formula {
-        padding: 1em;
-        border: 1px solid #bdc3c7;
-        font-weight: 400;
-        font-style: italic;
-
-        span {
-            font-weight: 600;
-            font-style: normal;
-        }
-
-        &.selectedRoll {
-            opacity: .5;
-        }
-    }
-
-    .hit_dice {
-        &:last-child {
-            border-top: none;
-        }
-    }
-
-    .totals {
-        font-weight: 400;
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        border-radius: 8px 8px 0 0;
-        border: 1px solid #bdc3c7;
-        border-bottom: none;
-
-        p {
-            display: flex;
-            flex-grow: 1;
-            justify-content: center;
-            align-items: center;
-            padding: .5em;
-            margin-bottom: 0;
-            width: 50%;
-
-            span {
-                font-weight: 600;
-                padding: 0 .2em;
-            }
-
-            &:first-child {
-                border-right: 1px solid #bdc3c7;
-            }
-        }
-    }
-
-    .multiattack {
-        font-weight: 400;
-        padding: .5em;
-    }
 `;

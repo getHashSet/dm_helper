@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
+import StyledToast from '../../../styles/StyledToast';
 import ActionAttack from '../ActionAttack/ActionAttack';
 import ActionPassive from '../ActionPassive/ActionPassive';
 import ActionMagic from '../ActionMagic/ActionMagic';
@@ -118,12 +119,10 @@ export default function EnemyCard(props) {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastMenu = (str) => {
-        const html = <StyledToast>
-            {str}
-        </StyledToast>
-        dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-        dispatch(updateToastData(html)); // default parent is a div with flex turned on.
+    const updateToastHandler = data => {
+        const toastData = <StyledToast>{data}</StyledToast>;
+        dispatch(updateToastData(toastData));
+        dispatch(showToastMenuState(true));
     };
 
     const rollSavingThrow = (e) => {
@@ -154,8 +153,8 @@ export default function EnemyCard(props) {
         if (d20 === 20) { savingThrow = "Nat 20" };
         if (d20 === 1) { savingThrow = "Nat 1" };
 
-        savingThrow = <h4>{savingThrow}</h4>;
-        updateToastMenu(savingThrow);
+        savingThrow = <StyledSavingThrow><h4>{savingThrow}</h4></StyledSavingThrow>;
+        updateToastHandler(savingThrow);
     };
 
     const getStatMod = (stat) => {
@@ -299,7 +298,7 @@ export default function EnemyCard(props) {
 
             {/* Enemy Name */}
             <div className="card_name">
-                <h2>{props.enemy.enemyName}</h2>
+                <h3>{props.enemy.enemyName}</h3>
                 <div className="toggle" ></div>
             </div>
 
@@ -307,7 +306,7 @@ export default function EnemyCard(props) {
             <StyledAcHpIn>
                 <div className="top_section">
                     {/* AC */}
-                    <div className="block" title="Armor Class">
+                    <div className="info_block" title="Armor Class">
                         <div className="background"></div>
                         <div className="info">
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="shield-alt" className="svg-inline--fa fa-shield-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z"></path></svg>
@@ -315,7 +314,7 @@ export default function EnemyCard(props) {
                         </div>
                     </div>
                     {/* HP */}
-                    <div className="block" title="Hit Points">
+                    <div className="info_block" title="Hit Points">
                         <div className="background"></div>
                         <div className="info">
                             <svg xmlns='http://www.w3.org/2000/svg' className='ionicon' viewBox='0 0 512 512'><title>Heart</title><path d='M256 448a32 32 0 01-18-5.57c-78.59-53.35-112.62-89.93-131.39-112.8-40-48.75-59.15-98.8-58.61-153C48.63 114.52 98.46 64 159.08 64c44.08 0 74.61 24.83 92.39 45.51a6 6 0 009.06 0C278.31 88.81 308.84 64 352.92 64c60.62 0 110.45 50.52 111.08 112.64.54 54.21-18.63 104.26-58.61 153-18.77 22.87-52.8 59.45-131.39 112.8a32 32 0 01-18 5.56z' /></svg>
@@ -323,7 +322,7 @@ export default function EnemyCard(props) {
                         </div>
                     </div>
                     {/* IN */}
-                    <div className="block" title="Initiative Roll">
+                    <div className="info_block" title="Initiative Roll">
                         <div className="background"></div>
                         <div className="info">
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="stopwatch" className="svg-inline--fa fa-stopwatch fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 304c0 114.9-93.1 208-208 208S16 418.9 16 304c0-104 76.3-190.2 176-205.5V64h-28c-6.6 0-12-5.4-12-12V12c0-6.6 5.4-12 12-12h120c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-28v34.5c37.5 5.8 71.7 21.6 99.7 44.6l27.5-27.5c4.7-4.7 12.3-4.7 17 0l28.3 28.3c4.7 4.7 4.7 12.3 0 17l-29.4 29.4-.6.6C419.7 223.3 432 262.2 432 304zm-176 36V188.5c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12V340c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12z"></path></svg>
@@ -393,11 +392,11 @@ export default function EnemyCard(props) {
             <div className="toggles">
                 <div className="advantage" onClick={advantageToggle}>
                     <div className="toggle"></div>
-                    <p>Advantage</p>
+                    <h4>Advantage</h4>
                 </div>
                 <div className="disadvantage" onClick={disadvantageToggle}>
                     <div className="toggle_disadvantage"></div>
-                    <p>Disadvantage</p>
+                    <h4>Disadvantage</h4>
                 </div>
             </div>
 
@@ -438,7 +437,7 @@ const StyledCard = styled.article`
         justify-content: space-between;
         align-items: center;
         
-        h2 {
+        h3 {
             font-size: 2em;
             color: #fff;
         }
@@ -469,7 +468,7 @@ const StyledCard = styled.article`
 
             &:hover {
                 cursor: pointer;
-                color: #e74c3c;
+                color: ${props => props.theme.color.red};
             }
 
             &:active {
@@ -528,6 +527,11 @@ const StyledCard = styled.article`
         justify-content: center;
         font-size: .8em;
         user-select: none;
+        color: ${props => props.theme.color.red};
+
+        h4 {
+            font-weight: 400;
+        }
 
         .advantage,
         .disadvantage {
@@ -542,7 +546,7 @@ const StyledCard = styled.article`
                 margin: .5em;
                 width: 1em;
                 height: 1em;
-                border: 3px solid #e74c3c;
+                border: 3px solid ${props => props.theme.color.red};
                 border-radius: 4px;
             }
 
@@ -557,13 +561,13 @@ const StyledCard = styled.article`
 
         .advantage {
             .toggle {
-                background-color: ${props => props.hasAdvantage ? "#e74c3c" : "#fff"};
+                background-color: ${props => props.hasAdvantage ? props.theme.color.red : "#fff"};
             }
         }
 
         .disadvantage {
             .toggle_disadvantage {
-                background-color: ${props => props.hasDisadvantage ? "#e74c3c" : "#fff"};
+                background-color: ${props => props.hasDisadvantage ? props.theme.color.red : "#fff"};
             }
         }
     }
@@ -589,7 +593,7 @@ const StyledAcHpIn = styled.section`
         border-bottom: 1px solid #b2bec3;
         margin-bottom: .5em;
 
-        .block {
+        .info_block {
             position: relative;
             flex-grow: 1;
             display: flex;
@@ -704,10 +708,13 @@ const StyledAcHpIn = styled.section`
         .damage_heal_buttons {
             text-align: center;
             user-select: none;
+            font-family: ${props => props.theme.font.title};
+            font-weight: 900;
+            font-size: 1.2em;
 
             &:hover {
                 cursor: pointer;
-                color: #e74c3c;
+                color: ${props => props.theme.color.red};
             }
 
             &:active {
@@ -720,13 +727,13 @@ const StyledAcHpIn = styled.section`
 // ========= //
 //   TOAST   //
 // ========= //
-const StyledToast = styled.section`
+const StyledSavingThrow = styled.section`
     font-weight: 400;
     font-size: 16px;
     text-align: center;
     color: #2d3436;
     background-color: #fff;
-    padding: .5em;
+    padding: 2em .5em;
 
     h4 {
         font-weight: 900;

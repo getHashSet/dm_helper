@@ -12,13 +12,6 @@ export default function Footer() {
 
             </div>
             <div className="social">
-                {/* <ul>
-                    <li><a href="http://" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-                    <li><a href="http://" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-                    <li><a href="http://" target="_blank" rel="noopener noreferrer">Etsy</a></li>
-                    <li><a href="http://" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
-                    <li><a href="http://">Shop</a></li>
-                </ul> */}
             </div>
             <div className="copyright">
                 <span>Copyright&copy; {year}</span>
