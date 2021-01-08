@@ -6,10 +6,11 @@ import Dm from "./pages/Dm/Dm";
 import Player from "./pages/Player/Player";
 import UploadPage from "./pages/UploadPage/UploadPage.jsx";
 import Login from "./pages/Login/Login.jsx";
+import { StyledMain } from "./styles/StyledElements.jsx";
 
 function App() {
   return (
-    <main className="root">
+    <StyledMain>
       <Switch>
         <Route exact path="/" render={() => <Home />} />
 
@@ -27,7 +28,7 @@ function App() {
         <Route render={() => <Error />} />
 
       </Switch>
-    </main>
+    </StyledMain>
   );
 }
 

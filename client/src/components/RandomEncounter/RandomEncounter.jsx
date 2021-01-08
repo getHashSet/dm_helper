@@ -9,7 +9,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_plus, svg_trash } from '../../styles';
-import { StyledToast } from '../../styles/StyledElements';
+import { StyledChapter, StyledFrame, StyledToast, StyledWireFrame } from '../../styles/StyledElements';
 
 // ===================== //
 //     DEFAULT PROPS     //
@@ -222,8 +222,8 @@ export default function RandomEncounter() {
   // ========== //
   return (
     <React.Fragment>
-      <StyledSection className="chapter">
-        <StyledFrame className="frame">
+      <StyledChapter backgroundColor={props => props.theme.color.red} fontColor={props => props.theme.color.white}>
+        <StyledFrame>
           <h2>Random Encounter</h2>
 
           <StyledOptionBox partyLevel={partyLevel}>
@@ -283,7 +283,7 @@ export default function RandomEncounter() {
             Roll Encounter
           </StyledButton>
         </StyledFrame>
-      </StyledSection>
+      </StyledChapter>
 
       {/* BATTLE FIELD */}
       <StyledBattleField className={`chapter ${enemyEncounter.enemies.length > 0 ? "show" : "hide"}`} >
@@ -293,10 +293,10 @@ export default function RandomEncounter() {
             <h3>Description</h3>
             <p>{enemyEncounter.desc}</p>
           </div>
-          <div className="wire_block">
+          <StyledWireFrame>
             <h3>DM Notes</h3>
             <p>{enemyEncounter.info}</p>
-          </div>
+          </StyledWireFrame>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
               return <EnemyCard key={index} enemy={enemy} />;
@@ -366,14 +366,6 @@ const StyledListOfEnemies = styled.section`
       border-top: 1px solid white;
     }
   }
-`;
-
-const StyledSection = styled.section`
-  padding: 1em 0.5em;
-  background-color: #e74c3c;
-  display: flex;
-  justify-content: center;
-  user-select: none;
 `;
 
 const StyledFlexOptionsUL = styled.ul`
@@ -497,23 +489,24 @@ const StyledOptionBox = styled.div`
     }
   }
 `;
-const StyledFrame = styled.div`
-  color: #fff;
+// const StyledFrame = styled.div`
+//   color: #fff;
 
-  .wire_block {
-    margin-left: .5em;
-    margin-right: .5em;
-    max-width: 800px;
-    border: 1px solid white;
+//   .wire_block {
+//     margin-left: .5em;
+//     margin-right: .5em;
+//     max-width: 800px;
+//     border: 1px solid white;
 
-    h3 {
-      font-size: 1em;
-      border: 1px solid white;
-      background-color: ${props => props.theme.color.dark};
-    }
-  }
+//     h3 {
+//       font-size: 1em;
+//       border: 1px solid white;
+//       background-color: ${props => props.theme.color.dark};
+//     }
+//   }
 
-`;
+// `;
+
 const StyledButton = styled.button`
   background: none;
   color: #fff;

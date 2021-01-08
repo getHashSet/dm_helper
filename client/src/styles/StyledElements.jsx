@@ -13,7 +13,7 @@ export const StyledChapter = styled.section`
 //   FRAME   //
 export const StyledFrame = styled.div`
     position: relative;
-	max-width: 1200px;
+	max-width: ${props => props.theme.max.width};
     width: 100%;
     
     h2 {
@@ -35,10 +35,11 @@ export const StyledFrame = styled.div`
 `;
 
 //   WIRE FRAME   //
+// props: frameColor, backgroundColor
 export const StyledWireFrame = styled.div`
     position: relative;
     border-radius: .5em;
-    border: 1px solid ${props => props.frameColor ? props.frameColor : props.theme.color.dark};
+    border: 1px solid ${props => props.frameColor ? props.frameColor : props.theme.color.white};
     margin: 2em 0 1em;
     padding: 1em;
 
@@ -48,7 +49,7 @@ export const StyledWireFrame = styled.div`
         top: calc(-1em + 2px);
         left: 2em;
         background-color: ${props => props.backgroundColor ? props.backgroundColor : props.theme.color.white};
-        border: 1px solid ${props => props.frameColor ? props.frameColor : props.theme.color.dark};
+        border: 1px solid ${props => props.frameColor ? props.frameColor : props.theme.color.white};
         color: ${props => props.frameColor ? props.frameColor : props.theme.color.dark};
         border-radius: 8px;
         padding: 4px 8px;
@@ -304,4 +305,31 @@ export const StyledRefresh = styled.div`
       }
     }
   }
+`;
+
+//   SOLID BUTTON   //
+// props: fontColor, backgroundColor, hoverColor
+export const StyledButton = styled.div`
+    color: ${props => props.fontColor ? props.fontColor : props.theme.color.white};
+    background-color: ${props => props.backgroundColor ? props.backgroundColor : props.theme.color.dark};
+    border-radius: 1em;
+    padding: .5em 1em;
+    margin: .5em 0;
+    font-family: ${props => props.theme.font.title};
+    width: fit-content;
+    font-weight: 900;
+
+    &:hover {
+        cursor: pointer;
+        background-color: ${props => props.hoverColor ? props.hoverColor : props.theme.color.grey};
+    }
+
+    &:active {
+        transform: translateY(4px);
+    }
+`;
+
+//   MAIN   //
+export const StyledMain = styled.main`
+    margin-bottom: 4em;
 `;
