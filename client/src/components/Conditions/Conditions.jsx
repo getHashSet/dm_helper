@@ -1,25 +1,20 @@
+// ========== //
+//   IMPORT   //
+// ========== //
 import React from 'react';
-import { StyledFrame, StyledChapter } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
-
-// ============= //
-//   COMPONENT   //
-// ============= //
+// ========== //
+//   EXPORT   //
+// ========== //
 export default function Conditions() {
-    // ========= //
-    //   HOOKS   //
-    // ========= //
-
-    // ============= //
-    //   FUNCTIONS   //
-    // ============= //
-
+    
     // ========== //
     //   RETURN   //
     // ========== //
     return (
-        <StyledChapter>
-            <StyledFrame>
+        <S.Chapter>
+            <S.Frame>
                 <h2>Conditions</h2>
                 <p>Display all the conditions here for the toast menu.</p>
                 <p>Unconscious Stunned, Restrained, Prone, Poisoned, Petrified, Paralyzed, Invisible, Incapacitated, Grappled, Frightened, Deafened, Charmed, Blinded</p>
@@ -57,7 +52,7 @@ export default function Conditions() {
                         <div className="desc">Death</div>
                     </li>
                 </ul>
-            </StyledFrame>
-        </StyledChapter>
+            </S.Frame>
+        </S.Chapter>
     )
 }

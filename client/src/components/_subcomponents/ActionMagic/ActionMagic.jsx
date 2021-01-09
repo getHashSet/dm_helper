@@ -1,35 +1,42 @@
+// ========== //
+//   IMPORT   //
+// ========== //
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
+import * as S from '../../../styles/StyledElements';
+import { svg_book } from '../../../styles';
 import axios from 'axios';
 
-// ============= //
-//   COMPONENT   //
-// ============= //
+// ========== //
+//   EXPORT   //
+// ========== //
 export default function ActionMagic(props) {
-    // =============================== //
-    //   HOOKS & COMPONENT VARIABLES   //
-    // =============================== //
+    // ========= //
+    //   REDUX   //
+    // ========= //
     const dispatch = useDispatch(); // used to send data back to redux
 
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastMenu = (str) => {
-        const html = <div>{str}</div>
-        dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-        dispatch(updateToastData(html)); // default parent is a div with flex turned on.
+    const updateToastHandler = (jsx) => {
+        dispatch(updateToastData(jsx));
+        dispatch(showToastMenuState(true));
     };
 
-    const creatToastMessage = () => {
-
+    const getMagicSpell = () => {
         axios.get(`https://www.dnd5eapi.co${props.spell.url}`)
-            .then(spellInfo => {
-                console.log(spellInfo.data);
-                const toastMsg = <StyledToast>{spellInfo.data.desc}</StyledToast>;
-                updateToastMenu(toastMsg);
-            });
+        .then(spellInfo => {
+            const toast = <S.Toast>{spellInfo.data.desc}</S.Toast>
+            updateToastHandler(toast);
+        })
+        .catch(err => {
+            console.log(err);
+            const error = <S.Toast>OOPS! Something has gone wrong.</S.Toast>
+            updateToastHandler(error);
+        })
     }
 
     // ========== //
@@ -38,14 +45,14 @@ export default function ActionMagic(props) {
     return (
         <StyledAction>
             <div className="dice_box">
-                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="book" className="svg-inline--fa fa-book fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"></path></svg>
+                {svg_book}
             </div>
-            <div className="info" onClick={creatToastMessage}>
+            <div className="info" onClick={getMagicSpell}>
                 <div className="title">
                     {props.spell.name}
                 </div>
                 <div className="body">
-                    <p>{props.spell.level > 0 ? `Click to learn more about this level ${props.spell.level} spell.` : `Click to learn more about this cantrip.`}</p>
+                    <p>{props.spell.level > 0 ? `Spell Lv. ${props.spell.level}.` : `Cantrip.`}</p>
                 </div>
             </div>
         </StyledAction>
@@ -55,6 +62,7 @@ export default function ActionMagic(props) {
 // ========== //
 //   STYLES   //
 // ========== //
+// NOTE: Clean Styled action so it can be reused.
 const StyledAction = styled.div`
     background-color: #fff;
     display: flex;
@@ -133,15 +141,4 @@ const StyledAction = styled.div`
     &:active {
         transform: translateY(3px);
     }
-`;
-
-const StyledToast = styled.p`
-    background-color: #fff;
-    font-size: 20px;
-    font-weight: 300;
-    font-family: 'Roboto Slab', serif;
-    line-height: 1.2em;
-    color: #2d3436;
-    background-color: #fff;
-    padding: .5em;
 `;

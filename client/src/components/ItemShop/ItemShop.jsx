@@ -1,42 +1,44 @@
+// ============== //
+//     IMPORT     //
+// ============== //
 import React from 'react';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_coins, svg_refresh } from '../../styles';
-import { StyledChapter, StyledFrame, StyledRefresh, StyledToast } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
 // ============== //
 //     EXPORT     //
 // ============== //
 export default function ItemShop() {
-    // =================== //
-    //   HOOK INTO STATE   //
-    // =================== //
+    // ========= //
+    //   REDUX   //
+    // ========= //
     const dispatch = useDispatch();
 
     // ================ //
     //     Functions    //
     // ================ //
     const updateToastHandler = data => {
-        const toastData = <StyledToast>{data}</StyledToast>;
+        const toastData = <S.Toast>{data}</S.Toast>;
         dispatch(updateToastData(toastData));
         dispatch(showToastMenuState(true));
-        // shop data should be stored in redux and not in hooks
     };
 
     // ========== //
     //   RETURN   //
     // ========== //
     return (
-        <StyledChapter>
-            <StyledFrame>
+        <S.Chapter>
+            <S.Frame>
                 <h2>
                     {svg_coins} Item Shop
                 </h2>
 
                 <p className="description">Select the type of shop your adventures have wandered into. This will list the shop owner, whats for sale in the shop and how much gold they have on their person and behind the counter.</p>
 
-                <label htmlFor="shop">Type of shop: </label> 
-                {/* TODO create a toast menu to pick the shop type */}
+                <label htmlFor="shop">Type of shop: </label>
+                
                 <select name="shop">
                     <option value="item_shop">Item Shop</option>
                     <option value="black_smith">Black Smith</option>
@@ -62,11 +64,11 @@ export default function ItemShop() {
                     </div>
                 </section>
 
-                <StyledRefresh className="clickable" onClick={() => { updateToastHandler("Refreshed This Shop") }} title="Refresh Shop">
+                <S.Refresh className="clickable" onClick={() => { updateToastHandler("Refreshed This Shop") }} title="Refresh Shop">
                     {svg_refresh}
-                </StyledRefresh>
+                </S.Refresh>
 
-            </StyledFrame>
-        </StyledChapter>
+            </S.Frame>
+        </S.Chapter>
     )
 }
