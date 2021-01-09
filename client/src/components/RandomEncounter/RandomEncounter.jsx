@@ -11,18 +11,13 @@ import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_plus, svg_trash } from '../../styles';
 import * as S from '../../styles/StyledElements';
 
-// ===================== //
-//     DEFAULT PROPS     //
-// ===================== //
-RandomEncounter.defaultProps = {};
-
 // ============== //
 //     EXPORT     //
 // ============== //
 export default function RandomEncounter() {
-  // =================== //
-  //   HOOK INTO STATE   //
-  // =================== //
+  // ================= //
+  //   HOOKS & REDUX   //
+  // ================= //
   const dispatch = useDispatch(); // used to send data back to redux
   const [userEncounterSelection, updateuserEncounterSelection] = useState("");
   const [partyLevel, updatepartyLevel] = useState("1");
@@ -43,19 +38,14 @@ export default function RandomEncounter() {
   ];
 
   // FORCE UPDATE COMPONENT
-  const [, updateState] = React.useState();
+  const [, updateState] = useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
   // ================ //
   //     Functions    //
   // ================ //
-  const updateToastHandler = data => {
-    const toastData =
-      <S.Toast>
-        <section>
-          {data}
-        </section>
-      </S.Toast>;
+  const updateToastHandler = jsx => {
+    const toastData = <S.Toast>{jsx}</S.Toast>;
     dispatch(updateToastData(toastData));
     dispatch(showToastMenuState(true));
   };
