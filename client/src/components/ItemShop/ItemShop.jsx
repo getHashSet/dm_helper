@@ -38,7 +38,7 @@ export default function ItemShop() {
                 <label htmlFor="shop">Type of shop: </label> 
                 {/* TODO create a toast menu to pick the shop type */}
                 <select name="shop">
-                    <option value="item_shop" selected>Item Shop</option>
+                    <option value="item_shop">Item Shop</option>
                     <option value="black_smith">Black Smith</option>
                     <option value="stable">Stable</option>
                     <option value="magic_shop">Magic Shop</option>
