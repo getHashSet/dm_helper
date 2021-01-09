@@ -12,9 +12,10 @@ export const Chapter = styled.section`
 `;
 
 //   FRAME   //
+// props, maxWidth
 export const Frame = styled.div`
     position: relative;
-	max-width: ${props => props.theme.max.width};
+	  max-width: ${props => props.maxWidth || props.theme.max.width};
     width: 100%;
     
     h2 {
@@ -107,10 +108,6 @@ export const Box = styled.div`
         background-color: #fff;
         color: #c0392b;
         opacity: 1;
-      }
-
-      @media (max-width: 768px) {
-
       }
     }
   }
@@ -397,7 +394,7 @@ export const Refresh = styled.div`
   }
 `;
 
-//   SOLID BUTTON   //
+//   BUTTON   //
 // props: fontColor, backgroundColor, hoverColor
 export const Button = styled.div`
     color: ${props => props.fontColor ? props.fontColor : props.theme.color.white};
@@ -620,9 +617,23 @@ export const Nav = styled.nav`
     display: flex;
     flex-wrap: nowrap;
     z-index: 9000;
+    border-top: 2px solid rgba(255,255,255,.4);
+    background: linear-gradient(#34495e, #2c3e50);
 
-    border-top: 1px solid rgba(255,255,255,.3);
-    background: linear-gradient(#2c3e50, #2d3436);
+    @media (max-width: ${props => props.theme.breakpoint.mobile}) {
+      border-radius: 200% 200% 0 0;
+      padding: 1em;
+      width: 110vw;
+      transform: translate(-10vw, 2vw);
+
+      ul {
+        li {
+          &:nth-child(2) {
+            transform: translateY(-10px);
+          }
+        }
+      }
+    }
 
     ul {
         display: flex;
@@ -649,8 +660,8 @@ export const Nav = styled.nav`
     }
 `;
 
-//   CARD_ACTION   //
-export const Card_Action = styled.div`
+//   CARDACTION   //
+export const CardAction = styled.div`
   background-color: #fff;
   display: flex;
   margin: .5em;
