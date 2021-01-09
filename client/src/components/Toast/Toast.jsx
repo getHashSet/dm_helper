@@ -46,7 +46,7 @@ const StyledToast = styled.div`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     margin: 0;
     padding: 0;
     z-index: ${props => props.showToastMenu ? "9000" : "-1"};
@@ -69,7 +69,7 @@ const StyledShadowBox = styled.div`
 `;
 
 const StyledToastBox = styled.div`
-    min-width: 250px;
+    min-width: 150px;
     max-width: calc(100vw);
     min-height: 1em;
     max-height: 70vh;
@@ -78,7 +78,6 @@ const StyledToastBox = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    color: #2d3436;
     border-radius: .5em;
     box-shadow: 1px 1px 8px #000;
     opacity: 0;
