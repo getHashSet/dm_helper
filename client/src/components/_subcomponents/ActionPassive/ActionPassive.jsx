@@ -29,7 +29,7 @@ export default function ActionPassive(props) {
     //   RETURN   //
     // ========== //
     return (
-        <S.Card_Action>
+        <S.CardAction>
 
             <div className="dice_box">
                 {svg_bookmark}
@@ -44,6 +44,6 @@ export default function ActionPassive(props) {
                 </div>
             </div>
             
-        </S.Card_Action>
+        </S.CardAction>
     )
 };

@@ -16,9 +16,8 @@ export default function Nav() {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastHandler = (data) => {
-        const html = <S.Toast>{data}</S.Toast>
-        dispatch(updateToastData(html));
+    const updateToastHandler = (jsx) => {
+        dispatch(updateToastData(jsx));
         dispatch(showToastMenuState(true));
     };
 

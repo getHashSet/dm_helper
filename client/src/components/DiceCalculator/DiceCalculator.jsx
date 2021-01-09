@@ -315,51 +315,48 @@ export default function RollToHit() {
     //   RETURN   //
     // ========== //
     return (
-        <S.Chapter>
-            <S.Frame>
-                <STyledDiceCalculator>
-                    <div className="frame">
-                        <div id="output" className="output">
-                            <div className="mathFormula">{calculatorOutput}</div>
-                            <div onClick={backspaceHandler} className="backspace">
-                                {svg_caret_left}
-                            </div>
+        <S.Frame maxWidth='500px'>
+            <STyledDiceCalculator>
+                <div className="frame">
+                    <div id="output" className="output">
+                        <div className="mathFormula">{calculatorOutput}</div>
+                        <div onClick={backspaceHandler} className="backspace">
+                            {svg_caret_left}
                         </div>
-                        <div className="buttons">
-                            <StyledCalcRow className="first_row">
-                                <li onClick={addInputHandler}><p>7</p></li>
-                                <li onClick={addInputHandler}><p>8</p></li>
-                                <li onClick={addInputHandler}><p>9</p></li>
-                                <li onClick={addInputHandler}><p>-</p></li>
-                            </StyledCalcRow>
-                            <StyledCalcRow className="second_row">
-                                <li onClick={addInputHandler}><p>4</p></li>
-                                <li onClick={addInputHandler}><p>5</p></li>
-                                <li onClick={addInputHandler}><p>6</p></li>
-                                <li onClick={addInputHandler}><p>+</p></li>
-                            </StyledCalcRow>
-                            <StyledCalcRow className="third_row">
-                                <li onClick={addInputHandler}><p>1</p></li>
-                                <li onClick={addInputHandler}><p>2</p></li>
-                                <li onClick={addInputHandler}><p>3</p></li>
-                                <li onClick={clearCalulatorOutputHandler}><p>c</p></li>
-                            </StyledCalcRow>
-                            <StyledCalcRow className="fourth_row">
-                                <li onClick={addInputHandler}><p>0</p></li>
-                                <li onClick={addInputHandler}><p>d</p></li>
-                                <li onClick={rollCalculationHandler}>
-                                    <p>
-                                        {svg_d20}
-                                    </p>
-                                </li>
-                            </StyledCalcRow>
-                        </div>
-                        <div className="other_options"></div>
                     </div>
-                </STyledDiceCalculator>
-
-            </S.Frame>
-        </S.Chapter>
+                    <div className="buttons">
+                        <StyledCalcRow className="first_row">
+                            <li onClick={addInputHandler}><p>7</p></li>
+                            <li onClick={addInputHandler}><p>8</p></li>
+                            <li onClick={addInputHandler}><p>9</p></li>
+                            <li onClick={addInputHandler}><p>-</p></li>
+                        </StyledCalcRow>
+                        <StyledCalcRow className="second_row">
+                            <li onClick={addInputHandler}><p>4</p></li>
+                            <li onClick={addInputHandler}><p>5</p></li>
+                            <li onClick={addInputHandler}><p>6</p></li>
+                            <li onClick={addInputHandler}><p>+</p></li>
+                        </StyledCalcRow>
+                        <StyledCalcRow className="third_row">
+                            <li onClick={addInputHandler}><p>1</p></li>
+                            <li onClick={addInputHandler}><p>2</p></li>
+                            <li onClick={addInputHandler}><p>3</p></li>
+                            <li onClick={clearCalulatorOutputHandler}><p>c</p></li>
+                        </StyledCalcRow>
+                        <StyledCalcRow className="fourth_row">
+                            <li onClick={addInputHandler}><p>0</p></li>
+                            <li onClick={addInputHandler}><p>d</p></li>
+                            <li onClick={rollCalculationHandler}>
+                                <p>
+                                    {svg_d20}
+                                </p>
+                            </li>
+                        </StyledCalcRow>
+                    </div>
+                    <div className="other_options"></div>
+                </div>
+            </STyledDiceCalculator>
+        </S.Frame>
     )
 }
 
@@ -409,28 +406,6 @@ const StyledCalcRow = styled.ul`
         }
     }
 `;
-
-const StyledFrame = styled.div`
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    max-width: 500px;
-
-    h2 {
-        font-size: 2em;
-        font-weight: 800;
-        margin-bottom: 1em;
-        user-select: none;
-
-        svg {
-            height: 1em;
-            max-height: 1em;
-            max-height: 1em;
-            padding: 0 .5em 0 0;
-            margin-bottom: -4px;
-        }
-    }
-`
 
 const STyledDiceCalculator = styled.div`
     display:flex;
@@ -491,14 +466,4 @@ const STyledDiceCalculator = styled.div`
 
         }
     }
-`;
-
-const StyledSection = styled.section`
-    color: #2d3436;
-    min-height: 30vh;
-    height: 100%;
-    max-width: 100%;
-    background-color: #dfe4ea;
-    display: flex;
-    justify-content: center;
 `;
