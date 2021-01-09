@@ -38,6 +38,7 @@ export const Frame = styled.div`
 
 //   BOX   //
 export const Box = styled.div`
+  font-size: 16px;
   padding: 0.5em;
 
   h3 {
@@ -145,7 +146,7 @@ export const WireFrame = styled.div`
         }
 
         input {
-            height: 2.4em;
+            height: 2em;
             flex-grow: 1;
             border: 1px solid white;
             border-radius: 4px 0 0 4px;

@@ -46,7 +46,7 @@ const StyledToast = styled.div`
     top: 0;
     left: 0;
     width: 100vw;
-    height: 90vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
     z-index: ${props => props.showToastMenu ? "9000" : "-1"};
@@ -82,11 +82,11 @@ const StyledToastBox = styled.div`
     box-shadow: 1px 1px 8px #000;
     opacity: 0;
     transition: transform .3s, opacity .2s;
-    transform: translateY(-30%);
+    transform: translateY(-45%);
     user-select: none;
 
     &.fadeIn {
-        transform: translateY(0);
+        transform: translateY(-15%);
         opacity: 1;
     }
 
