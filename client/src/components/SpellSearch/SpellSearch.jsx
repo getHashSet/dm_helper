@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { updateToastData, showToastMenuState } from "../../redux/actions"; // folder path may be different
 import { svg_search } from '../../styles';
-import { StyledChapter, StyledFrame, StyledToast, StyledWireFrame } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
 // ============== //
 //     EXPORT     //
@@ -21,7 +21,7 @@ export default function SpellSearch() {
     //     Functions    //
     // ================ //
     const updateToastHandler = (data) => {
-        const toastData = <StyledToast>{data}</StyledToast>
+        const toastData = <S.Toast>{data}</S.Toast>
 
         // update state
         dispatch(updateToastData(toastData));
@@ -38,14 +38,14 @@ export default function SpellSearch() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledChapter
+        <S.Chapter
             fontColor={props => props.theme.color.white}
             backgroundColor={props => props.theme.color.gold}
         >
-            <StyledFrame>
+            <S.Frame>
                 <h2>Spell Book</h2>
 
-                <StyledWireFrame
+                <S.WireFrame
                     frameColor={props => props.theme.color.white}
                     backgroundColor={props => props.theme.color.gold}
                 >
@@ -55,14 +55,14 @@ export default function SpellSearch() {
                         <input onChange={(e) => updateSpellName(e.target.value)} value={spellName} type="text" name="search_spell" />
                         <div className="button" onClick={spellSearchHandler}>{svg_search}</div>
                     </form>
-                </StyledWireFrame>
+                </S.WireFrame>
 
                 <div className="block">
                     <h3>Title</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam quo minima dolorem dicta exercitationem quia architecto fugiat, labore repellat.</p>
                 </div>
 
-            </StyledFrame>
-        </StyledChapter>
+            </S.Frame>
+        </S.Chapter>
     )
 }

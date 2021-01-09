@@ -1,81 +1,18 @@
+// ========== //
+//   IMPORT   //
+// ========== //
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
-import { StyledToast } from '../../../styles/StyledElements';
+import * as S from '../../../styles/StyledElements';
 import ActionAttack from '../ActionAttack/ActionAttack';
 import ActionPassive from '../ActionPassive/ActionPassive';
 import ActionMagic from '../ActionMagic/ActionMagic';
 
-EnemyCard.defaultProps = {
-    enemy: {
-        enemyName: "Enemy",
-        ac: 14,
-        cr: 1,
-        hitDice: "2d10",
-        movement: ["walk", "swim", "fly", "dig"],
-        stats: {
-            STR: 14,
-            DEX: 20,
-            CON: 1,
-            INT: 28,
-            WIS: 5,
-            CHA: 16
-        },
-        pageNumber: "Monster Manual",
-        actionsNumber: 1,
-        actions: [
-            {
-                type: "attack", // attack, item, spell
-                actionType: "action", // action, bonus action, passive, reaction.
-                actionName: "Battle Axe",
-                hitMod: 5,
-                damageMod: "STR",
-                damageDice: "1d6",
-                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText: "The enemy strikes you in the side. You can see the bloodlust on his face when he strikes.",
-                charges: 1,
-            },
-            {
-                type: "attack", // attack, item, spell
-                actionType: "action", // action, bonus action, passive, reaction.
-                actionName: "Bow & Arrow",
-                hitMod: 5,
-                damageMod: "DEX", // number - or - "str", "dex" - or - "finess"
-                damageDice: "1d6",
-                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText: "You get shot.",
-                charges: 1,
-            },
-            {
-                type: "attack", // attack, item, spell
-                actionType: "action", // action, bonus action, passive, reaction.
-                actionName: "Bite",
-                hitMod: 5,
-                damageMod: "DEX", // number - or - "str", "dex" - or - "finess"
-                damageDice: "2d4",
-                description: "Attack is +5 to hit to deal 1d6 + 3 damage.",
-                flavorText: "The enemy rears back and bites your arm.",
-                charges: 1,
-                sideAffect: "Roll vs being tripped. DC 11 or fall prone.",
-            },
-            {
-                type: "item",
-                actionType: "bonus_action",
-                actionName: "Potion",
-                roll: "2d4", // edge case. what if its like 2d4 + 2?
-                diceMod: 2,
-                description: "Drink potion to heal 2d4 + 2 hp.",
-                flavorText: "A potion of red goo that smells tart."
-            },
-        ]
-    }
-
-}
-
-// ============= //
-//   COMPONENT   //
-// ============= //
+// ========== //
+//   EXPORT   //
+// ========== //
 export default function EnemyCard(props) {
     // ==================== //
     //   FAKE CONSTRUCTOR   //
@@ -107,9 +44,9 @@ export default function EnemyCard(props) {
         return totalHp;
     };
 
-    // =================== //
-    //   HOOK INTO STATE   //
-    // =================== //
+    // ======================== //
+    //   HOOKS & REDUX: PART 1  //
+    // ======================== //
     const dispatch = useDispatch(); // used to send data back to redux
     const [enemyHp, updateenemyHp] = useState(getHp(props.enemy.hitDice));
     const [maxHp] = useState(enemyHp);
@@ -120,7 +57,7 @@ export default function EnemyCard(props) {
     //     Functions    //
     // ================ //
     const updateToastHandler = data => {
-        const toastData = <StyledToast>{data}</StyledToast>;
+        const toastData = <S.Toast>{data}</S.Toast>;
         dispatch(updateToastData(toastData));
         dispatch(showToastMenuState(true));
     };
@@ -284,9 +221,9 @@ export default function EnemyCard(props) {
         updatehasDisadvantage(!hasDisadvantage);
     }
 
-    // ============== //
-    //   HOOKS AGAIN  //
-    // ============== //
+    // ================ //
+    //   HOOKS: PART 2  //
+    // ================ //
     // because of a rookie mistake that I cant be bothered to fix Im just going to put this hook here.
     const [initiative] = useState(rollPlusMod(props.enemy.stats.DEX));
 

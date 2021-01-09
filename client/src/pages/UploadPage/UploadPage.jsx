@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import Nav from "../../components/Nav/Nav";
 import { updateToastData, showToastMenuState } from "../../redux/actions";
 import { svg_d20 } from "../../styles";
-import { StyledToast } from "../../styles/StyledElements";
+import * as S from "../../styles/StyledElements";
 
 export default function UploadPage() {
   // HOOKS
@@ -203,14 +203,14 @@ export default function UploadPage() {
       // ======= //
       //   JSX   //
       // ======= //
-      <StyledToast>
+      <S.Toast>
         <section>
           <h2>Title</h2>
           <h3>Title</h3>
           <h4>Title</h4>
           <p>Body</p>
         </section>
-      </StyledToast>
+      </S.Toast>
 
     // ============== //
     //   CALL TOAST   //
@@ -227,7 +227,7 @@ export default function UploadPage() {
       <StyledMain>
         <h1 className="clickable" onClick={updateToastHanddler}>{svg_d20}</h1>
 
-        <StyledUploadForm>
+        <S.UploadForm>
           <h2>Authentication Token</h2>
           <div className="block">
             <label htmlFor="token">Token:</label>
@@ -238,9 +238,9 @@ export default function UploadPage() {
               onChange={(e) => updatePasswordField(e.target.value)}
             />
           </div>
-        </StyledUploadForm>
+        </S.UploadForm>
 
-        <StyledUploadForm>
+        <S.UploadForm>
           <h2>Item</h2>
 
           <div className="block">
@@ -361,9 +361,9 @@ export default function UploadPage() {
             <p>UPLOAD ITEM</p>
           </div>
 
-        </StyledUploadForm>
+        </S.UploadForm>
 
-        <StyledUploadForm className="rumor">
+        <S.UploadForm className="rumor">
           <h2>Rumor</h2>
           <div className="block">
             <label htmlFor="rumor">Add A Rumor:</label>
@@ -373,9 +373,9 @@ export default function UploadPage() {
           <div className="block">
             <div className="button" onClick={uploadRumor}>Submit Rumor</div>
           </div>
-        </StyledUploadForm>
+        </S.UploadForm>
 
-        <StyledUploadForm className="encounter">
+        <S.UploadForm className="encounter">
           <h2>Encounter</h2>
 
           <div className="block">
@@ -447,7 +447,7 @@ export default function UploadPage() {
             <div className="button" onClick={submitEncounter}>Submit Encounter</div>
           </div>
 
-        </StyledUploadForm>
+        </S.UploadForm>
       </StyledMain>
       <Nav />
     </React.Fragment>
@@ -466,149 +466,4 @@ const StyledMain = styled.main`
         max-height: 100%;
         color: black;
     }
-`;
-
-const StyledUploadForm = styled.section`
-  color: #4b6584;
-  max-width: 800px;
-  margin: 1em auto 2em;
-  background-color: #fff;
-  border-radius: .5em;
-  box-shadow: 0 1px 4px #333;
-
-  h2 {
-    font-size: 2em;
-    font-weight: 900;
-    margin: .5em;
-    padding: .5em 0;
-  }
-
-  label {
-    margin-top: .5em;
-  }
-
-  input {
-    width: calc(100% - .5em);
-  }
-
-  textarea {
-    width: calc(100% - .5em);
-    max-width: calc(100% - .5em);
-  }
-
-  select {
-    min-width: 200px;
-    margin: 0 8px;
-  }
-
-  svg {
-    width: 1em;
-    height: 1em;
-    max-width: 1em;
-    max-height: 1em;
-  }
-
-  .block {
-    display: block;
-    padding: 1em;
-    margin: .5em 0;
-    overflow: hidden;
-
-    .enemy_party {
-      display: flex;
-      flex-wrap: wrap;
-
-      li {
-          display: flex;
-          padding: 4px;
-          margin: 4px 4px 4px 0;
-          border: 1px solid #d1d8e0;
-        
-        h4 {
-          font-weight: 900;
-          padding-right: .5em;
-          border-right: 1px solid #d1d8e0;
-        }
-
-        p {
-          padding: 0 .5em;
-
-          span {
-            font-weight: 900;
-          }
-        }
-      }
-    }
-
-    .categories {
-      padding: .5em;
-      margin: .5em;
-      border: 1px solid black;
-      border-radius: .5em;
-
-      .category {
-        display: flex;
-        margin: 2px;
-
-        .checkbox {
-          width: 1em;
-          height: 1em;
-          border: 2px solid black;
-
-          &:hover {
-            cursor: pointer;
-          }
-        }
-
-        p {
-          margin: 0 .5em;
-        }
-      }
-    }
-
-    &:nth-child(even) {
-      border-bottom: 1px solid #d1d8e0;
-      border-top: 1px solid #d1d8e0;
-      background-color: #f1f2f6;
-    }
-  }
-
-  .add_button {
-    padding: .5em;
-    margin: .5em 0;
-    width: fit-content;
-    user-select: none;
-    background-color: #3498db;
-    color: #fff;
-    font-weight: 900;
-
-    &:hover {
-      cursor: pointer;
-      background-color: #2980b9;
-    }
-
-    &:active {
-        transform: translateY(4px);
-    }
-  }
-
-  .button {
-    background-color: #e74c3c;
-    color: #fff;
-    font-weight: 900;
-    padding: .5em;
-    margin: .5em 0;
-    width: fit-content;
-    user-select: none;
-    text-transform: uppercase;
-
-    &:hover {
-      cursor: pointer;
-      background-color: #c0392b;
-    }
-
-    &:active {
-        transform: translateY(4px);
-    }
-  }
 `;

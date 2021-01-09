@@ -1,32 +1,37 @@
+// ============= //
+//     IMPORT    //
+// ============= //
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
 import { svg_beer, svg_d20, svg_refresh } from "../../styles";
-import { StyledButton, StyledChapter, StyledFrame, StyledRefresh, StyledToast } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
-
-Inn.defaultProps = {};
-
+// ============= //
+//     EXPORT    //
+// ============= //
 export default function Inn() {
-  // =================== //
-  //   HOOK INTO STATE   //
-  // =================== //
-  const [tavernName, updatetavernName] = useState("The Happy Hag");
+  // ================= //
+  //   HOOKS & REDUX   //
+  // ================= //
   const dispatch = useDispatch();
+  const [tavernName, updatetavernName] = useState("The Happy Hag");
 
   // ================ //
   //     Functions    //
   // ================ //
-  const updateToastMenu = (str) => {
-    const tempValue = (
-      <StyledToast>
-        {str}
-      </StyledToast>
-    );
-    dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-    dispatch(updateToastData(tempValue)); // default parent is a div with flex turned on.
+  const updateToastHandler = (data) => {
+    const toast = <S.Toast>{data}</S.Toast>;
+    dispatch(updateToastData(toast));
+    dispatch(showToastMenuState(true));
+  };
+  
+  const refreshTavernHandler = () => {
+    tavernName === "The Happy Hag"
+    ? updatetavernName("Stuffit Inn & Pub")
+    : updatetavernName("The Happy Hag");
   };
 
   const getRandomRumor = (e) => {
@@ -35,24 +40,18 @@ export default function Inn() {
     axios.get("/api/rumor")
       .then(data => {
         const toast = <p>{data.data.rumor.toString()}</p>;
-        updateToastMenu(toast);
+        updateToastHandler(toast);
       }).catch(err => {
         // do nothin
       });
   };
-
-  const refreshTavern = (e) => {
-    e.preventDefault();
-    tavernName === "The Happy Hag"
-      ? updatetavernName("Stuffit Inn & Pub")
-      : updatetavernName("The Happy Hag");
-  };
-
+  
+  // ============= //
+  //     RETURN    //
+  // ============= //
   return (
-    <StyledChapter
-      backgroundColor={props => props.theme.color.light}
-    >
-      <StyledFrame>
+    <S.Chapter backgroundColor={props => props.theme.color.light} >
+      <S.Frame>
         <h2>
           {svg_beer}
           The Tavern
@@ -66,19 +65,22 @@ export default function Inn() {
           <p>Room Cost</p>
         </StyledTavernMenu>
 
-        <StyledButton onClick={getRandomRumor}>
+        <S.Button onClick={getRandomRumor}>
           {svg_d20} Rumor
-        </StyledButton>
+        </S.Button>
 
-        <StyledRefresh onClick={refreshTavern} title="Refresh Tavern">
+        <S.Refresh onClick={refreshTavernHandler} title="Refresh Tavern">
           {svg_refresh}
-        </StyledRefresh>
+        </S.Refresh>
 
-      </StyledFrame>
-    </StyledChapter>
+      </S.Frame>
+    </S.Chapter>
   );
 }
 
+// ========== //
+//   STYLES   //
+// ========== //
 const StyledTavernMenu = styled.section`
   h3 {
     font-weight: 900;

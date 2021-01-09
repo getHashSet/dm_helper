@@ -2,17 +2,15 @@
 //   IMPORT   //
 // ========== //
 import React from 'react';
-import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_d20 } from '../../styles';
-import { StyledToast } from '../../styles/StyledElements';
-
+import * as S from '../../styles/StyledElements';
 
 // ============== //
 //     EXPORT     //
 // ============== //
-export default function RollPlayToHit() {
+export default function RollPlayToHit(props) {
     // ================= //
     //   HOOKS & REDUX   //
     // ================= //
@@ -22,7 +20,7 @@ export default function RollPlayToHit() {
     //     Functions    //
     // ================ //
     const updateToastHandler = data => {
-        const toastData = <StyledToast>{data}</StyledToast>;
+        const toastData = <S.Toast>{data}</S.Toast>;
         dispatch(updateToastData(toastData));
         dispatch(showToastMenuState(true));
     };
@@ -42,8 +40,8 @@ export default function RollPlayToHit() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection>
-            <StyledFrame>
+        <S.Chapter backgroundColor={props => props.theme.color.red} fontColor={props => props.theme.color.white}>
+            <S.Frame>
 
                 <h2>Roll<span>Play</span> to Hit</h2>
 
@@ -55,73 +53,12 @@ export default function RollPlayToHit() {
                 <p>add to hit</p>
                 <p>add to damage</p>
                 <p>advantage? (default is false)</p>
-                <StyledButton onClick={rollPlayToHitHandler}>
+                <S.Button onClick={rollPlayToHitHandler}>
                     {svg_d20}
                     <span>Roll</span>
-                </StyledButton>
+                </S.Button>
 
-            </StyledFrame>
-        </StyledSection>
+            </S.Frame>
+        </S.Chapter>
     )
 }
-
-// ========= //
-//   STYLE   //
-// ========= //
-const StyledSection = styled.section`
-    padding: 1em .5em;
-    background-color: #e74c3c;
-    display: flex;
-    justify-content: center;
-`;
-
-const StyledFrame = styled.div`
-    width: 100%;
-    max-width: 1200px;
-    color: #fff;
-
-    h2 {
-        font-size: 2em;
-        font-weight: 800;
-
-        span {
-            font-weight: 100;
-        }
-    }
-`;
-
-const StyledButton = styled.button`
-    background: none;
-    color: #fff;
-    font-size: 1.5em;
-    padding: .5em 1em;
-    margin: .5em 0;
-    border-radius: 2em;
-    border: 1px solid #fff;
-    text-transform: uppercase;
-    font-weight: 900;
-
-    svg {
-        width: 1em;
-        padding: 0 .5em;
-        margin-bottom: -4px;
-    }
-
-    span {
-        padding-right: .5em;
-    }
-
-    &:hover {
-        cursor: pointer;
-        background-color: #c0392b;
-        transform: translateY(2px);
-    }
-
-    &:active {
-        transform: translateY(4px);
-    }
-
-    &:focus {
-        outline: none;
-    }
-`;

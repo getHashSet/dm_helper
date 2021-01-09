@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
 import { svg_npc, svg_refresh } from "../../styles";
-import { StyledChapter, StyledToast, StyledRefresh } from '../../styles/StyledElements';
-
+import * as S from '../../styles/StyledElements';
 
 export default function Npc() {
-    // =================== //
-    //   HOOK INTO STATE   //
-    // =================== //
+    // ================ //
+    //   HOOKS PART 1   //
+    // ================ //
     const dispatch = useDispatch();
 
     // ================ //
@@ -18,24 +16,16 @@ export default function Npc() {
     // ================ //
     const updateToastHandler = (data) => {
         const toastData =
-
-            // ======= //
-            //   JSX   //
-            // ======= //
-            <StyledToast>
+            <S.Toast>
                 <section>
                     {data}
                 </section>
-            </StyledToast>
-
-        // ============== //
-        //   CALL TOAST   //
-        // ============== //
+            </S.Toast>
         dispatch(updateToastData(toastData));
         dispatch(showToastMenuState(true));
     }
 
-    const createNPC = {
+    const createNpcHandler = {
         desc: "",
         name: "",
         passivePerception: "",
@@ -47,23 +37,24 @@ export default function Npc() {
     const updateNpcHandler = () => {
         axios.get("/api/npc")
             .then(data => {
-                const toast = <p>{data.data.name}</p>;
-                updateToastHandler(toast)
                 updateNpc(data.data);
             }).catch(err => {
-                // do nothin
+                console.log(err);
+                updateToastHandler("Unable to connect to server. Please try again.");
             });
     }
 
-    // HOOK //
-    const [npc, updateNpc] = useState(createNPC);
+    // ================ //
+    //   HOOKS PART 2   //
+    // ================ //
+    const [npc, updateNpc] = useState(createNpcHandler);
 
     // ========== //
     //   RETURN   //
     // ========== //
     return (
-        <StyledChapter>
-            <StyledFrame>
+        <S.Chapter>
+            <S.Frame>
                 <h2>
                     {svg_npc}NPC Generator
                 </h2>
@@ -74,37 +65,15 @@ export default function Npc() {
                     <p>Side Pouch: {npc.coin}</p>
                     <p>Other Items: {npc.item}</p>
                     <p>Equip: {npc.weapon}</p>
-                    <p>Story:</p>
+                    <p>Perks &amp; Flaws:</p>
                     <p>Passive Perception: {npc.passivePerception}</p>
                 </div>
 
-                <StyledRefresh onClick={updateNpcHandler}>
+                <S.Refresh onClick={updateNpcHandler}>
                     {svg_refresh}
-                </StyledRefresh>
+                </S.Refresh>
 
-            </StyledFrame>
-        </StyledChapter>
+            </S.Frame>
+        </S.Chapter>
     )
 }
-
-// ========= //
-//   STYLE   //
-// ========= //
-const StyledFrame = styled.div`
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    color: #34495e;
-
-    h2 {
-        font-size: 2em;
-        font-weight: 800;
-        margin-bottom: 1em;
-        user-select: none;
-    }
-
-    .desc {
-        font-style: italic;
-        padding-bottom: .5em;
-    }
-`;

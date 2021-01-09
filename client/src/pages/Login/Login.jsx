@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import axios from 'axios';
 import Nav from '../../components/Nav/Nav';
+import * as S from '../../styles/StyledElements';
 import {
     showToastMenuState,
     updateToastData,
     updateUserName,
     updateLogin
 } from "../../redux/actions";
-import { StyledToast } from '../../styles/StyledElements';
-
 
 export default function Login(props) {
     // ========= //
@@ -21,19 +19,13 @@ export default function Login(props) {
     const [userPasswordState, updateUserPasswordState] = useState("");
     const dispatch = useDispatch();
 
-    // cache login attempts
-    // reset password
-    // user name field
-    // password field
-    // email token
-
     // ================ //
     //     Functions    //
     // ================ //
     const updateToastMenu = (str) => {
-        const html = <StyledToast>
+        const html = <S.Toast>
             {str}
-        </StyledToast>
+        </S.Toast>
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
@@ -67,7 +59,7 @@ export default function Login(props) {
     }
 
     return (
-        <StyledLogin>
+        <S.Login>
             <h1>Hello World</h1>
 
             <label htmlFor="user_name">Enter User Name:</label>
@@ -79,27 +71,6 @@ export default function Login(props) {
             <div className="login" onClick={submitUserName}>Sign In</div>
             <Link to={'/upload'}>Upload</Link>
             <Nav/>
-        </StyledLogin>
+        </S.Login>
     )
 }
-
-const StyledLogin = styled.section`
-    background-color: #aaa;
-    color: #fff;
-
-    .login {
-        user-select: none;
-        border: 1px solid #fff;
-        padding: 4px;
-        margin: 4px;
-        width: fit-content;
-
-        &:hover {
-            cursor: pointer;
-        }
-
-        &:active {
-            transform: translateY(4px);
-        }
-    }
-`;

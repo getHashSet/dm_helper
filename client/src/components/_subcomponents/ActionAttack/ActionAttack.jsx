@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../../redux/actions";
-import { StyledToast, StyledDiceRoll } from '../../../styles/StyledElements';
+import * as S from '../../../styles/StyledElements';
 
 // ============= //
 //   COMPONENT   //
@@ -83,7 +84,7 @@ export default function ActionAttack(props) {
     //     Functions    //
     // ================ //
     const updateToastHandler = (data) => {
-        const html = <StyledToast>{data}</StyledToast>;
+        const html = <S.Toast>{data}</S.Toast>;
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
         dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
@@ -276,8 +277,8 @@ export default function ActionAttack(props) {
         };
 
         const reactElement =
-            <StyledToast>
-                <StyledDiceRoll>
+            <S.Toast>
+                <S.DiceRoll>
                     <h4>{hitRollText}</h4>
                     <div className="totals">
                         {props.action.dc ? <p>{props.action.dc.dc_type.name} Save</p> : <p> To Hit: {hitRollText}</p>}
@@ -300,8 +301,8 @@ export default function ActionAttack(props) {
                             </p>
                         </div>
                     })}
-                </StyledDiceRoll>
-            </StyledToast>
+                </S.DiceRoll>
+            </S.Toast>
         updateToastHandler(reactElement);
         reset();
     }

@@ -1,26 +1,37 @@
+// ========== //
+//   IMPORT   //
+// ========== //
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_caret_left, svg_d20 } from '../../styles';
-import { StyledDiceRoll, StyledToast } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
-
+// =========== //
+//   EXPORT   //
+// =========== //
 export default function RollToHit() {
-    // =================== //
-    //   HOOK INTO STATE   //
-    // =================== //
-    const [calculatorOutput, updatecalculatorOutput] = useState("0");
+    // ================= //
+    //   HOOKS & REDUX   //
+    // ================= //
     const dispatch = useDispatch();
+    const [calculatorOutput, updatecalculatorOutput] = useState("0");
 
     // ================ //
     //     Functions    //
     // ================ //
-    const clearCalculatorField = (e) => {
+    const updateToastHandler = data => {
+        const toastData = <S.Toast>{data}</S.Toast>;
+        dispatch(updateToastData(toastData));
+        dispatch(showToastMenuState(true));
+    };
+
+    const clearCalulatorOutputHandler = (e) => {
         updatecalculatorOutput("0");
     }
 
-    const addANumberToTheProblem = (e) => {
+    const addInputHandler = (e) => {
         // Step 1: Check if button field was clicked or the p tag itself.
         let buttonValue = "0";
         if (e.target.children[0] != null) {
@@ -137,6 +148,7 @@ export default function RollToHit() {
         updatecalculatorOutput(newOutput);
     }
 
+    // NOTE: Use controllers for random numbers
     const rollRandomNumber = (max = 1, min = 1) => {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -144,7 +156,7 @@ export default function RollToHit() {
         return randomNumber.toString();
     }
 
-    const doRollCalculation = (e) => {
+    const rollCalculationHandler = (e) => {
         e.preventDefault();
 
         let cleanedOutput = calculatorOutput;
@@ -265,8 +277,8 @@ export default function RollToHit() {
         // TOAST //
         // ===== //
         const toast =
-            <StyledToast>
-                <StyledDiceRoll>
+            <S.Toast>
+                <S.DiceRoll>
                     <h4>{finalValue}</h4>
 
                     <h3>{calculatorOutput}</h3>
@@ -274,20 +286,14 @@ export default function RollToHit() {
                     <div className={`overflow expand`}>
                         {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
                     </div>
-                </StyledDiceRoll>
-            </StyledToast>;
+                </S.DiceRoll>
+            </S.Toast>;
 
         // Edge Case: Negative Numbers
         updateToastHandler(toast)
     }
 
-    const updateToastHandler = data => {
-        const toastData = <StyledToast>{data}</StyledToast>;
-        dispatch(updateToastData(toastData));
-        dispatch(showToastMenuState(true));
-    };
-
-    const backspace = () => {
+    const backspaceHandler = () => {
         if (calculatorOutput.length === 1) { updatecalculatorOutput("0"); return; }
 
         if (calculatorOutput[calculatorOutput.length - 1] === " ") {
@@ -309,39 +315,39 @@ export default function RollToHit() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection>
-            <StyledFrame>
+        <S.Chapter>
+            <S.Frame>
                 <STyledDiceCalculator>
                     <div className="frame">
                         <div id="output" className="output">
                             <div className="mathFormula">{calculatorOutput}</div>
-                            <div onClick={backspace} className="backspace">
-                                {svg_caret_left}    
+                            <div onClick={backspaceHandler} className="backspace">
+                                {svg_caret_left}
                             </div>
                         </div>
                         <div className="buttons">
                             <StyledCalcRow className="first_row">
-                                <li onClick={addANumberToTheProblem}><p>7</p></li>
-                                <li onClick={addANumberToTheProblem}><p>8</p></li>
-                                <li onClick={addANumberToTheProblem}><p>9</p></li>
-                                <li onClick={addANumberToTheProblem}><p>-</p></li>
+                                <li onClick={addInputHandler}><p>7</p></li>
+                                <li onClick={addInputHandler}><p>8</p></li>
+                                <li onClick={addInputHandler}><p>9</p></li>
+                                <li onClick={addInputHandler}><p>-</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="second_row">
-                                <li onClick={addANumberToTheProblem}><p>4</p></li>
-                                <li onClick={addANumberToTheProblem}><p>5</p></li>
-                                <li onClick={addANumberToTheProblem}><p>6</p></li>
-                                <li onClick={addANumberToTheProblem}><p>+</p></li>
+                                <li onClick={addInputHandler}><p>4</p></li>
+                                <li onClick={addInputHandler}><p>5</p></li>
+                                <li onClick={addInputHandler}><p>6</p></li>
+                                <li onClick={addInputHandler}><p>+</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="third_row">
-                                <li onClick={addANumberToTheProblem}><p>1</p></li>
-                                <li onClick={addANumberToTheProblem}><p>2</p></li>
-                                <li onClick={addANumberToTheProblem}><p>3</p></li>
-                                <li onClick={clearCalculatorField}><p>c</p></li>
+                                <li onClick={addInputHandler}><p>1</p></li>
+                                <li onClick={addInputHandler}><p>2</p></li>
+                                <li onClick={addInputHandler}><p>3</p></li>
+                                <li onClick={clearCalulatorOutputHandler}><p>c</p></li>
                             </StyledCalcRow>
                             <StyledCalcRow className="fourth_row">
-                                <li onClick={addANumberToTheProblem}><p>0</p></li>
-                                <li onClick={addANumberToTheProblem}><p>d</p></li>
-                                <li onClick={doRollCalculation}>
+                                <li onClick={addInputHandler}><p>0</p></li>
+                                <li onClick={addInputHandler}><p>d</p></li>
+                                <li onClick={rollCalculationHandler}>
                                     <p>
                                         {svg_d20}
                                     </p>
@@ -352,8 +358,8 @@ export default function RollToHit() {
                     </div>
                 </STyledDiceCalculator>
 
-            </StyledFrame>
-        </StyledSection>
+            </S.Frame>
+        </S.Chapter>
     )
 }
 

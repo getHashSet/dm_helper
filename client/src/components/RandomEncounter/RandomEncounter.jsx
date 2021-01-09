@@ -9,7 +9,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_plus, svg_trash } from '../../styles';
-import { StyledChapter, StyledFrame, StyledToast, StyledWireFrame } from '../../styles/StyledElements';
+import * as S from '../../styles/StyledElements';
 
 // ===================== //
 //     DEFAULT PROPS     //
@@ -51,11 +51,11 @@ export default function RandomEncounter() {
   // ================ //
   const updateToastHandler = data => {
     const toastData =
-      <StyledToast>
+      <S.Toast>
         <section>
           {data}
         </section>
-      </StyledToast>;
+      </S.Toast>;
     dispatch(updateToastData(toastData));
     dispatch(showToastMenuState(true));
   };
@@ -222,21 +222,21 @@ export default function RandomEncounter() {
   // ========== //
   return (
     <React.Fragment>
-      <StyledChapter backgroundColor={props => props.theme.color.red} fontColor={props => props.theme.color.white}>
-        <StyledFrame>
+      <S.Chapter backgroundColor={props => props.theme.color.red} fontColor={props => props.theme.color.white}>
+        <S.Frame>
           <h2>Random Encounter</h2>
 
-          <StyledOptionBox partyLevel={partyLevel}>
+          <S.Box partyLevel={partyLevel}>
             <h3>Party Level</h3>
             <ul>{partyLevelButtons()}</ul>
-          </StyledOptionBox>
+          </S.Box>
 
-          <StyledOptionBox>
+          <S.Box>
             <h3>Challenge Rating</h3>
             <Slider updateDificulty={updateDificulty} difficulty={difficulty} />
-          </StyledOptionBox>
+          </S.Box>
 
-          <StyledOptionBox>
+          <S.Box>
             <h3>Encounter Table</h3>
             <StyledFlexOptionsUL className="encounter_table" userEncounterSelection={userEncounterSelection}>
               {rollTables.map((location, index) => {
@@ -247,9 +247,9 @@ export default function RandomEncounter() {
                 );
               })}
             </StyledFlexOptionsUL>
-          </StyledOptionBox>
+          </S.Box>
 
-          <StyledOptionBox>
+          <S.Box>
             <h3>Custom Encounter</h3>
             <p className="instructions">Already have an encounter in mind? Thats great! Just input each of the enemies name here and build your roster.</p>
             <div className="search">
@@ -257,7 +257,7 @@ export default function RandomEncounter() {
               <input value={searchInput} onKeyDown={inputData} onChange={(e) => updatesearchInput(e.target.value)} type="search" name="enemyName" />
               <div className="clickable" onClick={addEnemy}>{svg_plus}</div>
             </div>
-          </StyledOptionBox>
+          </S.Box>
 
           <StyledListOfEnemies>
             {enemyRoster.map((enemy, index) => {
@@ -282,27 +282,27 @@ export default function RandomEncounter() {
           <StyledButton onClick={rollEnemyEncounter}>
             Roll Encounter
           </StyledButton>
-        </StyledFrame>
-      </StyledChapter>
+        </S.Frame>
+      </S.Chapter>
 
       {/* BATTLE FIELD */}
       <StyledBattleField className={`chapter ${enemyEncounter.enemies.length > 0 ? "show" : "hide"}`} >
-        <StyledFrame className="frame">
+        <S.Frame>
           <h2>Battle Field</h2>
           <div className="block">
             <h3>Description</h3>
             <p>{enemyEncounter.desc}</p>
           </div>
-          <StyledWireFrame>
+          <S.WireFrame>
             <h3>DM Notes</h3>
             <p>{enemyEncounter.info}</p>
-          </StyledWireFrame>
+          </S.WireFrame>
           <StyledDeck>
             {enemyEncounter.enemies.map((enemy, index) => {
               return <EnemyCard key={index} enemy={enemy} />;
             })}
           </StyledDeck>
-        </StyledFrame>
+        </S.Frame>
         <div className="end_battle clickable" onClick={clearEnemyEncounter}>
           {svg_trash}
         </div>
@@ -410,102 +410,6 @@ const StyledFlexOptionsUL = styled.ul`
     }
   }
 `;
-const StyledOptionBox = styled.div`
-  padding: 0.5em;
-
-  h3 {
-    padding-bottom: 0.5em;
-    font-size: 1.5em;
-    font-weight: 700;
-    display: block;
-    width: 100%;
-    user-select: none;
-  }
-
-  .instructions {
-    font-style: italic;
-    padding: .5em;
-  }
-
-  .search {
-    display: flex;
-    flex-wrap: wrap;
-    padding: .5em;
-    user-select: none;
-
-    label {
-      user-select: none;
-    }
-
-    input {
-      text-decoration: none;
-      box-shadow: none;
-      border: none;
-      outline: none;
-      padding: 0 .5em;
-      margin: 0 .5em;
-      min-width: 50vw;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-
-    .numbers {
-      width: 2em;
-      height: 2em;
-      border-radius: 0.5em;
-      margin: 0.5em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid #fff;
-      font-weight: 900;
-      opacity: .6;
-
-      &:hover {
-        cursor: pointer;
-        opacity: 1;
-      }
-
-      &:active {
-        transform: translateY(4px);
-      }
-
-      &:nth-child(${(props) => props.partyLevel}) {
-        background-color: #fff;
-        color: #c0392b;
-        opacity: 1;
-      }
-
-      @media (max-width: 768px) {
-
-      }
-    }
-  }
-`;
-// const StyledFrame = styled.div`
-//   color: #fff;
-
-//   .wire_block {
-//     margin-left: .5em;
-//     margin-right: .5em;
-//     max-width: 800px;
-//     border: 1px solid white;
-
-//     h3 {
-//       font-size: 1em;
-//       border: 1px solid white;
-//       background-color: ${props => props.theme.color.dark};
-//     }
-//   }
-
-// `;
 
 const StyledButton = styled.button`
   background: none;
@@ -591,37 +495,3 @@ const StyledDeck = styled.section`
   margin: 0;
   padding: 0;
 `;
-
-// ======== //
-//   CARD   //
-// ======== //
-// See sub components for card styling.
-
-// ========= //
-//   TOAST   //
-// ========= //
-// const StyledToast = styled.section`
-//   font-weight: 400;
-//   font-size: 16px;
-//   text-align: center;
-//   color: #2d3436;
-//   background-color: #fff;
-//   padding: .5em;
-
-//   p {
-//     padding: 0.5em 0;
-
-//     i {
-//       font-style: italic;
-//     }
-
-//     span {
-//       font-weight: 600;
-//     }
-//   }
-
-//   h4 {
-//     font-weight: 600;
-//     font-size: 1.5em;
-//   }
-// `;
