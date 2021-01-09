@@ -395,20 +395,26 @@ export const Refresh = styled.div`
 `;
 
 //   BUTTON   //
-// props: fontColor, backgroundColor, hoverColor
+// props: fontColor, backgroundColor, hoverColor, wire
 export const Button = styled.div`
-    color: ${props => props.fontColor ? props.fontColor : props.theme.color.white};
-    background-color: ${props => props.backgroundColor ? props.backgroundColor : props.theme.color.dark};
+    color: ${props => props.wire ? props.backgroundColor || props.theme.color.dark : props.fontColor || props.theme.color.white};
+    background-color: ${props => props.wire ? "none" : props.backgroundColor || props.theme.color.dark};
     border-radius: 1em;
+    border: ${props => props.wire ? `1px solid ${props.backgroundColor || props.theme.color.dark}` : "none"};
     padding: .5em 1em;
     margin: .5em 0;
     font-family: ${props => props.theme.font.title};
     width: fit-content;
     font-weight: 900;
 
+    span {
+      padding: 0 .5em;
+    }
+
     &:hover {
         cursor: pointer;
-        background-color: ${props => props.hoverColor ? props.hoverColor : props.theme.color.grey};
+        background-color: ${props => props.wire ? "none" : props.hoverColor || props.theme.color.grey};
+        transform: ${props => props.wire ? "translateY(2px)" : "none"};
     }
 
     &:active {

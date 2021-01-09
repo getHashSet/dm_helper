@@ -16,6 +16,16 @@ let enemyTable = [
   },
 ];
 
+const d4Weapons = ["Club", "Dagger", "Torch", "Damaged Mace", "Scimitar", "Plowshare"];
+const d6Weapons = ["Scimitar", "Shortsword", "Rusty Sword", "Damaged Crossbow", "Short Spear"];
+
+const randomItemFrom = (arr) => {
+  const maxNumber = arr.length;
+  const randomNumber = Math.floor(Math.random() * maxNumber);
+  const item = arr[randomNumber];
+  return item;
+};
+
 // Read All
 router.route("/").post(function (req, res) {
 
@@ -151,6 +161,9 @@ router.route("/").post(function (req, res) {
                 if (e.special_abilities !== undefined && e.special_abilities !== null) {
                   newEnemy.special_abilities = e.special_abilities;
                 };
+
+                if (newEnemy.actions[0].name === "Scimitar") { newEnemy.actions[0].name = randomItemFrom(d6Weapons)};
+                if (newEnemy.actions[0].name === "Club") { newEnemy.actions[0].name = randomItemFrom(d4Weapons)};
 
                 devEncounter.encounter.enemies.push(newEnemy);
                 counter++;
