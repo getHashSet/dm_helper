@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import StyledToast from "../../styles/StyledToast";
 import { useDispatch } from "react-redux";
 import Nav from "../../components/Nav/Nav";
 import { updateToastData, showToastMenuState } from "../../redux/actions";
 import { svg_d20 } from "../../styles";
+import { StyledToast } from "../../styles/StyledElements";
 
 export default function UploadPage() {
   // HOOKS

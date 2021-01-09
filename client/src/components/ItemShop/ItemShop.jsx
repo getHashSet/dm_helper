@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
-import StyledToast from '../../styles/StyledToast';
 import { svg_coins, svg_refresh } from '../../styles';
+import { StyledChapter, StyledFrame, StyledRefresh, StyledToast } from '../../styles/StyledElements';
 
 // ============== //
 //     EXPORT     //
@@ -28,8 +27,8 @@ export default function ItemShop() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledRoot className="chapter">
-            <div className="frame">
+        <StyledChapter>
+            <StyledFrame>
                 <h2>
                     {svg_coins} Item Shop
                 </h2>
@@ -39,7 +38,7 @@ export default function ItemShop() {
                 <label htmlFor="shop">Type of shop: </label> 
                 {/* TODO create a toast menu to pick the shop type */}
                 <select name="shop">
-                    <option value="item_shop" selected>Item Shop</option>
+                    <option value="item_shop">Item Shop</option>
                     <option value="black_smith">Black Smith</option>
                     <option value="stable">Stable</option>
                     <option value="magic_shop">Magic Shop</option>
@@ -67,57 +66,7 @@ export default function ItemShop() {
                     {svg_refresh}
                 </StyledRefresh>
 
-            </div>
-        </StyledRoot>
+            </StyledFrame>
+        </StyledChapter>
     )
 }
-
-// ========== //
-//   STYLES   //
-// ========== //
-const StyledRoot = styled.section`
-    padding: 3em .5em 4em;
-    background-color: ${props => props.theme.color.gold};
-    color: white;
-
-    .wire_block {
-        max-width: 500px;
-        background-color: white;
-        border: 1px solid white;
-
-        h3 {
-            left: 1em;
-            background-color: ${props => props.theme.color.gold};
-            color: white;
-            border: 2px solid white;
-        }
-
-        .menu {
-            p {
-                display: flex;
-                justify-content: space-between;
-                border-bottom: 1px solid ${props => props.theme.color.gold};
-            }
-            background-color: white;
-            color: ${props => props.theme.color.dark};
-        }
-
-    }
-`;
-
-const StyledRefresh = styled.div`
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  color: ${props => props.theme.color.white};
-
-  @media (max-width: ${props => props.theme.breakpoint.mobile}) {
-    svg {
-      transition: transform 0;
-
-      &:hover {
-        transform: none;
-      }
-    }
-  }
-`;

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import axios from 'axios';
-import StyledToast from "../../styles/StyledToast"; // folder path may be different
-import { svg_d20, svg_npc, svg_refresh } from "../../styles";
+import { svg_npc, svg_refresh } from "../../styles";
+import { StyledChapter, StyledToast, StyledRefresh } from '../../styles/StyledElements';
 
 
 export default function Npc() {
@@ -44,17 +44,16 @@ export default function Npc() {
         item: "",
     };
 
-    const updateNPC = () => {
+    const updateNpcHandler = () => {
         axios.get("/api/npc")
             .then(data => {
-                const toast = <p>{data.data.name}, {data.data.desc}</p>;
+                const toast = <p>{data.data.name}</p>;
                 updateToastHandler(toast)
                 updateNpc(data.data);
             }).catch(err => {
                 // do nothin
             });
     }
-
 
     // HOOK //
     const [npc, updateNpc] = useState(createNPC);
@@ -63,7 +62,7 @@ export default function Npc() {
     //   RETURN   //
     // ========== //
     return (
-        <StyledSection>
+        <StyledChapter>
             <StyledFrame>
                 <h2>
                     {svg_npc}NPC Generator
@@ -79,12 +78,12 @@ export default function Npc() {
                     <p>Passive Perception: {npc.passivePerception}</p>
                 </div>
 
-                <StyledRefresh onClick={() => { updateToastHandler("Refreshed NPC") }} title="Refresh Shop">
+                <StyledRefresh onClick={updateNpcHandler}>
                     {svg_refresh}
                 </StyledRefresh>
 
             </StyledFrame>
-        </StyledSection>
+        </StyledChapter>
     )
 }
 
@@ -108,58 +107,4 @@ const StyledFrame = styled.div`
         font-style: italic;
         padding-bottom: .5em;
     }
-`;
-
-const StyledSection = styled.section`
-    padding: 1em .5em;
-    display: flex;
-    justify-content: center;
-`;
-
-const StyledButton = styled.button`
-    background: #e67e22;
-    color: #fff;
-    font-size: 1.5em;
-    padding: .5em 1em;
-    margin: .5em 0;
-    border-radius: 2em;
-    border: 1px solid #fff;
-    text-transform: uppercase;
-    font-weight: 900;
-
-    span {
-        padding-right: .5em;
-    }
-
-    &:hover {
-        cursor: pointer;
-        background-color: #f39c12;
-        border: 1px solid #f39c12;
-        color: #fff;
-    }
-
-    &:active {
-        transform: translateY(4px);
-    }
-
-    &:focus {
-        outline: none;
-    }
-`;
-
-const StyledRefresh = styled.div`
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  color: ${props => props.theme.color.dark};
-
-  @media (max-width: 768px) {
-    svg {
-      transition: transform 0;
-
-      &:hover {
-        transform: none;
-      }
-    }
-  }
 `;

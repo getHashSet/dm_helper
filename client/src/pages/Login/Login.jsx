@@ -10,6 +10,8 @@ import {
     updateUserName,
     updateLogin
 } from "../../redux/actions";
+import { StyledToast } from '../../styles/StyledElements';
+
 
 export default function Login(props) {
     // ========= //
@@ -100,30 +102,4 @@ const StyledLogin = styled.section`
             transform: translateY(4px);
         }
     }
-`;
-
-// ========= //
-//   TOAST   //
-// ========= //
-const StyledToast = styled.section`
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-
-  p {
-    padding: 0.5em 0;
-
-    i {
-      font-style: italic;
-    }
-
-    span {
-      font-weight: 600;
-    }
-  }
-
-  h4 {
-    font-weight: 600;
-    font-size: 1.5em;
-  }
 `;

@@ -3,10 +3,11 @@
 // ========== //
 import React from 'react';
 import styled from 'styled-components';
-import StyledToast from '../../styles/StyledToast';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
 import { svg_d20 } from '../../styles';
+import { StyledToast } from '../../styles/StyledElements';
+
 
 // ============== //
 //     EXPORT     //
@@ -28,12 +29,12 @@ export default function RollPlayToHit() {
 
     const rollPlayToHitHandler = () => {
         const toastJsx = (
-            <section>
+            <React.Fragment>
                 <p>Gripping my mace <span><i>Adinnale</i></span> tightly in my hand. I take a breath all the way down into my belly, then shout.</p>
                 <h4>"Whost thy father!"</h4>
                 <p>And unleash my blow upon thy head.</p>
                 <p>(Hit roll: {Math.floor(Math.random() * 20) + 1}) (Damage: {Math.floor(Math.random() * 8) + 3})</p>
-            </section>)
+            </React.Fragment>)
         updateToastHandler(toastJsx);
     }
 
