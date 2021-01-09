@@ -53,7 +53,7 @@ export default function RollPlayToHit(props) {
                 <p>add to hit</p>
                 <p>add to damage</p>
                 <p>advantage? (default is false)</p>
-                <S.Button onClick={rollPlayToHitHandler}>
+                <S.Button wire backgroundColor="white" onClick={rollPlayToHitHandler}>
                     {svg_d20}
                     <span>Roll</span>
                 </S.Button>
