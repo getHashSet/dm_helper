@@ -54,7 +54,7 @@ table {
 	overflow: hidden;
 }
 a:-webkit-any-link{
-	text-decoration:none;
+	text-decoration:underline 1px solid;
 }
 h1,h2,h3,h4,h5,h6 {
 	user-select: none;

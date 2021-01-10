@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Nav from "../../components/Nav/Nav";
 import { updateToastData, showToastMenuState } from "../../redux/actions";
 import { svg_d20 } from "../../styles";
@@ -9,6 +10,7 @@ import * as S from "../../styles/StyledElements";
 
 export default function UploadPage() {
   // HOOKS
+  const dispatch = useDispatch();
   const [rumorField, updateRumorField] = useState("");
   const [passwordField, updatePasswordField] = useState("");
   const [locationField, updateLocationField] = useState("error");
@@ -19,13 +21,23 @@ export default function UploadPage() {
   const [crField, updateCrField] = useState("1");
   const [listOfApiEnemies, updateListOfApiEnemies] = useState([]);
   const [cr, updateCr] = useState(0);
-  const dispatch = useDispatch();
+  const [loggedIn] = useState(useSelector(state => state.isLoggedIn));
 
   // =============== //
   //    FUNCTIONS    //
   // =============== //
+  
+  const updateToastHandler = (jsx) => {
+    dispatch(updateToastData(jsx));
+    dispatch(showToastMenuState(true));
+  }
 
   const submitEncounter = () => {
+    if (!loggedIn) {
+      notSignedInHandler();
+      return;
+    };
+
 
     // TODO: add confirm field. 
 
@@ -76,7 +88,6 @@ export default function UploadPage() {
   };
 
   const addEnemy = () => {
-
     let cleanedSearchResult = enemyField.toLowerCase().trim().replace(/ /g, "-");
 
     switch (cleanedSearchResult) {
@@ -160,6 +171,11 @@ export default function UploadPage() {
   }
 
   const uploadRumor = () => {
+    if (!loggedIn) {
+      notSignedInHandler();
+      return;
+    };
+
     if (rumorField.length < 5) { return };
 
     const POSTrequest = {
@@ -176,7 +192,24 @@ export default function UploadPage() {
       });
   }
 
+  const notSignedInHandler = () => {
+    const msg = <S.Toast>
+        <S.Box>
+          You must <Link to="/login" onClick={() => {dispatch(showToastMenuState(false))}}>sign in </Link>to continue.
+        </S.Box>
+      </S.Toast>
+      updateToastHandler(msg);
+  }
+
   const uploadItem = () => {
+
+    if (!loggedIn) {
+      notSignedInHandler();
+      return;
+    };
+
+    console.log("publishing item")
+
     const POSTrequest = {
       token: passwordField,
       item: {
@@ -226,19 +259,6 @@ export default function UploadPage() {
     <React.Fragment>
       <StyledMain>
         <h1 className="clickable" onClick={updateToastHanddler}>{svg_d20}</h1>
-
-        <S.UploadForm>
-          <h2>Authentication Token</h2>
-          <div className="block">
-            <label htmlFor="token">Token:</label>
-            <input
-              name="token"
-              value={passwordField}
-              type="text"
-              onChange={(e) => updatePasswordField(e.target.value)}
-            />
-          </div>
-        </S.UploadForm>
 
         <S.UploadForm>
           <h2>Item</h2>
@@ -357,9 +377,11 @@ export default function UploadPage() {
             </div>
           </div>
 
-          <div className="block" onClick={uploadItem}>
-            <p>UPLOAD ITEM</p>
-          </div>
+          <S.Box>
+            <div className="button" onClick={uploadItem}>
+              <p>UPLOAD ITEM</p>
+            </div>
+          </S.Box>
 
         </S.UploadForm>
 

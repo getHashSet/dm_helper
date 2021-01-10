@@ -61,7 +61,7 @@ export default function Login(props) {
         return (
             <React.Fragment>
                 <S.Login>
-                    <S.Frame>
+                    <S.Frame maxWidth="500px">
                         <h1>Signed In</h1>
 
                         <S.Button backgroundColor={props => props.theme.color.gold} className="login" onClick={logOffHandler}>
