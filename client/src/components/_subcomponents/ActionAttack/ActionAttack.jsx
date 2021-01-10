@@ -230,7 +230,7 @@ export default function ActionAttack(props) {
 
         let saveDc = thisDCRoll + props.action.save.save_bonus;
 
-        saveDc < 5 ? saveDc = 5 : saveDc = saveDc;
+        if (saveDc < 5) {saveDc = 5};
 
         const toast = <S.Toast>
             <S.DiceRoll>

@@ -101,21 +101,6 @@ export default function EnemyCard(props) {
         return `(${Math.floor((stat - 10) / 2)})`;
     };
 
-    const getMod = (stat) => {
-
-        if (+stat > 9 && +stat < 12) { return 0 };
-
-        const uncleanedMod = getStatMod(stat);
-        const mod = uncleanedMod.slice(1, uncleanedMod.length - 1); // remove string data
-        return +mod;
-    };
-
-    const rollPlusMod = (stat) => {
-        let mod = 0;
-        mod = mod + +getMod(stat);
-        return (Math.floor(Math.random() * 20) + 1) + mod;
-    };
-
     const adjustHpButton = (e) => {
         e.preventDefault();
 

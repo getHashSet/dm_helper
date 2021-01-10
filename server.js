@@ -12,8 +12,8 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-// const session = require("express-session");
-const MongoStore = require("connect-mongo")//(session);
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 const passport = require("./utils/passport");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -45,15 +45,6 @@ app.use(
 
 app.use(bodyParser.json());
 
-// mongoose
-//   .connect(process.env.MONGODB_URI || "mongodb://localhost/tabletopsquire", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .catch((err) => {
-//     // console.log(err);
-//   });
-
 try {
     // Connect to the MongoDB cluster
      mongoose.connect(
@@ -66,21 +57,21 @@ try {
     console.log("could not connect to Database");
   }
 
-// app.use(
-//   session({
-//     secret: process.env.APP_SECRET || "this is the default passphrase",
-//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.APP_SECRET || "this is the default passphrase",
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // =================== //
 // ===== Passport ==== //
 // =================== //
 
 app.use(passport.initialize());
-// app.use(passport.session()); // will call the deserializeUser
+app.use(passport.session()); // will call the deserializeUser
 
 // =================================== //
 // ==== if its production environment  //
@@ -109,11 +100,11 @@ app.get("*", (req, res) => {
 // ====== Error handler ==== //
 // ========================= //
 
-// app.use(function (err, req, res, next) {
-// 	// console.log('====== ERROR =======')
-// 	// console.error(err.stack)
-// 	// res.status(500)
-// })
+app.use(function (err, req, res, next) {
+	// console.log('====== ERROR =======')
+	// console.error(err.stack)
+	res.status(500)
+})
 
 // ========================== //
 // ==== Starting Server ===== //

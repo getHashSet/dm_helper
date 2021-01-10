@@ -3,7 +3,6 @@
 // ========== //
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Slider from "../_subcomponents/Slider/Slider";
 import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -21,7 +20,6 @@ export default function RandomEncounter() {
   const dispatch = useDispatch(); // used to send data back to redux
   const [userEncounterSelection, updateuserEncounterSelection] = useState("");
   const [partyLevel, updatepartyLevel] = useState(1);
-  const [difficulty, updateDificulty] = useState(3);
   const [enemyEncounter, updateenemyEncounter] = useState({ desc: "", info: "", enemies: [] });
   const [inputeEnemies, updateinputeEnemies] = useState([]);
   const [searchInput, updatesearchInput] = useState("");
@@ -76,7 +74,7 @@ export default function RandomEncounter() {
       enemies: uriEncodedEnemies,
       location: +userEncounterSelection > 0 ? rollTables[+userEncounterSelection - 1].toLowerCase() : "Woods",
       cr: +partyLevel > 0 ? partyLevel : 1,
-      mod: + difficulty - 3,
+      mod: 0,
     }
 
     axios
@@ -266,11 +264,6 @@ export default function RandomEncounter() {
             <h3>Party Level</h3>
             <ul>{partyLevelButtons()}</ul>
           </S.Box>
-
-          {/* <S.Box>
-            <h3>Challenge Rating</h3>
-            <Slider updateDificulty={updateDificulty} difficulty={difficulty} />
-          </S.Box> */}
 
           <S.Box>
             <h3>Encounter Table</h3>

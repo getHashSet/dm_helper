@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
-import { svg_calc, svg_caret_left, svg_d20 } from '../../styles';
+import { svg_caret_left, svg_d20 } from '../../styles';
 import * as S from '../../styles/StyledElements';
 
 // =========== //
