@@ -67,6 +67,12 @@ export default function Login(props) {
                         <S.Button backgroundColor={props => props.theme.color.gold} className="login" onClick={logOffHandler}>
                             Sign Out
                         </S.Button>
+
+                        <S.Box>
+                            <Link to="/upload">
+                                Upload Page
+                            </Link>
+                        </S.Box>
                     </S.Frame>
                 </S.Login>
                 <Nav />
