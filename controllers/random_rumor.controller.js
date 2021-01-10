@@ -23,25 +23,10 @@ router.route("/").get(function(req, res){
 });
 
 router.route("/upload").post((req, res) => {
-
-    if (req.body.password !== process.env.UPLOADPASSWORD) {
-        res.json({
-            msg: "incorrect token",
-            err: "incorrect token",
-        })
-    } else if (req.body.rumor === undefined || req.body.rumor === null || req.body.rumor.length < 4) {
-        res.json({
-            msg: "Unable to upload rumor.",
-            err: "Did not write rumor to database.",
-        });
-    } else {
-        db.Rumors
-        .create(req.body)
-        .then(dbModel => res.json( { msg: "uploaded rumor" } ))
-        .catch(err => res.status(422).json(err));
-    };
-
-
+    db.Rumors
+    .create(req.body)
+    .then(dbModel => res.json( { msg: "uploaded rumor" } ))
+    .catch(err => res.status(422).json(err));
 });
 
 module.exports = router;
