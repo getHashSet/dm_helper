@@ -613,6 +613,15 @@ export const Hero = styled.main`
     z-index: 9000;
     background-color: #1e272e;
     color: #ffffff;
+
+    h1 {
+      font-size: 3em;
+      font-weight: 900;
+
+      span {
+        font-weight: 100;
+      }
+    }
 `;
 
 //   NAV   //
