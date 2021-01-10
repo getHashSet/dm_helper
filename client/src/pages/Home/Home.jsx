@@ -7,7 +7,7 @@ export default class Home extends Component {
         return (
             <React.Fragment>
                 <S.Hero>
-                    <h1>TableTop Squire</h1>
+                    <h1>TableTop<span>Squire</span></h1>
                 </S.Hero>
                 <Nav/>
             </React.Fragment>

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux";
 import { showToastMenuState, updateToastData } from "../../redux/actions";
-import { svg_caret_left, svg_d20 } from '../../styles';
+import { svg_calc, svg_caret_left, svg_d20 } from '../../styles';
 import * as S from '../../styles/StyledElements';
 
 // =========== //
@@ -21,9 +21,8 @@ export default function RollToHit() {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastHandler = data => {
-        const toastData = <S.Toast>{data}</S.Toast>;
-        dispatch(updateToastData(toastData));
+    const updateToastHandler = jsx => {
+        dispatch(updateToastData(jsx));
         dispatch(showToastMenuState(true));
     };
 
@@ -279,9 +278,9 @@ export default function RollToHit() {
         const toast =
             <S.Toast>
                 <S.DiceRoll>
-                    <h4>{finalValue}</h4>
+                    <h4><span>{finalValue}</span></h4>
 
-                    <h3>{calculatorOutput}</h3>
+                    <h5>{calculatorOutput}</h5>
 
                     <div className={`overflow expand`}>
                         {cleanedDiceRolls.map((diceRollObject, index) => <div key={index}><p><span>{diceRollObject.index} of {diceRollObject.totalRolls}</span> {diceRollObject.type}</p> <p className="the_roll">({diceRollObject.roll})</p></div>)}
@@ -378,7 +377,9 @@ const StyledCalcRow = styled.ul`
         align-items: center;
 
         p {
+            font-family: ${props => props.theme.font.title};
             user-select: none;
+
             svg {    
                 min-width: 1em;
             }

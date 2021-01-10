@@ -87,10 +87,9 @@ export default function ActionAttack(props) {
     // ================ //
     //     Functions    //
     // ================ //
-    const updateToastHandler = (data) => {
-        const html = <S.Toast>{data}</S.Toast>;
+    const updateToastHandler = (jsx) => {
+        dispatch(updateToastData(jsx)); // default parent is a div with flex turned on.
         dispatch(showToastMenuState(true)); // redux => state => is it visible "true or false"
-        dispatch(updateToastData(html)); // default parent is a div with flex turned on.
     };
 
     const rolld20 = () => {
@@ -247,7 +246,7 @@ export default function ActionAttack(props) {
         if (props.action.hasOwnProperty("save")) { rollDcAttack(); return; };
 
         if (props.action?.damage?.length < 1 && props.action.dc === undefined) {
-            const toastObject = <StyledToastBit>{props.action.desc}</StyledToastBit>;
+            const toastObject = <S.Toast>{props.action.desc}</S.Toast>;
             updateToastHandler(toastObject);
             return;
         };
@@ -442,14 +441,4 @@ const StyledAction = styled.div`
     &:active {
         transform: translateY(3px);
     }
-`;
-
-const StyledToastBit = styled.div`
-    font-size: 20px;
-    font-weight: 300;
-    font-family: 'Roboto Slab', serif;
-    line-height: 1.2em;
-    color: #2d3436;
-    background-color: #fff;
-    padding: .5em;
 `;

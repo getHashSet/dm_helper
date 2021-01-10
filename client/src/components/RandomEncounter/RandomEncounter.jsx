@@ -124,9 +124,11 @@ export default function RandomEncounter() {
     if (partyLevel === e.target.value) {
       return;
     };
-    const newLevel = e.target.value;
+    let newLevel = e.target.value;
+    if (newLevel === 1) {
+      newLevel = "0,.25,.5,1";
+    };
     updatepartyLevel(+newLevel);
-    console.log('updated party level to ' + newLevel);
     axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${newLevel}`)
     .then(enemyLookup => {
         updateEnemyLookup(enemyLookup.data.results);
@@ -136,14 +138,19 @@ export default function RandomEncounter() {
     });
   };
 
+  const addEnemyHandler = () => {
+    addEnemy();
+  }
+
   const addEnemy = (enemy = searchInput) => {
+    console.log(enemy)
+
     if (enemy === "") { return };
     
     // STEP 1: Check if the enemy you are adding is a real thing
     try {
-      
       const cleanedSearchResult = enemy.toLowerCase().trim().replace(/ /g, "-");
-      
+
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
         .then(enemyFromApi => {
 
@@ -231,9 +238,10 @@ export default function RandomEncounter() {
   // ================= //
   useEffect(() => {
     console.log('looking for enemies');
-    axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${partyLevel}`)
+    axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=0,.25,.5,1`)
     .then(enemyLookup => {
         updateEnemyLookup(enemyLookup.data.results);
+        updateSelectedEnemyLookup(enemyLookup.data.results[0].index);
     })
     .catch(err => {
         console.log(err);
@@ -254,10 +262,10 @@ export default function RandomEncounter() {
             <ul>{partyLevelButtons()}</ul>
           </S.Box>
 
-          <S.Box>
+          {/* <S.Box>
             <h3>Challenge Rating</h3>
             <Slider updateDificulty={updateDificulty} difficulty={difficulty} />
-          </S.Box>
+          </S.Box> */}
 
           <S.Box>
             <h3>Encounter Table</h3>
@@ -278,7 +286,7 @@ export default function RandomEncounter() {
             <div className="search">
               <label htmlFor="enemyName">Search</label>
               <input value={searchInput} onKeyDown={inputData} onChange={(e) => updatesearchInput(e.target.value)} type="search" name="enemyName" />
-              <div className="clickable" onClick={addEnemy}>{svg_plus}</div>
+              <div className="clickable" onClick={addEnemyHandler}>{svg_plus}</div>
             </div>
           </S.Box>
 
