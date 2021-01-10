@@ -128,10 +128,10 @@ export default function RandomEncounter() {
       return;
     };
     let newLevel = e.target.value;
-    if (newLevel === 1) {
-      newLevel = "0,.25,.5,1";
-    };
     updatepartyLevel(+newLevel);
+    if (newLevel === 1) {
+      newLevel = ".25,.5,1";
+    };
     axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${newLevel}`)
     .then(enemyLookup => {
         updateEnemyLookup(enemyLookup.data.results);

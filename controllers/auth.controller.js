@@ -3,32 +3,32 @@ const router = express.Router()
 const User = require("../models").User;
 const passport = require('../utils/passport');
 
-// Google Auth
-router.get('/google',
-    passport.authenticate('google', {
-        scope: ['profile']
-    })
-)
+// // Google Auth
+// router.get('/google',
+//     passport.authenticate('google', {
+//         scope: ['profile']
+//     })
+// )
 
-// Google Redirect
-router.get(
-    '/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    })
-)
+// // Google Redirect
+// router.get(
+//     '/google/callback',
+//     passport.authenticate('google', {
+//         successRedirect: '/',
+//         failureRedirect: '/login'
+//     })
+// )
 
-// Find User
-router.get('/user',
-    (req, res, next) => {
-        if (req.user) {
-            return res.json({ user: req.user })
-            // console.log(req.body)
-        } else {
-            return res.json({ user: null })
-        }
-    })
+// // Find User
+// router.get('/user',
+//     (req, res, next) => {
+//         if (req.user) {
+//             return res.json({ user: req.user })
+//             // console.log(req.body)
+//         } else {
+//             return res.json({ user: null })
+//         }
+//     })
 
 // Login
 router.post('/login',
@@ -42,7 +42,8 @@ router.post('/login',
         if (cleanUser.local) {
             delete cleanUser.local.password
         }
-        res.json({ user: cleanUser })
+        console.log(user);
+        res.json({ msg: `Logged in as ${req.body.username}` });
     }
 )
 
@@ -52,7 +53,7 @@ router.post('/logout',
         if (req.user) {
             req.session.destroy()
             res.clearCookie('connect.sid')
-            return res.json({ msg: 'logging you out' })
+            return res.json({ msg: 'Signed out Successfully' })
         } else {
             return res.json({ msg: 'no user to log out!' })
         }

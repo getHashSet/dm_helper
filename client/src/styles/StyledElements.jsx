@@ -454,7 +454,7 @@ export const Button = styled.div`
 
 //   MAIN   //
 export const Main = styled.main`
-    margin-bottom: 4em;
+    // RESET COULD GO HERE
 `;
 
 //   UPLOAD FORM   //
@@ -605,24 +605,53 @@ export const UploadForm = styled.section`
 
 //   LOGIN   //
 export const Login = styled.section`
-    background-color: #aaa;
-    color: #fff;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${props => props.theme.color.dark};
+  color: white;
 
-    .login {
-        user-select: none;
-        border: 1px solid #fff;
-        padding: 4px;
-        margin: 4px;
-        width: fit-content;
+  div {
+    margin: .5em;
 
-        &:hover {
-            cursor: pointer;
-        }
-
-        &:active {
-            transform: translateY(4px);
-        }
+    h1 {
+      font-size: 3em;
+      font-weight: 900;
+      text-transform: uppercase;
     }
+
+    a {
+      color: ${props => props.theme.color.gold};
+
+      &:hover {
+        text-decoration: underline 1px solid ${props => props => props.theme.color.gold};
+      }
+    }
+
+    p,
+    label,
+    input {
+      font-family: ${props => props.theme.font.body};
+      font-weight: 100;
+      font-size: 16px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin: 4px 0;
+      padding: 4px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 `;
 
 //   HERO   //
