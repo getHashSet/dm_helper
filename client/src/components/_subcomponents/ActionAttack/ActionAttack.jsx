@@ -37,6 +37,8 @@ export default function ActionAttack(props) {
                 return rolld(10) - 1;
             case "tail spike":
                 return rolld(4, 6);
+            case "net":
+                return rolld(3);
             default:
                 return 999;
         }
@@ -59,6 +61,8 @@ export default function ActionAttack(props) {
                 return "Out of javlins";
             case "tail spike":
                 return "The Enemy has no more tail spikes left";
+            case "net":
+                return "Out of nets";
             default:
                 return "Unable to use that right now.";
         }
@@ -157,6 +161,8 @@ export default function ActionAttack(props) {
     const rollDamage = () => {
         let finalDamage = 0;
 
+        if (!props.action.hasOwnProperty('damage')) {return 0};
+
         // how to deal with multiple damage types;
         let fightingStyle = undefined;
         if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
@@ -183,7 +189,7 @@ export default function ActionAttack(props) {
         diceType = +breakDiceString[1];
         totalNumberOfDice = numberOfDice;
 
-        console.log(`DiceType ${diceType}, Numberofdice: ${numberOfDice}`);
+        // console.log(`DiceType ${diceType}, Numberofdice: ${numberOfDice}`);
 
         if (nat20) { numberOfDice = numberOfDice * 2 };
 
@@ -215,9 +221,32 @@ export default function ActionAttack(props) {
         unusedHitRoll = "";
     }
 
-    const rollToHitAndDamage = () => {
+    const rollDcAttack = () => {
+        let thisDCRoll = Math.floor(Math.random() * 20) + 1;
+        
+        if (props.action.save.disadvantage) {
+            const secondRoll = Math.floor(Math.random() * 20) + 1;
+            thisDCRoll = thisDCRoll > secondRoll ? secondRoll : thisDCRoll;
+        };
 
-        if (props.action.damage.length < 1 && props.action.dc === undefined) {
+        let saveDc = thisDCRoll + props.action.save.save_bonus;
+
+        saveDc < 5 ? saveDc = 5 : saveDc = saveDc;
+
+        const toast = <S.Toast>
+            <S.DiceRoll>
+                <p>{props.action.save.instructions}</p>
+                <h4>{saveDc}</h4>
+                <p>{props.action.save.desc}</p>
+            </S.DiceRoll>
+        </S.Toast>
+        updateToastHandler(toast);
+    }
+
+    const rollToHitAndDamage = () => {
+        if (props.action.hasOwnProperty("save")) { rollDcAttack(); return; };
+
+        if (props.action?.damage?.length < 1 && props.action.dc === undefined) {
             const toastObject = <StyledToastBit>{props.action.desc}</StyledToastBit>;
             updateToastHandler(toastObject);
             return;
@@ -240,7 +269,7 @@ export default function ActionAttack(props) {
             updatechargesRemaining(chargesRemaining - 1);
         };
 
-        if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) {
+        if (props.action?.damage?.length < 1 || props.action?.damage[0]?.hasOwnProperty("choose")) {
             // TODO this is trying to catch multi attack
             
         } else if (props.action.damage[0]?.damage_dice === undefined) {
