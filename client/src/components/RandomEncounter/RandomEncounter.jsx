@@ -1,7 +1,7 @@
 // ========== //
 //   IMPORT   //
 // ========== //
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Slider from "../_subcomponents/Slider/Slider";
 import EnemyCard from "../_subcomponents/EnemyCard/EnemyCard";
@@ -20,13 +20,15 @@ export default function RandomEncounter() {
   // ================= //
   const dispatch = useDispatch(); // used to send data back to redux
   const [userEncounterSelection, updateuserEncounterSelection] = useState("");
-  const [partyLevel, updatepartyLevel] = useState("1");
+  const [partyLevel, updatepartyLevel] = useState(1);
   const [difficulty, updateDificulty] = useState(3);
   const [enemyEncounter, updateenemyEncounter] = useState({ desc: "", info: "", enemies: [] });
-  const partyLevelMax = 10;
   const [inputeEnemies, updateinputeEnemies] = useState([]);
   const [searchInput, updatesearchInput] = useState("");
   const [enemyRoster, updateenemyRoster] = useState([]);
+  const [enemyLookup, updateEnemyLookup] = useState([]);
+  const [selectedEnemyLookup, updateSelectedEnemyLookup] = useState();
+  const partyLevelMax = 10;
   const rollTables = [
     "Road",
     "Mountains",
@@ -50,8 +52,8 @@ export default function RandomEncounter() {
     dispatch(showToastMenuState(true));
   };
 
-  const rollEnemyEncounter = (e) => {
-    e.preventDefault();
+  const rollEnemyEncounter = () => {
+    console.log(partyLevel);
 
     clearEnemyEncounter();
 
@@ -75,13 +77,12 @@ export default function RandomEncounter() {
     axios
       .post(`/api/encounter`, POSTbody)
       .then((data) => {
+        const enemies = data.data.encounter.enemies;
+        console.log(enemies)
         updateenemyEncounter(data.data.encounter);
-        console.log("Encounter");
-        console.log(enemyEncounter);
       })
       .catch((err) => {
         console.log("There was an issue with the api call.");
-        console.log(err);
       })
       .finally(() => {
         // TODO: remove load screen.
@@ -92,7 +93,7 @@ export default function RandomEncounter() {
     updateenemyEncounter({ description: "", info: "", enemies: [] });
     updatesearchInput("");
     updateinputeEnemies([]);
-    forceUpdate();
+    // forceUpdate();
     updateenemyRoster([]);
   };
 
@@ -120,24 +121,37 @@ export default function RandomEncounter() {
   };
 
   const partyLevelHandler = (e) => {
-    updatepartyLevel(e.target.value);
+    if (partyLevel === e.target.value) {
+      return;
+    };
+    const newLevel = e.target.value;
+    updatepartyLevel(+newLevel);
+    console.log('updated party level to ' + newLevel);
+    axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${newLevel}`)
+    .then(enemyLookup => {
+        updateEnemyLookup(enemyLookup.data.results);
+    }, [])
+    .catch(err => {
+        console.log(err);
+    });
   };
 
-  const addEnemy = () => {
-
-    if (searchInput === "") { return };
-
+  const addEnemy = (enemy = searchInput) => {
+    if (enemy === "") { return };
+    
     // STEP 1: Check if the enemy you are adding is a real thing
     try {
-
-      const cleanedSearchResult = searchInput.toLowerCase().trim().replace(/ /g, "-");
-
+      
+      const cleanedSearchResult = enemy.toLowerCase().trim().replace(/ /g, "-");
+      
       axios.get(`https://www.dnd5eapi.co/api/monsters/${cleanedSearchResult}`)
         .then(enemyFromApi => {
-          // console.log(enemyFromApi);
+
+          const enemy = enemyFromApi.data;
+          
           // Step 1: update enemy roster.
           const newEnemyRoster = enemyRoster;
-          newEnemyRoster.push(enemyFromApi.data);
+          newEnemyRoster.push(enemy);
           updateenemyRoster(newEnemyRoster);
 
           // Step 2: update the list we are going to send to the server.
@@ -147,6 +161,7 @@ export default function RandomEncounter() {
 
           // Step 3: Clear input
           updatesearchInput("");
+          forceUpdate();
         }).catch(err => {
           updateToastHandler(`Unable to find ${searchInput} in our library.`); //todo add custom monster api
           return;
@@ -195,17 +210,35 @@ export default function RandomEncounter() {
     updateenemyRoster(updatedEnemyRoster);
 
     // refresh component
-    forceUpdate();
+    // forceUpdate();
   }
 
   const inputData = (e) => {
 
     if (e.key === "Enter") {
       addEnemy();
-      forceUpdate();
+      // forceUpdate();
     };
 
   }
+
+  const enemyLookupAddHandler = () => {
+    addEnemy(selectedEnemyLookup);
+  }
+
+  // ================= //
+  //   REACT EFFECTS   //
+  // ================= //
+  useEffect(() => {
+    console.log('looking for enemies');
+    axios.get(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${partyLevel}`)
+    .then(enemyLookup => {
+        updateEnemyLookup(enemyLookup.data.results);
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  }, []);
 
   // ========== //
   //   RETURN   //
@@ -268,6 +301,18 @@ export default function RandomEncounter() {
               </div>;
             })}
           </StyledListOfEnemies>
+
+          <S.Box>
+            <h4>Enemy Lookup by Party Level: </h4>
+            <S.Box>
+              <select name="enemyLookup" onChange={e => updateSelectedEnemyLookup(e.target.value)}>
+                {!enemyLookup ? "" : enemyLookup.map(enemy => {
+                  return <option key={enemy.index} value={enemy.index}>{enemy.name}</option>
+                })}
+              </select>
+            </S.Box>
+            <S.Button wire backgroundColor="white" onClick={enemyLookupAddHandler}>Add Enemy</S.Button>
+          </S.Box>
 
           <StyledButton onClick={rollEnemyEncounter}>
             Roll Encounter

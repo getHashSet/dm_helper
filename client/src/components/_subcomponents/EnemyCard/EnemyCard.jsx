@@ -9,6 +9,7 @@ import * as S from '../../../styles/StyledElements';
 import ActionAttack from '../ActionAttack/ActionAttack';
 import ActionPassive from '../ActionPassive/ActionPassive';
 import ActionMagic from '../ActionMagic/ActionMagic';
+import { svg_stopwatch } from '../../../styles';
 
 // ========== //
 //   EXPORT   //
@@ -44,13 +45,14 @@ export default function EnemyCard(props) {
         return totalHp;
     };
 
-    // ======================== //
-    //   HOOKS & REDUX: PART 1  //
-    // ======================== //
+    // ================= //
+    //   HOOKS & REDUX   //
+    // ================= //
     const dispatch = useDispatch(); // used to send data back to redux
     const [enemyHp, updateenemyHp] = useState(getHp(props.enemy.hitDice));
     const [maxHp] = useState(enemyHp);
     const [hasAdvantage, updatehasAdvatage] = useState(false);
+    const [initiative] = useState(props.enemy.initiative);
     const [hasDisadvantage, updatehasDisadvantage] = useState(false);
 
     // ================ //
@@ -221,12 +223,6 @@ export default function EnemyCard(props) {
         updatehasDisadvantage(!hasDisadvantage);
     }
 
-    // ================ //
-    //   HOOKS: PART 2  //
-    // ================ //
-    // because of a rookie mistake that I cant be bothered to fix Im just going to put this hook here.
-    const [initiative] = useState(rollPlusMod(props.enemy.stats.DEX));
-
     // ========== //
     //   RETURN   //
     // ========== //
@@ -262,8 +258,7 @@ export default function EnemyCard(props) {
                     <div className="info_block" title="Initiative Roll">
                         <div className="background"></div>
                         <div className="info">
-                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="stopwatch" className="svg-inline--fa fa-stopwatch fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 304c0 114.9-93.1 208-208 208S16 418.9 16 304c0-104 76.3-190.2 176-205.5V64h-28c-6.6 0-12-5.4-12-12V12c0-6.6 5.4-12 12-12h120c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12h-28v34.5c37.5 5.8 71.7 21.6 99.7 44.6l27.5-27.5c4.7-4.7 12.3-4.7 17 0l28.3 28.3c4.7 4.7 4.7 12.3 0 17l-29.4 29.4-.6.6C419.7 223.3 432 262.2 432 304zm-176 36V188.5c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12V340c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12z"></path></svg>
-                            {initiative}
+                            {svg_stopwatch}{initiative}
                         </div>
                     </div>
                 </div>
