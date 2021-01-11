@@ -243,8 +243,7 @@ export default function ActionAttack(props) {
     }
 
     const rollToHitAndDamage = () => {
-        if (props.action.hasOwnProperty("save")) { rollDcAttack(); return; };
-
+       
         if (props.action?.damage?.length < 1 && props.action.dc === undefined) {
             const toastObject = <S.Toast>{props.action.desc}</S.Toast>;
             updateToastHandler(toastObject);
@@ -267,6 +266,8 @@ export default function ActionAttack(props) {
         if (chargesRemaining !== undefined) {
             updatechargesRemaining(chargesRemaining - 1);
         };
+
+        if (props.action.hasOwnProperty("save")) { rollDcAttack(); return; };
 
         if (props.action?.damage?.length < 1 || props.action?.damage[0]?.hasOwnProperty("choose")) {
             // TODO this is trying to catch multi attack
