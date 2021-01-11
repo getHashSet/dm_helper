@@ -166,7 +166,7 @@ export default function ActionAttack(props) {
         let fightingStyle = undefined;
         if (props.action.damage.length < 1 || props.action.damage[0].hasOwnProperty("choose")) { // TODO this is bad if there is more than 2 attacks. update to a foreach.
             
-            if (props.action.attack_options === undefined) {return};
+            //if (props.action.attack_options === undefined) {return};
 
             if (props.action.hasOwnProperty('attack_options')) {
                 multipleAttacks.push(props.action.attack_options.from[0].damage[0].damage_dice);
